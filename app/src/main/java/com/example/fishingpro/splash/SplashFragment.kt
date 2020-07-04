@@ -18,6 +18,7 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_splash, container, false)
+        //TODO change splash effect and add viewmodels
         val splashTextView: LineTextView = root.findViewById(R.id.splash_textview)
         splashTextView.animateText("Fishing pro")
         return root
