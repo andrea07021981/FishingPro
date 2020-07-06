@@ -14,7 +14,6 @@ import com.hanks.htextview.rainbow.RainbowTextView
 
 class SplashFragment : Fragment() {
 
-
     private val splashViewModel by viewModels<SplashViewModel>()
     private lateinit var dataBinding: FragmentSplashBinding
 
