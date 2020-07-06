@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -49,27 +53,130 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "androidx.core:core-ktx:$core_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "com.google.android.material:material:$appcompat_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$fragment_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$fragment_version"
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test.ext:junit:$exjunit_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressocore_version"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
+    implementation 'com.google.android.material:material:1.1.0'
+    // Support libraries
+    implementation "androidx.appcompat:appcompat:$version_appcompat"
+    implementation "androidx.fragment:fragment:$version_fragment"
+    implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
 
-    compile "com.hanks:htextview-base:$htextview_version"        // base library
+    // Android KTX
+    implementation "androidx.core:core-ktx:$version_core"
 
-    compile "com.hanks:htextview-fade:$htextview_version"        // optional
-    compile "com.hanks:htextview-line:$htextview_version"        // optional
-    compile "com.hanks:htextview-rainbow:$htextview_version"     // optional
-    compile "com.hanks:htextview-typer:$htextview_version"       // optional
+    // Room and Lifecycle dependencies
+    implementation "androidx.room:room-runtime:$version_room"
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    kapt "androidx.room:room-compiler:$version_room"
+    implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_archlifecycle"
 
-    compile "com.hanks:htextview-scale:$htextview_version"       // optional
-    compile "com.hanks:htextview-evaporate:$htextview_version"   // optional
-    compile "com.hanks:htextview-fall:$htextview_version"        // optional
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:2.2.2"
+    implementation "androidx.navigation:navigation-ui-ktx:2.2.2"
+
+    //Cards
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
+
+    //Material
+    implementation 'com.google.android.material:material:1.1.0'
+
+    //Play service
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi:$version_moshi"
+    implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
+
+    // Retrofit with Moshi Converter
+    implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
+    implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
+
+    // Retrofit Coroutines Support
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$version_glide"
+
+    // RecyclerView
+    implementation "androidx.recyclerview:recyclerview:$version_recyclerview"
+
+    // Paging library
+    implementation "androidx.paging:paging-runtime:$version_paging"
+
+    //Interceptor and http loggin
+    implementation 'com.squareup.okhttp3:okhttp:4.2.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+
+    // Testing
+    // Espresso
+    // Core library
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    testImplementation "androidx.arch.core:core-testing:$version_arch_testing"
+
+    // AndroidX Test - Instrumented testing
+    androidTestImplementation "androidx.test.ext:junit:$version_androidX_test_ext_kotlin_runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$version_espresso"
+    testImplementation "org.hamcrest:hamcrest-all:$version_hamcrest"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutine"
+    // Dependencies for Android instrumented unit tests
+    androidTestImplementation "junit:junit:$version_junit"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version_coroutine"
+    androidTestImplementation "androidx.arch.core:core-testing:$version_arch_testing"
+
+    // AndroidX Test - JVM testing
+    testImplementation "androidx.test:core-ktx:$version_androidX_test_core"
+    testImplementation "org.robolectric:robolectric:$version_robolectric"
+    testImplementation "androidx.test.ext:junit-ktx:$version_androidX_test_ext_kotlin_runner"
+
+
+    // Testing code should not be included in the main code.
+    // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.
+    debugImplementation "androidx.fragment:fragment-testing:$version_fragmentTest"
+    implementation "androidx.test:core:$version_androidX_test_core"
+
+    // Dependencies for Android instrumented unit tests
+    androidTestImplementation "org.mockito:mockito-core:$version_mockito"
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:$version_dex_maker"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$version_espresso"
+
+    //Test Espresso idling resources
+    implementation "androidx.test.espresso:espresso-idling-resource:$version_espresso"
+
+    //Custom login effect github
+    implementation 'br.com.simplepass:loading-button-android:2.2.0'
+
+    //Analytics
+    implementation "com.google.firebase:firebase-analytics-ktx:$version_analitycs"
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
+
+    implementation "android.arch.work:work-runtime-ktx:$version_work"
+
+    //Firebase Auth
+    implementation "com.google.firebase:firebase-auth-ktx:$version_auth"
+
+    //Firebase crashlytics
+    implementation "com.google.firebase:firebase-crashlytics:$version_crashlytics"
+
+    compile "com.hanks:htextview-base:$version_htextview"        // base library
+
+    compile "com.hanks:htextview-fade:$version_htextview"        // optional
+    compile "com.hanks:htextview-line:$version_htextview"        // optional
+    compile "com.hanks:htextview-rainbow:$version_htextview"     // optional
+    compile "com.hanks:htextview-typer:$version_htextview"       // optional
+
+    compile "com.hanks:htextview-scale:$version_htextview"       // optional
+    compile "com.hanks:htextview-evaporate:$version_htextview"   // optional
+    compile "com.hanks:htextview-fall:$version_htextview"        // optional
 
 }

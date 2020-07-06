@@ -5,8 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.fishingpro.Event
+import com.example.fishingpro.R
 
 class SplashViewModel : ViewModel() {
+
+    val textScreen = R.string.fighing_pro
 
     private val _loginEvent = MutableLiveData<Event<Unit>>()
     val loginEvent: LiveData<Event<Unit>>
