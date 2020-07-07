@@ -2,9 +2,17 @@ package com.example.fishingpro.login
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
-import kotlinx.coroutines.*
+import com.example.fishingpro.constant.Authenticated
+import com.example.fishingpro.constant.Authenticating
+import com.example.fishingpro.constant.InvalidAuthentication
+import com.example.fishingpro.constant.LoginAuthenticationStates
+import com.example.fishingpro.data.Result
+import com.example.fishingpro.data.source.repository.UserRepository
+import kotlinx.coroutines.launch
+
 
 class LoginViewModel(
+    private val repository: UserRepository
 ) : ViewModel() {
 
     var emailValue = MutableLiveData<String>()
@@ -14,9 +22,13 @@ class LoginViewModel(
     var errorPassword = MutableLiveData<Boolean>()
     var errorEmail = MutableLiveData<Boolean>()
 
+    private val _loginAuthenticationState = MutableLiveData<LoginAuthenticationStates>()
+    val loginAuthenticationState: LiveData<LoginAuthenticationStates>
+        get() = _loginAuthenticationState
+
     init {
         emailValue.value = "a@a.com"
-        passwordValue.value = "a"
+        passwordValue.value = "aaaaaa"
     }
 
     fun onSignUpClick(){
@@ -28,6 +40,31 @@ class LoginViewModel(
     }
 
     private fun doLogin() {
+        viewModelScope.launch {
+            _loginAuthenticationState.value = Authenticating()
+            val result = repository.retrieveUser(emailValue.value.toString(), passwordValue.value.toString())
+            when (result) {
+                is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
+                is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
+                is Result.ExError -> _loginAuthenticationState.value = InvalidAuthentication(result.exception.toString())
+                else -> _loginAuthenticationState.value = null
+            }
+        }
+    }
 
+    fun resetState() {
+        _loginAuthenticationState.value = null
+    }
+
+    class LoginViewModelFactory(
+        private val repository: UserRepository
+    ) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return LoginViewModel(repository) as T
+            }
+            throw IllegalArgumentException("Unable to construct ViewModel")
+        }
     }
 }
