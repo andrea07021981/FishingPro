@@ -105,5 +105,5 @@ class LoginFragment : Fragment() {
     private fun toastMessage(state: LoginAuthenticationStates)= Toast.makeText(requireActivity(), state.message, Toast.LENGTH_SHORT).show()
 
     private fun defaultDoneImage(resources: Resources) =
-        BitmapFactory.decodeResource(resources, R.mipmap.ic_check_ko)
+        BitmapFactory.decodeResource(resources, R.mipmap.ic_check_ok)
 }

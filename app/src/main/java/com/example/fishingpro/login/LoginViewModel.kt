@@ -27,7 +27,7 @@ class LoginViewModel(
         get() = _loginAuthenticationState
 
     init {
-        emailValue.value = "a@da.com"
+        emailValue.value = "a@a.com"
         passwordValue.value = "aaaaaa"
     }
 
