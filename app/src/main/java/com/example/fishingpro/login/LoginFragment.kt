@@ -70,6 +70,10 @@ class LoginFragment : Fragment() {
                 Handler().run {
                     doneLoadingAnimation(fillColor, bitmap)
                     postDelayed({
+                        findNavController()
+                            .navigate(
+                                LoginFragmentDirections.actionLoginFragmentToSignUpFragment()
+                            )
                         /*
                         val bundle = bundleOf("x" to dataBinding.loginButton.x, "y" to dataBinding.loginButton.y)
                         bundle.putParcelable("user", state.user)
