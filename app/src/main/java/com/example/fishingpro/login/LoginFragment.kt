@@ -74,16 +74,6 @@ class LoginFragment : Fragment() {
                             .navigate(
                                 LoginFragmentDirections.actionLoginFragmentToSignUpFragment()
                             )
-                        /*
-                        val bundle = bundleOf("x" to dataBinding.loginButton.x, "y" to dataBinding.loginButton.y)
-                        bundle.putParcelable("user", state.user)
-                        findNavController()
-                            .navigate(
-                                LoginFragmentDirections.actionLoginFragmentToHomeFragment(
-                                    bundle
-                                )
-                            )
-                         */
                         }, navigateTime)
                     loginViewModel.resetState()
                 }

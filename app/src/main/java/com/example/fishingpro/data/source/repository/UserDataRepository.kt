@@ -41,7 +41,7 @@ class UserDataRepository(
         }
     }
 
-    override suspend fun saveUser(email: String, password: String) {
+    override suspend fun saveUser(email: String, password: String): Result<FirebaseUser> {
         return withContext(ioDispatcher) {
             userRemoteDataSource.saveUser(email, password)
         }

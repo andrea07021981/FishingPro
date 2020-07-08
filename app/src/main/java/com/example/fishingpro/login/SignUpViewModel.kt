@@ -3,16 +3,19 @@ package com.example.fishingpro.login
 import android.util.Patterns
 import androidx.lifecycle.*
 import com.example.fishingpro.Event
+import com.example.fishingpro.constant.Authenticated
+import com.example.fishingpro.constant.Authenticating
+import com.example.fishingpro.constant.InvalidAuthentication
+import com.example.fishingpro.constant.LoginAuthenticationStates
+import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.source.repository.UserRepository
 import kotlinx.coroutines.*
 
 //Inherit from AndroidViewModel we don't need to use a CustomViewmodelFactory for passing the application
 class SignUpViewModel(
-    private val userDataRepository: UserRepository
+    private val repository: UserRepository
 ) : ViewModel() {
 
-    var userNameValue = MutableLiveData<String>()
-    var errorUserName = MutableLiveData<Boolean>()
     var emailValue = MutableLiveData<String>()
     var errorEmail = MutableLiveData<Boolean>()
     var passwordValue = MutableLiveData<String>()
@@ -22,41 +25,35 @@ class SignUpViewModel(
     val loginEvent: LiveData<Event<Unit>>
         get() = _loginEvent
 
-    private var viewModelJob = Job()
-    /**
-     * A [CoroutineScope] keeps track of all coroutines started by this ViewModel.
-     *
-     * Because we pass it [viewModelJob], any coroutine started in this scope can be cancelled
-     * by calling `viewModelJob.cancel()`
-     *
-     * By default, all coroutines started in uiScope will launch in [Dispatchers.Main] which is
-     * the main thread on Android. This is a sensible default because most coroutines started by
-     * a [ViewModel] update the UI after performing some processing.
-     */
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private val _loginAuthenticationState = MutableLiveData<LoginAuthenticationStates>()
+    val loginAuthenticationState: LiveData<LoginAuthenticationStates>
+        get() = _loginAuthenticationState
 
     init {
-        userNameValue.value = ""
         emailValue.value = ""
         passwordValue.value = ""
     }
 
     fun onSignUpClick(){
         if (!checkValues()) {
-
+            viewModelScope.launch {
+                _loginAuthenticationState.value = Authenticating()
+                val result = repository.saveUser(emailValue.value.toString(), passwordValue.value.toString())
+                //If the user is correctly created, it also logged in so we can move directly to the home page
+                when (result) {
+                    is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
+                    is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
+                    is Result.ExError -> _loginAuthenticationState.value = InvalidAuthentication(result.exception.toString())
+                    else -> _loginAuthenticationState.value = null
+                }
+            }
         }
     }
 
     private fun checkValues (): Boolean {
-        errorUserName.value = userNameValue.value.isNullOrEmpty()
-        errorEmail.value = !Patterns.EMAIL_ADDRESS.matcher(emailValue.value).matches()
+        errorEmail.value = !Patterns.EMAIL_ADDRESS.matcher(emailValue.value.toString()).matches()
         errorPassword.value = passwordValue.value.isNullOrEmpty()
-        return errorUserName.value!! && errorEmail.value!! && errorPassword.value!!
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
+        return errorEmail.value!! && errorPassword.value!!
     }
 
     /**
