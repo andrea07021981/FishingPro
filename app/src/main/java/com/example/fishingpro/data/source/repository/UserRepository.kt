@@ -7,5 +7,5 @@ interface UserRepository {
 
     suspend fun retrieveUser(email: String, password: String): Result<FirebaseUser>
 
-    suspend fun saveUser(email: String, password: String)
+    suspend fun saveUser(email: String, password: String): Result<FirebaseUser>
 }

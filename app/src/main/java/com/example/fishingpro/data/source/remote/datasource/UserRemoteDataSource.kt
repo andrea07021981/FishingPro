@@ -16,11 +16,11 @@ class UserRemoteDataSource internal constructor(
 
     override suspend fun getUser(email: String, password: String): Result<FirebaseUser> = withContext(ioDispatcher){
         try {
-            val await = firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            if (await.user != null) {
-                return@withContext Result.Success(await.user!!)
+            val authResultAwait = firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            if (authResultAwait.user != null) {
+                return@withContext Result.Success(authResultAwait.user!!)
             } else {
-                return@withContext Result.Error("Login Failed")
+                return@withContext return@withContext Result.Error("Login Failed")
             }
         } catch (e: Exception) {
             //Print the message but send a login failed info
@@ -29,7 +29,17 @@ class UserRemoteDataSource internal constructor(
         }
     }
 
-    override suspend fun saveUser(email: String, password: String) {
-        TODO("Not yet implemented")
+    override suspend fun saveUser(email: String, password: String): Result<FirebaseUser> = withContext(ioDispatcher) {
+        try {
+            val authResultAwait = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
+            if (authResultAwait.user != null) {
+                return@withContext Result.Success(authResultAwait.user!!)
+            } else {
+                return@withContext Result.Error("Login Failed")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return@withContext Result.Error("Login Failed")
+        }
     }
 }

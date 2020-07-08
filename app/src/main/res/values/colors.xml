@@ -14,4 +14,5 @@
     <color name="customRed">#f10408</color>
     <color name="customLightRed">#E35E60</color>
     <color name="customGreen">#57a701</color>
+    <color name="customWhiteLight">#83FFFFFF</color>
 </resources>

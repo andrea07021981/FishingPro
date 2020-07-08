@@ -17,6 +17,132 @@
         android:orientation="vertical"
         android:background="@drawable/background" >
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="96dp"
+                android:layout_height="120dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="72dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:src="@mipmap/ic_launcher"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:backgroundTint="@color/primaryColor"
+                android:elevation="10dp"
+                android:translationZ="10dp"
+                app:cardCornerRadius="30dp"
+                app:layout_constraintBottom_toTopOf="@+id/signup_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutEmail"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="16dp"
+                        android:textColorHint="@color/primaryTextColor"
+                        app:boxStrokeColor="@color/primaryTextColor"
+                        app:errorEnabled="true"
+                        app:hasError="@{safeUnbox(signupViewModel.errorEmail)}"
+                        app:hintTextColor="@color/primaryTextColor"
+                        app:layout_constraintBottom_toTopOf="@+id/layoutPassword"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/email_white_24dp"
+                            android:drawablePadding="10dp"
+                            android:hint="@string/email"
+                            android:singleLine="true"
+                            android:text="@={signupViewModel.emailValue}"
+                            android:textColor="@color/primaryTextColor"
+                            android:textColorHint="@color/primaryTextColor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutPassword"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="32dp"
+                        android:textColorHint="@color/primaryTextColor"
+                        app:boxStrokeColor="@color/primaryTextColor"
+                        app:errorEnabled="true"
+                        app:hasError="@{safeUnbox(signupViewModel.errorPassword)}"
+                        app:hintTextColor="@color/primaryTextColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layoutEmail">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/lock_white_24dp"
+                            android:drawablePadding="10dp"
+                            android:hint="@string/password"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:singleLine="true"
+                            android:text="@={signupViewModel.passwordValue}"
+                            android:textColor="@color/primaryTextColor"
+                            android:textColorHint="@color/primaryTextColor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
+                android:id="@+id/signup_button"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginEnd="56dp"
+                android:layout_marginBottom="48dp"
+                android:background="@drawable/custom_rounded_corners"
+                android:onClick="@{() -> signupViewModel.onSignUpClick()}"
+                android:text="@string/sign_up"
+                android:textColor="@color/secondaryTextColor"
+                android:transitionName="login_button"
+                app:finalCornerAngle="50dp"
+                app:initialCornerAngle="40dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:spinning_bar_color="#FFFFFF"
+                app:spinning_bar_padding="2dp"
+                app:spinning_bar_width="3dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>
