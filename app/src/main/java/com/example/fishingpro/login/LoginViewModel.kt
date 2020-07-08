@@ -2,6 +2,7 @@ package com.example.fishingpro.login
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.*
+import com.example.fishingpro.Event
 import com.example.fishingpro.constant.Authenticated
 import com.example.fishingpro.constant.Authenticating
 import com.example.fishingpro.constant.InvalidAuthentication
@@ -26,17 +27,25 @@ class LoginViewModel(
     val loginAuthenticationState: LiveData<LoginAuthenticationStates>
         get() = _loginAuthenticationState
 
+    private val _signUpEvent = MutableLiveData<Event<Unit>>()
+    val signUpEvent: LiveData<Event<Unit>>
+        get() = _signUpEvent
+
     init {
         emailValue.value = "a@a.com"
         passwordValue.value = "aaaaaa"
     }
 
-    fun onSignUpClick(){
+    fun onSignInClick(){
         errorEmail.value = emailValue.value.isNullOrEmpty()
         errorPassword.value = passwordValue.value.isNullOrEmpty()
         if (errorEmail.value == false && errorPassword.value == false) {
             doLogin()
         }
+    }
+
+    fun onSignUpClick() {
+        _signUpEvent.value = Event(Unit)
     }
 
     private fun doLogin() {

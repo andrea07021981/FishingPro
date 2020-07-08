@@ -9,6 +9,8 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -16,9 +18,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import br.com.simplepass.loadingbutton.animatedDrawables.ProgressType
 import br.com.simplepass.loadingbutton.customViews.ProgressButton
+import com.example.fishingpro.EventObserver
 import com.example.fishingpro.R
 import com.example.fishingpro.constant.*
 import com.example.fishingpro.data.source.repository.UserDataRepository
@@ -46,6 +50,12 @@ class LoginFragment : Fragment() {
                 dataBinding.loginButton.run { morphDoneAndRevert(requireNotNull(activity), it) }
             } else if (it is Unauthenticated){
                 Toast.makeText(requireActivity(), it.message, Toast.LENGTH_SHORT).show()
+            }
+        })
+        loginViewModel.signUpEvent.observe(this.viewLifecycleOwner, EventObserver {
+            it.let {
+                findNavController()
+                    .navigate(LoginFragmentDirections.actionLoginFragmentToSignUpFragment())
             }
         })
         return dataBinding.root

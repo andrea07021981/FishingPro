@@ -21,6 +21,7 @@ import com.example.fishingpro.constant.InvalidAuthentication
 import com.example.fishingpro.constant.Unauthenticated
 import com.example.fishingpro.data.source.repository.UserDataRepository
 import com.example.fishingpro.databinding.FragmentSignupBinding
+import com.example.fishingpro.ui.CustomDialog
 
 class SignUpFragment : Fragment() {
 
@@ -40,14 +41,21 @@ class SignUpFragment : Fragment() {
         dataBinding.signupViewModel = signUpViewModel
         dataBinding.lifecycleOwner = this
         signUpViewModel.loginAuthenticationState.observe(this.viewLifecycleOwner, Observer {
+            val customDialog = CustomDialog(requireActivity())
+            //TODO change layout in sx image dx text
+            customDialog.showDialog();
             when (it) {
                 is Authenticating -> {
+                    customDialog.showDialog();
                     Toast.makeText(requireNotNull(activity), "Creating user", Toast.LENGTH_SHORT).show()
                 }
                 is Authenticated -> {
-                    Toast.makeText(requireNotNull(activity), "Creating user", Toast.LENGTH_SHORT).show()
+                    customDialog.hideDialog()
+                    findNavController()
+                        .navigate(SignUpFragmentDirections.actionSignUpFragmentToHomeFragment())
                 }
                 is Unauthenticated, is InvalidAuthentication -> {
+                    customDialog.hideDialog()
                     Toast.makeText(requireNotNull(activity), it.message, Toast.LENGTH_SHORT).show()
                 }
             }
