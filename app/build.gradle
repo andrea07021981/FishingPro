@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 29
@@ -165,18 +166,22 @@ dependencies {
     //Firebase Auth
     implementation "com.google.firebase:firebase-auth-ktx:$version_auth"
 
-    //Firebase crashlytics
+    //Firebase crashlytics and analytics
     implementation "com.google.firebase:firebase-crashlytics:$version_crashlytics"
+    implementation "com.google.firebase:firebase-analytics-ktx:$version_analytics"
 
-    compile "com.hanks:htextview-base:$version_htextview"        // base library
+    //Firebase performance
+    implementation "com.google.firebase:firebase-perf:$version_perf"
 
-    compile "com.hanks:htextview-fade:$version_htextview"        // optional
-    compile "com.hanks:htextview-line:$version_htextview"        // optional
-    compile "com.hanks:htextview-rainbow:$version_htextview"     // optional
-    compile "com.hanks:htextview-typer:$version_htextview"       // optional
+    implementation "com.hanks:htextview-base:$version_htextview"        // base library
 
-    compile "com.hanks:htextview-scale:$version_htextview"       // optional
-    compile "com.hanks:htextview-evaporate:$version_htextview"   // optional
-    compile "com.hanks:htextview-fall:$version_htextview"        // optional
+    implementation "com.hanks:htextview-fade:$version_htextview"        // optional
+    implementation "com.hanks:htextview-line:$version_htextview"        // optional
+    implementation "com.hanks:htextview-rainbow:$version_htextview"     // optional
+    implementation "com.hanks:htextview-typer:$version_htextview"       // optional
+
+    implementation "com.hanks:htextview-scale:$version_htextview"       // optional
+    implementation "com.hanks:htextview-evaporate:$version_htextview"   // optional
+    implementation "com.hanks:htextview-fall:$version_htextview"        // optional
 
 }

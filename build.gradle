@@ -33,7 +33,9 @@ buildscript {
         version_work = "1.0.0-alpha11"
         version_analitycs = "17.4.3"
         version_auth = "19.3.1"
-        version_crashlytics = "17.1.0"
+        version_crashlytics = "17.1.1"
+        version_analytics = "17.4.4"
+        version_perf = "19.0.7"
         version_htextview = "0.1.6"
         version_navigation_ui = "2.3.0"
     }
@@ -47,6 +49,7 @@ buildscript {
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
         classpath 'com.google.gms:google-services:4.3.3'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
+        classpath 'com.google.firebase:perf-plugin:1.3.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
