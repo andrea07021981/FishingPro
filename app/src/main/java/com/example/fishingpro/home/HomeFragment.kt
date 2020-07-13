@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.fishingpro.R
+import com.example.fishingpro.map.MapFragment
 import com.example.fishingpro.user.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -28,6 +29,7 @@ class HomeFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return loadFragment(when (item.itemId) {
                 R.id.user_page -> HomeFragment()
+                R.id.map_page -> MapFragment()
                 else -> null
             }
         )
