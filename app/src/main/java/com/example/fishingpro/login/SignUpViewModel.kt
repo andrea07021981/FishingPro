@@ -35,7 +35,7 @@ class SignUpViewModel(
     }
 
     fun onSignUpClick(){
-        if (!checkValues()) {
+        if (checkValidValues()) {
             viewModelScope.launch {
                 _loginAuthenticationState.value = Authenticating()
                 val result = repository.saveUser(emailValue.value.toString(), passwordValue.value.toString())
@@ -50,10 +50,10 @@ class SignUpViewModel(
         }
     }
 
-    private fun checkValues (): Boolean {
+    private fun checkValidValues (): Boolean {
         errorEmail.value = !Patterns.EMAIL_ADDRESS.matcher(emailValue.value.toString()).matches()
         errorPassword.value = passwordValue.value.isNullOrEmpty()
-        return errorEmail.value!! && errorPassword.value!!
+        return !(errorEmail.value!! || errorPassword.value!!)
     }
 
     /**

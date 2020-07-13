@@ -7,8 +7,10 @@
 
     <ImageView
         android:id="@+id/custom_loading_imageView"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@android:color/transparent"
+        android:backgroundTint="@android:color/transparent"
         android:scaleType="center"
         android:src="@drawable/loading"
         app:layout_constraintBottom_toBottomOf="parent"

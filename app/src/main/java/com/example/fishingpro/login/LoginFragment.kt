@@ -9,16 +9,11 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import br.com.simplepass.loadingbutton.animatedDrawables.ProgressType
 import br.com.simplepass.loadingbutton.customViews.ProgressButton
@@ -26,7 +21,6 @@ import com.example.fishingpro.EventObserver
 import com.example.fishingpro.R
 import com.example.fishingpro.constant.*
 import com.example.fishingpro.data.source.repository.UserDataRepository
-import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
@@ -82,7 +76,7 @@ class LoginFragment : Fragment() {
                     postDelayed({
                         findNavController()
                             .navigate(
-                                LoginFragmentDirections.actionLoginFragmentToSignUpFragment()
+                                LoginFragmentDirections.actionLoginFragmentToHomeFragment()
                             )
                         }, navigateTime)
                     loginViewModel.resetState()
