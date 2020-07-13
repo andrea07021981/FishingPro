@@ -20,7 +20,7 @@ class UserRemoteDataSource internal constructor(
             if (authResultAwait.user != null) {
                 return@withContext Result.Success(authResultAwait.user!!)
             } else {
-                return@withContext return@withContext Result.Error("Login Failed")
+                return@withContext Result.Error("Login Failed")
             }
         } catch (e: Exception) {
             //Print the message but send a login failed info
