@@ -40,10 +40,8 @@ class SignUpFragment : Fragment() {
         dataBinding = FragmentSignupBinding.inflate(inflater)
         dataBinding.signupViewModel = signUpViewModel
         dataBinding.lifecycleOwner = this
+        val customDialog = CustomDialog(requireActivity())
         signUpViewModel.loginAuthenticationState.observe(this.viewLifecycleOwner, Observer {
-            val customDialog = CustomDialog(requireActivity())
-            //TODO change layout in sx image dx text
-            customDialog.showDialog();
             when (it) {
                 is Authenticating -> {
                     customDialog.showDialog();
