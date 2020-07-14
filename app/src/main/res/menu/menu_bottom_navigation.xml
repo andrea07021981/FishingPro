@@ -3,11 +3,13 @@
     <item
         android:id="@+id/user_page"
         android:enabled="true"
-        android:icon="@drawable/email_white_24dp"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:iconTint="@color/secondaryColor"
         android:title="User"/>
     <item
         android:id="@+id/map_page"
         android:enabled="true"
-        android:icon="@drawable/abc_vector_test"
+        android:icon="@drawable/ic_baseline_map_24"
+        android:iconTint="@color/secondaryColor"
         android:title="Map"/>
 </menu>
