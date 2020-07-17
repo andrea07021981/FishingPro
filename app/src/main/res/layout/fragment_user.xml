@@ -86,15 +86,16 @@
                             android:paddingStart="20sp"
                             android:paddingEnd="20sp">
 
-                            <TextView
+                            <ImageView
                                 android:id="@+id/textView2"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="16dp"
-                                android:text="Weather data"
+                                tools:srcCompat="@drawable/ic_baseline_sync_24"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:weatherState="@{userViewModel.currentWeather.WIcon}"/>
 
                             <TextView
                                 android:id="@+id/textView"

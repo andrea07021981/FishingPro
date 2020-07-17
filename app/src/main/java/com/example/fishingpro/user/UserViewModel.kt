@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.fishingpro.Event
+import com.example.fishingpro.data.domain.WeatherDomain
 import com.example.fishingpro.login.SignUpViewModel
 
 class UserViewModel(
@@ -14,6 +15,13 @@ class UserViewModel(
     private val _userEvent = MutableLiveData<Event<Unit>>()
     val userEvent: LiveData<Event<Unit>>
         get() = _userEvent
+    private val _currentWeather = MutableLiveData<WeatherDomain>()
+    val currentWeather: LiveData<WeatherDomain>
+        get() = _currentWeather
+
+    init {
+
+    }
 
     fun backToRecipeList() {
         _userEvent.value = Event(Unit)
