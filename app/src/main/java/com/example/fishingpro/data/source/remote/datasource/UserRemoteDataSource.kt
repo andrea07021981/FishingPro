@@ -2,7 +2,7 @@ package com.example.fishingpro.data.source.remote.datasource
 
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.await
-import com.example.fishingpro.data.source.UserDataSource
+import com.example.fishingpro.data.source.UserSource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineDispatcher
@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 class UserRemoteDataSource internal constructor(
     private val firebaseAuth: FirebaseAuth,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : UserDataSource{
+) : UserSource{
 
     override suspend fun getUser(email: String, password: String): Result<FirebaseUser> = withContext(ioDispatcher){
         try {

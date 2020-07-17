@@ -1,5 +1,6 @@
 package com.example.fishingpro.data.source.remote.datatranferobject
 
+import com.example.fishingpro.data.domain.*
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -36,18 +37,18 @@ data class Clouds(
 
 @JsonClass(generateAdapter = true)
 data class Coord(
-    val lat: Int,
-    val lon: Int
+    val lat: Double,
+    val lon: Double
 )
 
 @JsonClass(generateAdapter = true)
 data class Sys(
     val country: String,
-    val id: Int,
-    val message: Double,
+    val id: Int?,
+    val message: Double?,
     val sunrise: Int,
     val sunset: Int,
-    val type: Int
+    val type: Int?
 )
 
 @JsonClass(generateAdapter = true)
@@ -63,3 +64,22 @@ data class Wind(
     val deg: Double,
     val speed: Double
 )
+
+fun NetworkLocalWeather.asDomainModel(): LocalWeatherDomain {
+    return LocalWeatherDomain(
+        wBase =  base,
+        wClouds = CloudsDomain(clouds.all),
+        wCod = cod,
+        wCoord = CoordDomain(coord.lat, coord.lon),
+        wDt = dt,
+        wId = id,
+        wMain = MainDomain(main.feelsLike, main.humidity, main.pressure, main.temp, main.tempMax, main.tempMin),
+        wName = name,
+        wSys = SysDomain(sys.country, sys.id, sys.message, sys.sunrise, sys.sunset, sys.type),
+        wTimezone = timezone,
+        wWeather = weather.map {
+            WeatherDomain(it.description, it.icon, it.id, it.main)
+        },
+        wWind = WindDomain(wind.deg, wind.speed)
+    )
+}
