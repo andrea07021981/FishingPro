@@ -36,18 +36,18 @@ data class CloudsDomain(
 
 @Parcelize
 data class CoordDomain(
-    val wLat: Int,
-    val wLon: Int
+    val wLat: Double,
+    val wLon: Double
 ) : Parcelable
 
 @Parcelize
 data class SysDomain(
     val wCountry: String,
-    val wId: Int,
-    val wMessage: Double,
+    val wId: Int?,
+    val wMessage: Double?,
     val wSunrise: Int,
     val wSunset: Int,
-    val wType: Int
+    val wType: Int?
 ) : Parcelable
 
 @Parcelize

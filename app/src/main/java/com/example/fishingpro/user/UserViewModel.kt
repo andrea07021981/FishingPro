@@ -1,26 +1,38 @@
 package com.example.fishingpro.user
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.example.fishingpro.Event
+import com.example.fishingpro.data.Result
+import com.example.fishingpro.data.domain.LocalWeatherDomain
 import com.example.fishingpro.data.domain.WeatherDomain
+import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.example.fishingpro.login.SignUpViewModel
+import kotlinx.coroutines.launch
 
 class UserViewModel(
-
+    private val weatherRepository: WeatherRepository
 ) : ViewModel() {
 
     private val _userEvent = MutableLiveData<Event<Unit>>()
     val userEvent: LiveData<Event<Unit>>
         get() = _userEvent
-    private val _currentWeather = MutableLiveData<WeatherDomain>()
-    val currentWeather: LiveData<WeatherDomain>
+    private val _currentWeather = MutableLiveData<LocalWeatherDomain>()
+    val currentWeather: LiveData<LocalWeatherDomain>
         get() = _currentWeather
 
     init {
+        loadWeather()
+    }
 
+    private fun loadWeather() {
+        viewModelScope.launch {
+            val liveWeatherResult = weatherRepository.retrieveLiveWeather(44.389339, 79.685516)
+            if (liveWeatherResult is Result.Success) {
+                _currentWeather.value = liveWeatherResult.data
+            } else {
+                //TODO manage it with some live errors
+            }
+        }
     }
 
     fun backToRecipeList() {
@@ -31,11 +43,12 @@ class UserViewModel(
      * Factory for constructing SignUpViewModel with parameter
      */
     class UserViewModelFactory(
+        private val weatherRepository: WeatherRepository
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return UserViewModel() as T
+                return UserViewModel(weatherRepository) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

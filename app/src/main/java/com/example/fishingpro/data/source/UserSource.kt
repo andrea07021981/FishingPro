@@ -3,7 +3,7 @@ package com.example.fishingpro.data.source
 import com.example.fishingpro.data.Result
 import com.google.firebase.auth.FirebaseUser
 
-interface UserDataSource {
+interface UserSource {
 
     suspend fun getUser(email: String, password: String): Result<FirebaseUser>
 

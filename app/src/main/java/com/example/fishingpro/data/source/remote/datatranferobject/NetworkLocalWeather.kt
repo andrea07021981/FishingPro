@@ -37,18 +37,18 @@ data class Clouds(
 
 @JsonClass(generateAdapter = true)
 data class Coord(
-    val lat: Int,
-    val lon: Int
+    val lat: Double,
+    val lon: Double
 )
 
 @JsonClass(generateAdapter = true)
 data class Sys(
     val country: String,
-    val id: Int,
-    val message: Double,
+    val id: Int?,
+    val message: Double?,
     val sunrise: Int,
     val sunset: Int,
-    val type: Int
+    val type: Int?
 )
 
 @JsonClass(generateAdapter = true)
