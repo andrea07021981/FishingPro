@@ -90,23 +90,32 @@
                                 android:id="@+id/textView2"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
-                                android:layout_marginStart="16dp"
+                                android:layout_marginStart="8dp"
                                 android:layout_marginTop="16dp"
-                                tools:srcCompat="@drawable/ic_baseline_sync_24"
+                                app:layout_constraintBottom_toTopOf="@+id/textView"
+                                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+                                app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:weatherState="@{userViewModel.currentWeather.WIcon}"/>
+                                app:weatherState="@{userViewModel.currentWeatherDetail.WIcon}"
+                                tools:srcCompat="@drawable/ic_baseline_sync_24" />
 
                             <TextView
                                 android:id="@+id/textView"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="16dp"
-                                android:text="TextView"
-                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:fontFamily="sans-serif"
+                                android:gravity="center"
+                                android:text="@{@string/format_temperature(userViewModel.currentWeather.wMain.wTemp)}"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                app:layout_constraintBottom_toTopOf="@+id/textView10"
+                                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+                                app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                                tools:text="---" />
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/constraintLayout"
@@ -124,22 +133,24 @@
                                     android:id="@+id/textView8"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="1000 hPa"
+                                    android:text="@{@string/format_pressure(userViewModel.currentWeather.wMain.wPressure)}"
                                     app:layout_constraintBottom_toTopOf="@+id/textView7"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.5"
                                     app:layout_constraintStart_toStartOf="@+id/guideline"
-                                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView5"
+                                    tools:text="---- hPa" />
 
                                 <TextView
                                     android:id="@+id/textView6"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="10 mph"
+                                    android:text="@{@string/format_wind(userViewModel.currentWeather.wWind.wSpeed)}"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintStart_toStartOf="@+id/guideline"
-                                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView7"
+                                    tools:text="--- mph" />
 
                                 <TextView
                                     android:id="@+id/textView7"
@@ -156,33 +167,33 @@
                                     android:id="@+id/imageView11"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
+                                    android:src="@drawable/ic_rain"
                                     app:layout_constraintBottom_toTopOf="@+id/imageView12"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    android:src="@drawable/ic_rain"
                                     tools:srcCompat="@drawable/ic_rain" />
 
                                 <ImageView
                                     android:id="@+id/imageView12"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
+                                    android:src="@drawable/ic_pressure"
                                     app:layout_constraintBottom_toTopOf="@+id/imageView13"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/imageView11"
-                                    android:src="@drawable/ic_pressure"
                                     tools:srcCompat="@drawable/ic_pressure" />
 
                                 <ImageView
                                     android:id="@+id/imageView13"
                                     android:layout_width="40dp"
                                     android:layout_height="40dp"
+                                    android:src="@drawable/ic_wind"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/guideline"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/imageView12"
-                                    android:src="@drawable/ic_wind"
                                     tools:srcCompat="@drawable/ic_wind" />
 
                                 <androidx.constraintlayout.widget.Guideline
@@ -207,12 +218,13 @@
                                     android:id="@+id/textView4"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:text="13%"
+                                    android:text="--%"
                                     app:layout_constraintBottom_toTopOf="@+id/textView5"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintHorizontal_bias="0.5"
                                     app:layout_constraintStart_toStartOf="@+id/guideline"
-                                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                                    app:layout_constraintTop_toBottomOf="@+id/textView3"
+                                    tools:text="--%" />
 
                                 <TextView
                                     android:id="@+id/textView5"
@@ -225,6 +237,22 @@
                                     app:layout_constraintStart_toStartOf="@+id/guideline"
                                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
                             </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <TextView
+                                android:id="@+id/textView10"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginBottom="16dp"
+                                android:gravity="center"
+                                android:text="@{userViewModel.currentWeather.wName}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+                                app:layout_constraintHorizontal_bias="0.5"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/textView"
+                                tools:text="---" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
                     </androidx.cardview.widget.CardView>

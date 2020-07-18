@@ -10,7 +10,7 @@ import com.example.fishingpro.R
 @BindingAdapter("weatherState")
 fun ImageView.setWeatherState(weather: String?) {
     weather?.let {
-        val url = "openweathermap.org/img/wn"
+        val url = "openweathermap.org/img/wn/"
             .plus(weather)
             .plus("@2x.png")
             .toUri()

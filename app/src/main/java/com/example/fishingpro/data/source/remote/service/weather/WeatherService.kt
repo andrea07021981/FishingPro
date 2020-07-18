@@ -8,5 +8,5 @@ import retrofit2.http.Query
 interface WeatherService {
 
     @GET("weather")
-    suspend fun getLocalWeather(@Query("lat") lat: Double, @Query("lon") lon: Double, @Query("appid") key: String = API_KEY): NetworkLocalWeather
+    suspend fun getLocalWeather(@Query("lat") lat: Double, @Query("lon") lon: Double, @Query("units") units: String = "metric", @Query("appid") key: String = API_KEY): NetworkLocalWeather
 }
