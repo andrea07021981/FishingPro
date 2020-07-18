@@ -12,6 +12,18 @@
     <string name="sign_up">Sign Up</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="location_detected">
+        location detected.
+    </string>
+    <string name="no_location_detected">
+        No location detected. Make sure location is enabled on the device.
+    </string>
+    <string name="permission_denied_explanation">
+        Permission was denied, but is needed for core functionality.
+    </string>
+    <string name="permission_rationale">
+        Location permission is needed for core functionality
+    </string>
 
     <string name="format_temperature"><xliff:g id="temp">%.1f</xliff:g> C\u00B0</string>
     <string name="format_pressure"><xliff:g id="pressure">%s</xliff:g> hPa</string>
