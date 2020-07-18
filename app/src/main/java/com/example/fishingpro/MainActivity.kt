@@ -18,6 +18,8 @@ import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
 
+    //TODO review the class, it could be an abstract parent of home
+
     companion object {
         private val TAG = MainActivity::class.java.simpleName
         private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
@@ -129,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(
             this@MainActivity,
             arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-            Companion.REQUEST_PERMISSIONS_REQUEST_CODE
+            REQUEST_PERMISSIONS_REQUEST_CODE
         )
     }
 
@@ -147,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         // request previously, but didn't check the "Don't ask again" checkbox.
         if (shouldProvideRationale) {
             Log.i(
-                Companion.TAG,
+                TAG,
                 "Displaying permission rationale to provide additional context."
             )
             showSnackbar(R.string.permission_rationale, android.R.string.ok,
@@ -155,7 +157,7 @@ class MainActivity : AppCompatActivity() {
                     startLocationPermissionRequest()
                 })
         } else {
-            Log.i(Companion.TAG, "Requesting permission")
+            Log.i(TAG, "Requesting permission")
             // Request permission. It's possible this can be auto answered if device policy
             // sets the permission in a given state or the user denied the permission
             // previously and checked "Never ask again".
@@ -171,7 +173,7 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.i(Companion.TAG, "onRequestPermissionResult")
+        Log.i(TAG, "onRequestPermissionResult")
         if (requestCode == Companion.REQUEST_PERMISSIONS_REQUEST_CODE) {
             when {
                 grantResults.isEmpty() -> {

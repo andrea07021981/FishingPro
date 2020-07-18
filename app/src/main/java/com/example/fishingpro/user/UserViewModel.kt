@@ -6,6 +6,7 @@ import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalWeatherDomain
 import com.example.fishingpro.data.domain.WeatherDomain
 import com.example.fishingpro.data.source.repository.WeatherRepository
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
 class UserViewModel(
@@ -24,12 +25,12 @@ class UserViewModel(
         get() = _currentWeather
 
     init {
-        loadWeather()
+
     }
 
-    private fun loadWeather() {
+    private fun loadWeather(latLon: LatLng) {
         viewModelScope.launch {
-            val liveWeatherResult = weatherRepository.retrieveLiveWeather(44.389339, 79.685516)
+            val liveWeatherResult = weatherRepository.retrieveLiveWeather(latLon.latitude, latLon.longitude)
             if (liveWeatherResult is Result.Success) {
                 _currentWeather.value = liveWeatherResult.data
                 _currentWeatherDetail.value = liveWeatherResult.data.wWeather[0]
@@ -41,6 +42,10 @@ class UserViewModel(
 
     fun backToRecipeList() {
         _userEvent.value = Event(Unit)
+    }
+
+    fun updateLatLong(lat: Double, lon: Double) {
+        loadWeather(LatLng(lat, lon))
     }
 
     /**
