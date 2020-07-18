@@ -6,7 +6,6 @@ import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalWeatherDomain
 import com.example.fishingpro.data.domain.WeatherDomain
 import com.example.fishingpro.data.source.repository.WeatherRepository
-import com.example.fishingpro.login.SignUpViewModel
 import kotlinx.coroutines.launch
 
 class UserViewModel(
@@ -16,6 +15,10 @@ class UserViewModel(
     private val _userEvent = MutableLiveData<Event<Unit>>()
     val userEvent: LiveData<Event<Unit>>
         get() = _userEvent
+    private val _currentWeatherDetail = MutableLiveData<WeatherDomain>()
+    val currentWeatherDetail: LiveData<WeatherDomain>
+        get() = _currentWeatherDetail
+
     private val _currentWeather = MutableLiveData<LocalWeatherDomain>()
     val currentWeather: LiveData<LocalWeatherDomain>
         get() = _currentWeather
@@ -29,6 +32,7 @@ class UserViewModel(
             val liveWeatherResult = weatherRepository.retrieveLiveWeather(44.389339, 79.685516)
             if (liveWeatherResult is Result.Success) {
                 _currentWeather.value = liveWeatherResult.data
+                _currentWeatherDetail.value = liveWeatherResult.data.wWeather[0]
             } else {
                 //TODO manage it with some live errors
             }

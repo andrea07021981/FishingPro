@@ -16,7 +16,8 @@ class WeatherRemoteDataSource(
 
     override suspend fun getLiveWeather(lat: Double, lon: Double): Result<LocalWeatherDomain> = withContext(ioDispatcher) {
         try {
-            val weatherResult = weatherService.getLocalWeather(lat, lon)
+            //TODO manage unit with preferences
+            val weatherResult = weatherService.getLocalWeather(lat, lon, "metric")
             if (weatherResult.id != 0) {
                 return@withContext Result.Success(weatherResult.asDomainModel())
             } else {

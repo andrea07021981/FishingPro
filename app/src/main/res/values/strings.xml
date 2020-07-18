@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">FishingPro</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
@@ -12,4 +12,9 @@
     <string name="sign_up">Sign Up</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+
+    <string name="format_temperature"><xliff:g id="temp">%.1f</xliff:g> C\u00B0</string>
+    <string name="format_pressure"><xliff:g id="pressure">%s</xliff:g> hPa</string>
+    <string name="format_wind"><xliff:g id="wind">%s</xliff:g> mph</string>
+
 </resources>

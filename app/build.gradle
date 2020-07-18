@@ -9,7 +9,7 @@ apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion "30.0.0"
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.example.fishingpro"
@@ -113,8 +113,8 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$version_paging"
 
     //Interceptor and http loggin
-    implementation 'com.squareup.okhttp3:okhttp:4.2.1'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
 
     // Testing
     // Espresso
