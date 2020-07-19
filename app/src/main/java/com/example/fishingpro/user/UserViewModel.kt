@@ -16,6 +16,7 @@ class UserViewModel(
     private val _userEvent = MutableLiveData<Event<Unit>>()
     val userEvent: LiveData<Event<Unit>>
         get() = _userEvent
+
     private val _currentWeatherDetail = MutableLiveData<WeatherDomain>()
     val currentWeatherDetail: LiveData<WeatherDomain>
         get() = _currentWeatherDetail
@@ -24,9 +25,9 @@ class UserViewModel(
     val currentWeather: LiveData<LocalWeatherDomain>
         get() = _currentWeather
 
-    init {
-
-    }
+    private val _weatherEvent = MutableLiveData<Event<LocalWeatherDomain>>()
+    val weatherEvent: LiveData<Event<LocalWeatherDomain>>
+        get() = _weatherEvent
 
     private fun loadWeather(latLon: LatLng) {
         viewModelScope.launch {
@@ -46,6 +47,12 @@ class UserViewModel(
 
     fun updateLatLong(lat: Double, lon: Double) {
         loadWeather(LatLng(lat, lon))
+    }
+
+    fun gpToWeatherDetail() {
+        _currentWeather.value?.let {
+            _weatherEvent.value = Event(_currentWeather.value!!)
+        }
     }
 
     /**

@@ -9,10 +9,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import com.example.fishingpro.EventObserver
 import com.example.fishingpro.MainActivity
@@ -45,6 +49,20 @@ class UserFragment : Fragment() {
         }
         userViewModel.userEvent.observe(this.viewLifecycleOwner, EventObserver {
             findNavController().popBackStack()
+        })
+        userViewModel.weatherEvent.observe(this.viewLifecycleOwner, EventObserver {
+            it.let {
+                val weatherImage =
+                    dataBinding.weatherImageView
+                val weatherTemperature =
+                    dataBinding.temperatureTextView
+                val extras = FragmentNavigatorExtras(
+                    weatherImage to "weatherImage",
+                    weatherTemperature to "weatherTemperature")
+                val bundle = bundleOf("localWeatherDomain" to it)
+                findNavController()
+                    .navigate(R.id.weatherFragment, bundle, null, extras)
+            }
         })
         locationManager = (requireNotNull(activity).getSystemService(LOCATION_SERVICE) as LocationManager?)!!
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))

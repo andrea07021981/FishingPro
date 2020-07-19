@@ -76,6 +76,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
                         app:cardElevation="4dp"
+                        android:onClick="@{() -> userViewModel.gpToWeatherDetail()}"
                         android:layout_margin="10sp"
                         >
 
@@ -87,12 +88,13 @@
                             android:paddingEnd="20sp">
 
                             <ImageView
-                                android:id="@+id/textView2"
+                                android:id="@+id/weather_imageView"
                                 android:layout_width="100dp"
                                 android:layout_height="100dp"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="16dp"
-                                app:layout_constraintBottom_toTopOf="@+id/textView"
+                                android:transitionName="weatherImage"
+                                app:layout_constraintBottom_toTopOf="@+id/temperature_textView"
                                 app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -101,20 +103,21 @@
                                 tools:srcCompat="@drawable/ic_baseline_sync_24" />
 
                             <TextView
-                                android:id="@+id/textView"
+                                android:id="@+id/temperature_textView"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginEnd="16dp"
                                 android:fontFamily="sans-serif"
                                 android:gravity="center"
+                                android:transitionName="weatherTemperature"
                                 android:text="@{@string/format_temperature(userViewModel.currentWeather.wMain.wTemp)}"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                                 app:layout_constraintBottom_toTopOf="@+id/textView10"
                                 app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                                app:layout_constraintTop_toBottomOf="@+id/weather_imageView"
                                 tools:text="---" />
 
                             <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,7 +128,7 @@
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0.0"
-                                app:layout_constraintStart_toEndOf="@+id/textView2"
+                                app:layout_constraintStart_toEndOf="@+id/weather_imageView"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintVertical_bias="0.0">
 
@@ -251,7 +254,7 @@
                                 app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
                                 app:layout_constraintHorizontal_bias="0.5"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/textView"
+                                app:layout_constraintTop_toBottomOf="@+id/temperature_textView"
                                 tools:text="---" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
