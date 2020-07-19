@@ -43,4 +43,22 @@
         tools:layout="@layout/fragment_home"
         android:name="com.example.fishingpro.home.HomeFragment"
         android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.example.fishingpro.user.UserFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_user">
+        <action
+            android:id="@+id/action_userFragment_to_weatherFragment"
+            app:destination="@id/weatherFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="com.example.fishingpro.weather.WeatherFragment"
+        android:label="WeatherFragment"
+        tools:layout="@layout/fragment_weather">
+        <argument
+            android:name="localWeatherDomain"
+            app:argType="com.example.fishingpro.data.domain.LocalWeatherDomain" />
+    </fragment>
 </navigation>
