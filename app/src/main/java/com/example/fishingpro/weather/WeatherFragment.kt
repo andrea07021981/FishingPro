@@ -31,6 +31,7 @@ class WeatherFragment : Fragment() {
         dataBinding = FragmentWeatherBinding.inflate(inflater)
         dataBinding.lifecycleOwner = this
         dataBinding.weatherViewModel = weatherViewModel
+        //TODO check time to load image
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         return dataBinding.root
     }
