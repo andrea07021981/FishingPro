@@ -28,5 +28,7 @@
     <string name="format_temperature"><xliff:g id="temp">%.1f</xliff:g> C\u00B0</string>
     <string name="format_pressure"><xliff:g id="pressure">%s</xliff:g> hPa</string>
     <string name="format_wind"><xliff:g id="wind">%s</xliff:g> mph</string>
+    <string name="format_humidity">Humidity <xliff:g id="humidity">%s</xliff:g></string>
+    <string name="format_wind_ahead">Wind <xliff:g id="wind">%s</xliff:g> mph</string>
 
 </resources>

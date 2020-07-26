@@ -14,6 +14,11 @@ class WeatherViewModel(
     private val localWeatherDomain: LocalWeatherDomain
 ) : ViewModel() {
 
+    private val _currentWeatherDomain: MutableLiveData<LocalWeatherDomain>
+        get() = MutableLiveData(localWeatherDomain)
+    val currentWeatherDomain: LiveData<LocalWeatherDomain>
+        get() = _currentWeatherDomain
+
     private val _currentWeather = MutableLiveData<WeatherDomain>()
     val currentWeather: LiveData<WeatherDomain>
         get() = _currentWeather
