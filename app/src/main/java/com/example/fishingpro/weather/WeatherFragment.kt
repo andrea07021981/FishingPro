@@ -32,6 +32,10 @@ class WeatherFragment : Fragment() {
         dataBinding.lifecycleOwner = this
         dataBinding.weatherViewModel = weatherViewModel
         //TODO check time to load image
+        dataBinding.forecastRecyclerView.adapter = WeatherAdapter(
+            WeatherAdapter.OnWeatherClickListener {
+                print("Selected weather ${it.wId}")
+            })
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         return dataBinding.root
     }
@@ -41,6 +45,11 @@ class WeatherFragment : Fragment() {
     }
     override fun onDestroy() {
         super.onDestroy()
+        ActivityNavigator.applyPopAnimationsToPendingTransition(requireNotNull(activity))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         ActivityNavigator.applyPopAnimationsToPendingTransition(requireNotNull(activity))
     }
 }
