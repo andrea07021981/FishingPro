@@ -1,13 +1,14 @@
 package com.example.fishingpro.weather
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fishingpro.data.domain.LocalWeatherDomain
-import com.example.fishingpro.databinding.FragmentUserBinding
 import com.example.fishingpro.databinding.WeatherItemBinding
+import java.util.*
 
 class WeatherAdapter(
     private val onClickListener: OnWeatherClickListener
@@ -31,6 +32,9 @@ class WeatherAdapter(
             val from = {parent: ViewGroup ->
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = WeatherItemBinding.inflate(layoutInflater, parent, false)
+                val rnd = Random()
+                val color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                binding.weatherCardView.setBackgroundColor(color)
                 WeatherViewHolder(binding)
             }
         }
@@ -62,7 +66,7 @@ class WeatherAdapter(
     }
 
     class OnWeatherClickListener(
-        val clickListener: (weather: LocalWeatherDomain) ->Unit
+        val clickListener: (weather: LocalWeatherDomain) -> Unit
     ) {
         fun onClick(weather: LocalWeatherDomain) = clickListener(weather)
     }

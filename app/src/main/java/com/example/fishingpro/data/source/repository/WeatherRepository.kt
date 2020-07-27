@@ -7,4 +7,6 @@ import com.example.fishingpro.data.domain.WeatherDomain
 interface WeatherRepository {
 
     suspend fun retrieveLiveWeather(lat: Double, lon: Double): Result<LocalWeatherDomain>
+
+    suspend fun retrieveLiveWeeklyWeather(lat: Double, lon: Double): Result<List<LocalWeatherDomain>>
 }
