@@ -28,4 +28,26 @@ class WeatherRemoteDataSource(
             return@withContext Result.ExError(e)
         }
     }
+
+    override suspend fun getLiveWeeklyWeather(
+        lat: Double,
+        lon: Double
+    ): Result<List<LocalWeatherDomain>> = withContext(ioDispatcher) {
+        //TODO Fake data for first steps, API is not free
+        try {
+            val weatherResult = weatherService.getLocalWeather(lat, lon, "metric")
+            val weatherList = mutableListOf<LocalWeatherDomain>()
+            for (i in 0 until 7) {
+                weatherList.add(weatherResult.asDomainModel().copy())
+            }
+            if (weatherList.isNullOrEmpty()) {
+                return@withContext Result.Error("Login Failed")
+            } else {
+                return@withContext Result.Success(weatherList)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return@withContext Result.ExError(e)
+        }
+    }
 }

@@ -42,4 +42,13 @@ class WeatherDataRepository(
             remoteDataSource.getLiveWeather(lat, lon)
         }
     }
+
+    override suspend fun retrieveLiveWeeklyWeather(
+        lat: Double,
+        lon: Double
+    ): Result<List<LocalWeatherDomain>> {
+        return withContext(ioDispatcher) {
+            remoteDataSource.getLiveWeeklyWeather(lat, lon)
+        }
+    }
 }
