@@ -32,9 +32,9 @@ class WeatherAdapter(
             val from = {parent: ViewGroup ->
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val binding = WeatherItemBinding.inflate(layoutInflater, parent, false)
-                val rnd = Random()
-                val color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                binding.weatherCardView.setBackgroundColor(color)
+                //val rnd = Random()
+                //val color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                //binding.weatherCardView.setBackgroundColor(color)
                 WeatherViewHolder(binding)
             }
         }
