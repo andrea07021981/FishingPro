@@ -63,7 +63,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView"
-                    android:scaleType="center"
+                    android:scaleType="fitXY"
                     android:tint="@color/primaryTextColor"
                     android:foregroundTint="@color/primaryTextColor"
                     tools:srcCompat="@tools:sample/avatars"
