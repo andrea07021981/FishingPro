@@ -16,7 +16,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="30dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/weather_cardView"
@@ -62,13 +63,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    android:scaleType="fitXY"
+                    android:tint="@color/primaryTextColor"
+                    android:foregroundTint="@color/primaryTextColor"
+                    tools:srcCompat="@tools:sample/avatars"
+                    app:weatherState="@{localWeatherDomain.wWeather[0].WIcon}"/>
 
                 <TextView
                     android:id="@+id/temp_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="32dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="50sp"
@@ -78,8 +83,8 @@
                     tools:text="24" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="377dp"
-                    android:layout_height="362dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginTop="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +94,11 @@
                     <LinearLayout
                         android:id="@+id/linearLayout6"
                         android:layout_width="0dp"
-                        android:layout_height="360dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.5"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/linearLayout5"
@@ -100,26 +109,28 @@
                         <ImageView
                             android:id="@+id/imageView3"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
+                            android:layout_height="56dp"
                             tools:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
 
                         <TextView
                             android:id="@+id/textView15"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.8"
                             android:gravity="center|top"
                             android:text="11C"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="20sp" />
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/linearLayout5"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
                         android:layout_weight="0.5"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -131,20 +142,19 @@
                         <ImageView
                             android:id="@+id/imageView4"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.2"
+                            android:layout_height="56dp"
                             tools:srcCompat="@drawable/ic_baseline_keyboard_arrow_up_24" />
 
                         <TextView
                             android:id="@+id/textView16"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="0.8"
+                            android:layout_height="wrap_content"
                             android:gravity="center|top"
                             android:text="11C"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="20sp" />
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
