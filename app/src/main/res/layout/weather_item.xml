@@ -15,25 +15,25 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
-        android:layout_margin="30dp">
+        android:layout_margin="10dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/weather_cardView"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            app:cardBackgroundColor="@color/primaryColor"
             app:cardCornerRadius="20sp"
             app:cardElevation="4dp"
-            app:cardBackgroundColor="@color/primaryColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent">
@@ -41,12 +41,12 @@
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="50dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:gravity="center"
-                    android:text="@{@string/format_temperature(localWeatherDomain.WMain.WTemp)}"
+                    android:text="Monday"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@color/primaryTextColor"
                     android:textSize="30sp"
@@ -57,26 +57,25 @@
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="fitXY"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView"
-                    android:scaleType="fitXY"
-                    android:tint="@color/primaryTextColor"
-                    android:foregroundTint="@color/primaryTextColor"
-                    tools:srcCompat="@tools:sample/avatars"
-                    app:weatherState="@{localWeatherDomain.wWeather[0].WIcon}"/>
+                    app:weatherState="@{localWeatherDomain.wWeather[0].WIcon}"
+                    tools:srcCompat="@tools:sample/avatars" />
 
                 <TextView
                     android:id="@+id/temp_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@{@string/format_temperature(localWeatherDomain.WMain.WTemp)}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textColor="@color/primaryTextColor"
-                    android:textSize="50sp"
+                    android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView2"
@@ -85,8 +84,6 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginTop="32dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/temp_textView">
@@ -96,7 +93,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="0.5"
                         android:orientation="vertical"
@@ -109,7 +105,8 @@
                         <ImageView
                             android:id="@+id/imageView3"
                             android:layout_width="match_parent"
-                            android:layout_height="56dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                             tools:srcCompat="@drawable/ic_baseline_keyboard_arrow_down_24" />
 
                         <TextView
@@ -117,10 +114,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|top"
-                            android:text="11C"
+                            android:text="@{@string/format_temperature(localWeatherDomain.WMain.wTempMin)}"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="30sp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -129,7 +126,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="16dp"
                         android:layout_marginEnd="8dp"
                         android:layout_weight="0.5"
                         android:orientation="vertical"
@@ -142,7 +138,8 @@
                         <ImageView
                             android:id="@+id/imageView4"
                             android:layout_width="match_parent"
-                            android:layout_height="56dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_baseline_keyboard_arrow_up_24"
                             tools:srcCompat="@drawable/ic_baseline_keyboard_arrow_up_24" />
 
                         <TextView
@@ -150,10 +147,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|top"
-                            android:text="11C"
+                            android:text="@{@string/format_temperature(localWeatherDomain.WMain.wTempMax)}"
                             android:textAppearance="@style/TextAppearance.AppCompat.Large"
                             android:textColor="@color/primaryTextColor"
-                            android:textSize="30sp"
+                            android:textSize="20sp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
