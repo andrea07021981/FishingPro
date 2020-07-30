@@ -19,8 +19,8 @@ class WeatherViewModel(
     val currentWeatherDomain: LiveData<LocalWeatherDomain>
         get() = _currentWeatherDomain
 
-    private val _weeklyWeatherDomain = MutableLiveData<List<LocalWeatherDomain>>()
-    val weeklyWeatherDomain: LiveData<List<LocalWeatherDomain>>
+    private val _weeklyWeatherDomain = MutableLiveData<List<LocalWeatherDomain>?>()
+    val weeklyWeatherDomain: LiveData<List<LocalWeatherDomain>?>
         get() = _weeklyWeatherDomain
 
     private val _currentWeather = MutableLiveData<WeatherDomain>()
@@ -30,7 +30,7 @@ class WeatherViewModel(
     init {
         //TODO add check for emty
         if (localWeatherDomain.wWeather.isNotEmpty()) {
-            _currentWeather.value = localWeatherDomain.wWeather[0]
+            _currentWeather.value = localWeatherDomain.wWeather.getOrNull(0)
             loadWeeklyWeather(LatLng(localWeatherDomain.wCoord.wLat, localWeatherDomain.wCoord.wLon))
         }
     }

@@ -22,6 +22,7 @@ class HomeFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val navigation: BottomNavigationView = view.findViewById(R.id.homeBottomNavigation)
         navigation.setOnNavigationItemSelectedListener(this)
+
         loadFragment(UserFragment())
         return view
     }

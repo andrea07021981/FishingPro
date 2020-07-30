@@ -21,8 +21,8 @@ class UserViewModel(
     val currentWeatherDetail: LiveData<WeatherDomain>
         get() = _currentWeatherDetail
 
-    private val _currentWeather = MutableLiveData<LocalWeatherDomain>()
-    val currentWeather: LiveData<LocalWeatherDomain>
+    private val _currentWeather = MutableLiveData<LocalWeatherDomain?>()
+    val currentWeather: LiveData<LocalWeatherDomain?>
         get() = _currentWeather
 
     private val _weatherEvent = MutableLiveData<Event<LocalWeatherDomain>>()
@@ -34,7 +34,7 @@ class UserViewModel(
             val liveWeatherResult = weatherRepository.retrieveLiveWeather(latLon.latitude, latLon.longitude)
             if (liveWeatherResult is Result.Success) {
                 _currentWeather.value = liveWeatherResult.data
-                _currentWeatherDetail.value = liveWeatherResult.data.wWeather[0]
+                _currentWeatherDetail.value = liveWeatherResult.data.wWeather.getOrNull(0)
             } else {
                 //TODO manage it with some live errors
             }

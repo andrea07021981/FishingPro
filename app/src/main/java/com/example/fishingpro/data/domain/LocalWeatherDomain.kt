@@ -1,6 +1,8 @@
 package com.example.fishingpro.data.domain
 
 import android.os.Parcelable
+import com.example.fishingpro.data.source.remote.datatranferobject.Sys
+import com.example.fishingpro.data.source.remote.datatranferobject.Weather
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -17,7 +19,11 @@ data class LocalWeatherDomain(
     val wTimezone: Int,
     val wWeather: List<WeatherDomain>,
     val wWind: WindDomain
-) : Parcelable
+) : Parcelable {
+    constructor(): this("", CloudsDomain(0), 0, CoordDomain(0.0, 0.0), 0, 0,
+        MainDomain(0.0, 0, 0 ,0.0, 0.0, 0.0), "",
+        SysDomain("", null, null, 0, 0, null), 0, listOf<WeatherDomain>(), WindDomain(0.0, 0.0))
+}
 
 @Parcelize
 data class MainDomain(
