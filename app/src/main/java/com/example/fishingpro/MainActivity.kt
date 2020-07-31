@@ -10,15 +10,18 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
 class MainActivity : AppCompatActivity() {
 
     //TODO review the class, it could be an abstract parent of home
+    private lateinit var firebaseConfig: FirebaseRemoteConfig
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
@@ -34,6 +37,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        //Load the default remote config
+        firebaseConfig = FirebaseRemoteConfig.getInstance()
+        firebaseConfig.setDefaults(R.xml.remote_config_defaults)
+        firebaseConfig.fetchAndActivate()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val updated = task.result
+                    Log.d(TAG, "Config params updated: $updated")
+                    Toast.makeText(this, "Fetch and activate succeeded",
+                        Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Fetch failed",
+                        Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     override fun onStart() {
