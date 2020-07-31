@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- START xml_defaults -->
-
-<!-- With this values, the values are in app an we don't need to ask the server -->
 <defaultsMap>
     <entry>
         <key>map_visibility</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
 </defaultsMap>
     <!-- END xml_defaults -->
