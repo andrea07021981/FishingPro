@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         //Load the default remote config
         firebaseConfig = FirebaseRemoteConfig.getInstance()
-        firebaseConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+        firebaseConfig.setDefaults(R.xml.remote_config_defaults)
         firebaseConfig.fetchAndActivate()
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {

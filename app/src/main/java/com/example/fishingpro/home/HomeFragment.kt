@@ -10,9 +10,12 @@ import com.example.fishingpro.R
 import com.example.fishingpro.map.MapFragment
 import com.example.fishingpro.user.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
 
 class HomeFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var firebaseRemoteConfig: FirebaseRemoteConfig
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +26,10 @@ class HomeFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
         val navigation: BottomNavigationView = view.findViewById(R.id.homeBottomNavigation)
         navigation.setOnNavigationItemSelectedListener(this)
 
+        firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        val mapVisible = firebaseRemoteConfig.getBoolean("map_visibility")
+        //TODO check why it doesn't read the correct server value
+        navigation.menu.findItem(R.id.map_page).isVisible = mapVisible
         loadFragment(UserFragment())
         return view
     }
