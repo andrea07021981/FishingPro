@@ -40,19 +40,23 @@ class MainActivity : AppCompatActivity() {
 
         //Load the default remote config
         firebaseConfig = FirebaseRemoteConfig.getInstance()
-        firebaseConfig.setDefaults(R.xml.remote_config_defaults)
-        firebaseConfig.fetchAndActivate()
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val updated = task.result
-                    Log.d(TAG, "Config params updated: $updated")
-                    Toast.makeText(this, "Fetch and activate succeeded",
-                        Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Fetch failed",
-                        Toast.LENGTH_SHORT).show()
-                }
+        firebaseConfig.setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
+            if (it.isSuccessful) {
+                firebaseConfig.fetchAndActivate()
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            val updated = task.result
+                            Log.d(TAG, "Config params updated: $updated")
+                            Toast.makeText(this, "Fetch and activate succeeded",
+                                Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this, "Fetch failed",
+                                Toast.LENGTH_SHORT).show()
+                        }
+                    }
             }
+        }
+
     }
 
     override fun onStart() {
