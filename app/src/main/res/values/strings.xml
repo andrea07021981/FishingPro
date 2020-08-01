@@ -30,5 +30,6 @@
     <string name="format_wind"><xliff:g id="wind">%s</xliff:g> mph</string>
     <string name="format_humidity">Humidity <xliff:g id="humidity">%s</xliff:g></string>
     <string name="format_wind_ahead">Wind <xliff:g id="wind">%s</xliff:g> mph</string>
+    <string name="loading_progress">Loading</string>
 
 </resources>

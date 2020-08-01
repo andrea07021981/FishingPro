@@ -289,5 +289,13 @@
                 </androidx.core.widget.NestedScrollView>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </androidx.drawerlayout.widget.DrawerLayout>
+        <ImageView
+            android:id="@+id/status_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primaryColorAlpha"
+            android:src="@drawable/loading_animation"
+            android:visibility="@{userViewModel.status}"
+            android:contentDescription="@string/loading_progress" />
     </RelativeLayout>
 </layout>
