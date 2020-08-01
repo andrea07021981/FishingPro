@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import com.example.fishingpro.R
 import com.example.fishingpro.map.MapFragment
@@ -43,9 +44,14 @@ class HomeFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        view.doOnPreDraw { startPostponedEnterTransition() }
+    }
     private fun loadFragment(fragment: Fragment?): Boolean {
         //switching fragment
-        if (fragment != null) {
+        fragment?.let {
             requireNotNull(activity).supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.home_container, fragment)

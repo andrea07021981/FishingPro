@@ -17,6 +17,7 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,23 +41,29 @@ class MainActivity : AppCompatActivity() {
 
         //Load the default remote config
         firebaseConfig = FirebaseRemoteConfig.getInstance()
-        firebaseConfig.setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = if (BuildConfig.DEBUG)  1 else 3600
+        }
+        firebaseConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener {
             if (it.isSuccessful) {
-                firebaseConfig.fetchAndActivate()
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-                            val updated = task.result
-                            Log.d(TAG, "Config params updated: $updated")
-                            Toast.makeText(this, "Fetch and activate succeeded",
-                                Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(this, "Fetch failed",
-                                Toast.LENGTH_SHORT).show()
-                        }
+                firebaseConfig.setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        firebaseConfig.fetchAndActivate()
+                            .addOnCompleteListener(this) { task ->
+                                if (task.isSuccessful) {
+                                    val updated = task.result
+                                    Log.d(TAG, "Config params updated: $updated")
+                                    Toast.makeText(this, "Fetch and activate succeeded",
+                                        Toast.LENGTH_SHORT).show()
+                                } else {
+                                    Toast.makeText(this, "Fetch failed",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                            }
                     }
+                }
             }
         }
-
     }
 
     override fun onStart() {

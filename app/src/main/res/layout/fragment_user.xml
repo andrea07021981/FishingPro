@@ -274,20 +274,84 @@
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="200sp"
+                                android:layout_height="300sp"
                                 android:orientation="vertical"
                                 android:paddingStart="20sp"
-                                android:paddingEnd="20sp" >
+                                android:paddingEnd="20sp">
 
                                 <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:text="Calendar"/>
+                                    android:id="@+id/textView17"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginEnd="8dp"
+                                    android:gravity="center"
+                                    android:padding="16dp"
+                                    android:text="15"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    android:textSize="60sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintBottom_toTopOf="@+id/textView2"
+                                    app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/textView2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:layout_marginEnd="16dp"
+                                    android:gravity="center"
+                                    android:text="Monday"
+                                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toStartOf="@+id/constraintLayout2"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+                                <androidx.constraintlayout.widget.ConstraintLayout
+                                    android:id="@+id/constraintLayout2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="0dp"
+                                    android:layout_marginStart="8dp"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toEndOf="@+id/textView17"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+                                    <CalendarView
+                                        android:id="@+id/calendarView2"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="8dp"
+                                        android:layout_marginTop="8dp"
+                                        android:layout_marginEnd="8dp"
+                                        android:layout_marginBottom="8dp"
+                                        android:dateTextAppearance="@style/CalenderViewDateCustomText"
+                                        android:theme="@style/CalenderViewCustom"
+                                        android:weekDayTextAppearance="@style/CalenderViewWeekCustomText"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+                                </androidx.constraintlayout.widget.ConstraintLayout>
+
                             </androidx.constraintlayout.widget.ConstraintLayout>
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>
                 </androidx.core.widget.NestedScrollView>
             </androidx.coordinatorlayout.widget.CoordinatorLayout>
         </androidx.drawerlayout.widget.DrawerLayout>
+        <ImageView
+            android:id="@+id/status_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primaryColorAlpha"
+            android:src="@drawable/loading_animation"
+            tools:visibility="gone"
+            android:visibility="@{userViewModel.status}"
+            android:contentDescription="@string/loading_progress" />
     </RelativeLayout>
 </layout>
