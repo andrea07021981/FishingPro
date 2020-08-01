@@ -26,6 +26,9 @@ import com.example.fishingpro.data.source.repository.WeatherDataRepository
 import com.example.fishingpro.databinding.FragmentUserBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
 
 class UserFragment : Fragment() {
 
@@ -68,6 +71,8 @@ class UserFragment : Fragment() {
         locationManager = (requireNotNull(activity).getSystemService(LOCATION_SERVICE) as LocationManager?)!!
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
+        dataBinding.calendarView2.setDate(System.currentTimeMillis(), true, true)
         return dataBinding.root
     }
 
