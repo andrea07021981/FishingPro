@@ -71,8 +71,6 @@ class UserFragment : Fragment() {
         locationManager = (requireNotNull(activity).getSystemService(LOCATION_SERVICE) as LocationManager?)!!
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-
-        dataBinding.calendarView2.setDate(System.currentTimeMillis(), true, true)
         return dataBinding.root
     }
 
