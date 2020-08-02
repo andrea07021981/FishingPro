@@ -13,6 +13,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import java.util.*
 
 class UserViewModel(
     private val weatherRepository: WeatherRepository
@@ -37,6 +38,9 @@ class UserViewModel(
     private val _status = MutableLiveData(View.VISIBLE)
     val status: LiveData<Int>
         get() = _status
+
+    var currentDate = System.currentTimeMillis()
+
 
     /* TODO USE LIVE DATA AND COROUTINES FOR LOADING DATA IMMEDIATELY WITHOUT THE METHOD INITDATA
     val calendarEvents: LiveData<Calendar> = liveData {
