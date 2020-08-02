@@ -6,6 +6,7 @@ apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
     compileSdkVersion 29
@@ -181,5 +182,8 @@ dependencies {
     implementation "com.hanks:htextview-scale:$version_htextview"       // optional
     implementation "com.hanks:htextview-evaporate:$version_htextview"   // optional
     implementation "com.hanks:htextview-fall:$version_htextview"        // optional
+
+    implementation "com.google.dagger:hilt-android:2.28-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
 
 }

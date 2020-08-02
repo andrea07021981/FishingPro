@@ -14,6 +14,7 @@ class FishingProApplication : Application() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate() {
+        //TODO ADD https://developer.android.com/training/dependency-injection/hilt-android
         super.onCreate()
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = Firebase.analytics
