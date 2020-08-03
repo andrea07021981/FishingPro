@@ -51,9 +51,10 @@ class MapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = FragmentMapBinding.inflate(inflater)
-        dataBinding.mapViewModel = mapViewModel
-        dataBinding.lifecycleOwner = this
+        dataBinding = FragmentMapBinding.inflate(inflater).also {
+            it.mapViewModel = mapViewModel
+            it.lifecycleOwner = this
+        }
         return dataBinding.root
     }
 

@@ -74,7 +74,7 @@ class UserViewModel(
         }
     }
 
-    fun backToRecipeList() {
+    fun backToLogin() {
         _userEvent.value = Event(Unit)
     }
 

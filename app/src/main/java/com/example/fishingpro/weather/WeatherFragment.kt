@@ -30,15 +30,16 @@ class WeatherFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = FragmentWeatherBinding.inflate(inflater)
-        dataBinding.lifecycleOwner = this
-        dataBinding.weatherViewModel = weatherViewModel
-        //TODO check time to load image
-        dataBinding.forecastRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        dataBinding.forecastRecyclerView.adapter = WeatherAdapter(
-            WeatherAdapter.OnWeatherClickListener {
-                print("Selected weather ${it.wId}")
-            })
+        dataBinding = FragmentWeatherBinding.inflate(inflater).also {
+            it.lifecycleOwner = this
+            it.weatherViewModel = weatherViewModel
+            //TODO check time to load image
+            it.forecastRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            it.forecastRecyclerView.adapter = WeatherAdapter(
+                WeatherAdapter.OnWeatherClickListener {localWeather ->
+                    print("Selected weather ${localWeather.wId}")
+                })
+        }
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         return dataBinding.root
     }

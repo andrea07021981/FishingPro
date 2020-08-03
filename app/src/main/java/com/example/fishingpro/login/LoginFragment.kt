@@ -22,6 +22,7 @@ import com.example.fishingpro.R
 import com.example.fishingpro.constant.*
 import com.example.fishingpro.data.source.repository.UserDataRepository
 import com.example.fishingpro.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 class LoginFragment : Fragment() {
 
@@ -36,9 +37,11 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = FragmentLoginBinding.inflate(inflater)
-        dataBinding.loginViewModel = loginViewModel
-        dataBinding.lifecycleOwner = this
+        dataBinding = FragmentLoginBinding.inflate(inflater).also {
+            it.loginViewModel = loginViewModel
+            it.lifecycleOwner = this
+        }
+
         loginViewModel.loginAuthenticationState.observe(this.viewLifecycleOwner, Observer {
             if (it is Authenticated || it is Authenticating || it is InvalidAuthentication) {
                 dataBinding.loginButton.run { morphDoneAndRevert(requireNotNull(activity), it) }
