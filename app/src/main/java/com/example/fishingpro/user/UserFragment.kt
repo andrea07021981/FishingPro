@@ -5,12 +5,9 @@ import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
@@ -20,15 +17,11 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import com.example.fishingpro.EventObserver
-import com.example.fishingpro.MainActivity
 import com.example.fishingpro.R
 import com.example.fishingpro.data.source.repository.WeatherDataRepository
 import com.example.fishingpro.databinding.FragmentUserBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.*
 
 class UserFragment : Fragment() {
 
@@ -45,11 +38,12 @@ class UserFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = FragmentUserBinding.inflate(inflater)
-        dataBinding.lifecycleOwner = this
-        dataBinding.userViewModel = userViewModel
-        dataBinding.maintoolbar.setNavigationOnClickListener {
-            userViewModel.backToRecipeList()
+        dataBinding = FragmentUserBinding.inflate(inflater).also {
+            it.lifecycleOwner = this
+            it.userViewModel = userViewModel
+            it.maintoolbar.setNavigationOnClickListener {
+                userViewModel.backToLogin()
+            }
         }
         userViewModel.userEvent.observe(this.viewLifecycleOwner, EventObserver {
             findNavController().popBackStack()

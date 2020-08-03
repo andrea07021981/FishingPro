@@ -7,6 +7,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.HiltAndroidApp
 
 
 class FishingProApplication : Application() {
@@ -14,7 +15,6 @@ class FishingProApplication : Application() {
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate() {
-        //TODO ADD https://developer.android.com/training/dependency-injection/hilt-android
         super.onCreate()
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = Firebase.analytics

@@ -22,9 +22,10 @@ class SplashFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = FragmentSplashBinding.inflate(inflater)
-        dataBinding.splashViewModel = splashViewModel
-        dataBinding.lifecycleOwner = this
+        dataBinding = FragmentSplashBinding.inflate(inflater).also {
+            it.splashViewModel = splashViewModel
+            it.lifecycleOwner = this
+        }
         splashViewModel.loginEvent.observe(this.viewLifecycleOwner, Observer {
             it.let {
                 findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
