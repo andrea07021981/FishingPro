@@ -10,8 +10,10 @@ import com.example.fishingpro.constant.LoginAuthenticationStates
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.source.repository.UserRepository
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.onEach
 
 //Inherit from AndroidViewModel we don't need to use a CustomViewmodelFactory for passing the application
+@ExperimentalCoroutinesApi
 class SignUpViewModel(
     private val repository: UserRepository
 ) : ViewModel() {
@@ -37,14 +39,14 @@ class SignUpViewModel(
     fun onSignUpClick(){
         if (checkValidValues()) {
             viewModelScope.launch {
-                _loginAuthenticationState.value = Authenticating()
-                val result = repository.saveUser(emailValue.value.toString(), passwordValue.value.toString())
                 //If the user is correctly created, it also logged in so we can move directly to the home page
-                when (result) {
-                    is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
-                    is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
-                    is Result.ExError -> _loginAuthenticationState.value = InvalidAuthentication(result.exception.toString())
-                    else -> _loginAuthenticationState.value = null
+                repository.saveUser(emailValue.value.toString(), passwordValue.value.toString()).onEach { result ->
+                    when (result) {
+                        is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
+                        is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
+                        is Result.ExError -> _loginAuthenticationState.value = InvalidAuthentication(result.exception.toString())
+                        is Result.Loading -> _loginAuthenticationState.value = Authenticating()
+                    }
                 }
             }
         }

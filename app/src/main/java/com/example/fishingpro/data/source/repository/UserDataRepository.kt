@@ -8,8 +8,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
+@ExperimentalCoroutinesApi
 class UserDataRepository(
     private val userRemoteDataSource: UserSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -34,13 +37,13 @@ class UserDataRepository(
         }
 
     }
-    override suspend fun retrieveUser(email: String, password: String): Result<FirebaseUser> {
+    override suspend fun retrieveUser(email: String, password: String): Flow<Result<FirebaseUser>> {
         return withContext(ioDispatcher) {
             userRemoteDataSource.getUser(email, password)
         }
     }
 
-    override suspend fun saveUser(email: String, password: String): Result<FirebaseUser> {
+    override suspend fun saveUser(email: String, password: String): Flow<Result<FirebaseUser>> {
         return withContext(ioDispatcher) {
             userRemoteDataSource.saveUser(email, password)
         }

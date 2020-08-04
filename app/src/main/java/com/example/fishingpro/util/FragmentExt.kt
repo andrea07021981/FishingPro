@@ -22,7 +22,7 @@ package com.example.fishingpro.util
 import android.app.Application
 import androidx.fragment.app.Fragment
 
-/*     //TODO use one for every repository?
+/*     //TODO use one for every repository? interface for every vm?
 fun Fragment.getViewModelFactory(): ViewModelFactory {
     val repository = (requireContext().applicationContext as Application).UserDataRepository
     return ViewModelFactory(repository, this)
