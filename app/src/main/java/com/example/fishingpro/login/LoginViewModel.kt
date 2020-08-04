@@ -9,9 +9,14 @@ import com.example.fishingpro.constant.InvalidAuthentication
 import com.example.fishingpro.constant.LoginAuthenticationStates
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.source.repository.UserRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 
+@ExperimentalCoroutinesApi
 class LoginViewModel(
     private val repository: UserRepository
 ) : ViewModel() {
@@ -50,14 +55,14 @@ class LoginViewModel(
 
     private fun doLogin() {
         viewModelScope.launch {
-            _loginAuthenticationState.value = Authenticating()
-            val result = repository.retrieveUser(emailValue.value.toString(), passwordValue.value.toString())
-            when (result) {
-                is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
-                is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
-                is Result.ExError -> _loginAuthenticationState.value = InvalidAuthentication(result.exception.toString())
-                else -> _loginAuthenticationState.value = null
-            }
+            repository.retrieveUser(emailValue.value.toString(), passwordValue.value.toString()).onEach { result ->
+                when (result) {
+                    is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
+                    is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
+                    is Result.ExError -> _loginAuthenticationState.value = InvalidAuthentication(result.exception.toString())
+                    is Result.Loading -> _loginAuthenticationState.value = Authenticating()
+                }
+            }.launchIn(viewModelScope)
         }
     }
 

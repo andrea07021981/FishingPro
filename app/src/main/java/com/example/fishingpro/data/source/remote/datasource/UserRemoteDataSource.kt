@@ -7,39 +7,45 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
+@ExperimentalCoroutinesApi
 class UserRemoteDataSource internal constructor(
     private val firebaseAuth: FirebaseAuth,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : UserSource{
 
-    override suspend fun getUser(email: String, password: String): Result<FirebaseUser> = withContext(ioDispatcher){
+    override suspend fun getUser(email: String, password: String): Flow<Result<FirebaseUser>> = flow {
         try {
+            emit(Result.Loading)
             val authResultAwait = firebaseAuth.signInWithEmailAndPassword(email, password).await()
             if (authResultAwait.user != null) {
-                return@withContext Result.Success(authResultAwait.user!!)
+                emit(Result.Success(authResultAwait.user!!))
             } else {
-                return@withContext Result.Error("Login Failed")
+                emit(Result.Error("Login Failed"))
             }
         } catch (e: Exception) {
             //Print the message but send a login failed info
             e.printStackTrace()
-            return@withContext Result.Error("Login Failed")
+            emit(Result.Error("Login Error"))
         }
     }
 
-    override suspend fun saveUser(email: String, password: String): Result<FirebaseUser> = withContext(ioDispatcher) {
+    override suspend fun saveUser(email: String, password: String): Flow<Result<FirebaseUser>> = flow{
         try {
+            emit(Result.Loading)
             val authResultAwait = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             if (authResultAwait.user != null) {
-                return@withContext Result.Success(authResultAwait.user!!)
+                emit(Result.Success(authResultAwait.user!!))
             } else {
-                return@withContext Result.Error("Login Failed")
+                emit(Result.Error("Login Save Failed"))
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return@withContext Result.Error("Login Failed")
+            emit(Result.Error("Login Save Failed"))
         }
     }
 }
