@@ -11,9 +11,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class UserRemoteDataSource internal constructor(
+class UserRemoteDataSource @Inject internal constructor(
     private val firebaseAuth: FirebaseAuth,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : UserSource{
