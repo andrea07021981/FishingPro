@@ -22,13 +22,15 @@ import com.example.fishingpro.R
 import com.example.fishingpro.constant.*
 import com.example.fishingpro.data.source.repository.UserDataRepository
 import com.example.fishingpro.databinding.FragmentLoginBinding
+import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
-    private val loginViewModel: LoginViewModel by viewModels {
-        LoginViewModel.LoginViewModelFactory(UserDataRepository.getRepository(requireNotNull(activity).application))
-    }
+    private val loginViewModel: LoginViewModel by viewModels()
 
     lateinit var dataBinding: FragmentLoginBinding
 

@@ -17,13 +17,15 @@ import com.example.fishingpro.constant.Unauthenticated
 import com.example.fishingpro.data.source.repository.UserDataRepository
 import com.example.fishingpro.databinding.FragmentSignupBinding
 import com.example.fishingpro.ui.CustomDialog
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class SignUpFragment : Fragment() {
 
     //We can use by viewModels when the VM is not shared with other fragments
-    private val signUpViewModel by viewModels<SignUpViewModel>() {
-        SignUpViewModel.SignUpViewModelFactory(UserDataRepository.getRepository(requireActivity().application))
-    }
+    private val signUpViewModel: SignUpViewModel by viewModels()
 
     private lateinit var dataBinding: FragmentSignupBinding
 

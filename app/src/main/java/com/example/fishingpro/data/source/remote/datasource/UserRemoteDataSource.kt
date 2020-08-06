@@ -14,9 +14,8 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class UserRemoteDataSource @Inject internal constructor(
-    private val firebaseAuth: FirebaseAuth,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class UserRemoteDataSource @Inject constructor(
+    private val firebaseAuth: FirebaseAuth
 ) : UserSource{
 
     override suspend fun getUser(email: String, password: String): Flow<Result<FirebaseUser>> = flow {

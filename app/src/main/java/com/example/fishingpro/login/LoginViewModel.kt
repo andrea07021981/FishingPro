@@ -1,6 +1,7 @@
 package com.example.fishingpro.login
 
 import androidx.annotation.VisibleForTesting
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.Event
 import com.example.fishingpro.constant.Authenticated
@@ -14,10 +15,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @ExperimentalCoroutinesApi
-class LoginViewModel(
+class LoginViewModel @ViewModelInject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
 
@@ -68,17 +70,5 @@ class LoginViewModel(
 
     fun resetState() {
         _loginAuthenticationState.value = null
-    }
-
-    class LoginViewModelFactory(
-        private val repository: UserRepository
-    ) : ViewModelProvider.NewInstanceFactory() {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return LoginViewModel(repository) as T
-            }
-            throw IllegalArgumentException("Unable to construct ViewModel")
-        }
     }
 }
