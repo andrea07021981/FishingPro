@@ -9,10 +9,10 @@ import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.HiltAndroidApp
 
-
+@HiltAndroidApp
 class FishingProApplication : Application() {
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
+   /* private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate() {
         super.onCreate()
@@ -22,5 +22,5 @@ class FishingProApplication : Application() {
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN) {
             param(FirebaseAnalytics.Param.VALUE, "1")
         }
-    }
+    }*/
 }
