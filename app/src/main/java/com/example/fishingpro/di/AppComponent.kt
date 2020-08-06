@@ -19,22 +19,22 @@ import javax.inject.Singleton
 @ExperimentalCoroutinesApi
 @Module
 @InstallIn(ApplicationComponent::class)
-object AppModule {
+abstract class AppModule {
 
-    @Module
-    @InstallIn(ApplicationComponent::class)
-    internal interface Declarations {
+    //TODO review bind and interfaces https://developer.android.com/training/dependency-injection/hilt-android#inject-interfaces
+    @Binds
+    abstract fun bindUserSource(
+        userRemoteDataSource: UserRemoteDataSource
+    ): UserSource
+}
 
-        @Binds
-        fun bindUserSource(
-            userRemoteDataSource: UserRemoteDataSource
-        ): UserSource
-    }
-
+@ExperimentalCoroutinesApi
+@Module
+@InstallIn(ApplicationComponent::class)
+object BaseModule {
 
     @Provides
-    fun provideFirebaseAuth(firebaseAuth: FirebaseAuth): FirebaseAuth = FirebaseAuth.getInstance()
-
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
 
     @Provides
     fun provideUserRemoteDataSource(firebaseAuth: FirebaseAuth): UserSource {
