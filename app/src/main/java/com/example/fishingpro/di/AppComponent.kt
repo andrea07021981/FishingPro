@@ -2,6 +2,7 @@ package com.example.fishingpro.di
 
 import android.content.Context
 import com.example.fishingpro.data.source.UserSource
+import com.example.fishingpro.data.source.local.datasource.UserLocalDataSource
 import com.example.fishingpro.data.source.remote.datasource.UserRemoteDataSource
 import com.example.fishingpro.data.source.repository.UserDataRepository
 import com.example.fishingpro.data.source.repository.UserRepository
@@ -45,7 +46,10 @@ object BaseModule {
 
     @Singleton
     @Provides
-    fun provideUserDataRepository(@ApplicationContext appContext: Context): UserRepository {
-        return UserDataRepository.getRepository(appContext)
+    fun provideUserDataRepository(
+        @ApplicationContext appContext: Context,
+        userRemoteDataSource: UserRemoteDataSource,
+        userLocalDataSource: UserLocalDataSource): UserRepository {
+        return UserDataRepository(userRemoteDataSource, userLocalDataSource)
     }
 }
