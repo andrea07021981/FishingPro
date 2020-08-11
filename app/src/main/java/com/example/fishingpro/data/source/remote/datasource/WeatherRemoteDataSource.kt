@@ -8,13 +8,13 @@ import com.example.fishingpro.data.source.remote.service.weather.WeatherService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class WeatherRemoteDataSource(
-    private val weatherService: WeatherService,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class WeatherRemoteDataSource @Inject constructor(
+    private val weatherService: WeatherService
 ) : WeatherSource {
 
-    override suspend fun getLiveWeather(lat: Double, lon: Double): Result<LocalWeatherDomain> = withContext(ioDispatcher) {
+    override suspend fun getLiveWeather(lat: Double, lon: Double): Result<LocalWeatherDomain> = withContext(Dispatchers.IO) {
         try {
             //TODO manage unit with preferences
             val weatherResult = weatherService.getLocalWeather(lat, lon, "metric")
@@ -32,7 +32,7 @@ class WeatherRemoteDataSource(
     override suspend fun getLiveWeeklyWeather(
         lat: Double,
         lon: Double
-    ): Result<List<LocalWeatherDomain>> = withContext(ioDispatcher) {
+    ): Result<List<LocalWeatherDomain>> = withContext(Dispatchers.IO) {
         //TODO Fake data for first steps, API is not free
         try {
             val weatherResult = weatherService.getLocalWeather(lat, lon, "metric")

@@ -9,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 
+@Deprecated("Used DI with Hilt")
 class ApiClient {
 
     companion object {
@@ -35,7 +36,7 @@ class ApiClient {
          * Use the Retrofit builder to build a retrofit object using a Moshi converter with our Moshi
          * object.
          */
-        private val retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .baseUrl(ApiEndPoint.BASE_URL)

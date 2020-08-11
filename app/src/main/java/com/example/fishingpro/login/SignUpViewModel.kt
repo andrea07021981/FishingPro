@@ -1,6 +1,7 @@
 package com.example.fishingpro.login
 
 import android.util.Patterns
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.Event
 import com.example.fishingpro.constant.Authenticated
@@ -11,10 +12,11 @@ import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.source.repository.UserRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 //Inherit from AndroidViewModel we don't need to use a CustomViewmodelFactory for passing the application
 @ExperimentalCoroutinesApi
-class SignUpViewModel(
+class SignUpViewModel @ViewModelInject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
 

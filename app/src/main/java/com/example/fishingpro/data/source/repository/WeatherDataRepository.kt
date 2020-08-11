@@ -14,31 +14,15 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.lang.Exception
+import javax.inject.Inject
 
-class WeatherDataRepository(
-    private val remoteDataSource: WeatherSource,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class WeatherDataRepository @Inject constructor(
+    private val remoteDataSource: WeatherSource
 ) : WeatherRepository {
-
-    companion object {
-
-        @Volatile
-        private var INSTANCE: WeatherDataRepository? = null
-
-        fun getRepository(app: Application): WeatherDataRepository {
-            return INSTANCE ?: synchronized(this) {
-                return@synchronized WeatherDataRepository(
-                    WeatherRemoteDataSource(ApiClient.retrofitWeatherService)
-                ).also {
-                    INSTANCE = it
-                }
-            }
-        }
-    }
 
     @Throws(Exception::class)
     override suspend fun retrieveLiveWeather(lat: Double, lon: Double): Result<LocalWeatherDomain> {
-        return withContext(ioDispatcher) {
+        return withContext(Dispatchers.IO) {
             remoteDataSource.getLiveWeather(lat, lon)
         }
     }
@@ -47,7 +31,7 @@ class WeatherDataRepository(
         lat: Double,
         lon: Double
     ): Result<List<LocalWeatherDomain>> {
-        return withContext(ioDispatcher) {
+        return withContext(Dispatchers.IO) {
             remoteDataSource.getLiveWeeklyWeather(lat, lon)
         }
     }

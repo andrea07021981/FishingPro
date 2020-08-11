@@ -20,9 +20,8 @@ class WeatherFragment : Fragment() {
 
     private val weatherDomain: WeatherFragmentArgs by navArgs()
 
-    private val weatherViewModel by viewModels<WeatherViewModel> {
-        WeatherViewModel.WeatherViewModelFactory(WeatherDataRepository.getRepository(requireNotNull(activity).application), weatherDomain.localWeatherDomain)
-    }
+    private val weatherViewModel: WeatherViewModel by viewModels()
+
     private lateinit var dataBinding: FragmentWeatherBinding
 
     override fun onCreateView(

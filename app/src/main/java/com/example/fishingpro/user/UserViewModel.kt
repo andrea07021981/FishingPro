@@ -1,6 +1,7 @@
 package com.example.fishingpro.user
 
 import android.view.View
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.Event
 import com.example.fishingpro.data.Result
@@ -15,7 +16,7 @@ import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.util.*
 
-class UserViewModel(
+class UserViewModel @ViewModelInject constructor(
     private val weatherRepository: WeatherRepository
 ) : ViewModel() {
 
@@ -85,21 +86,6 @@ class UserViewModel(
     fun gpToWeatherDetail() {
         _currentWeather.value?.let {
             _weatherEvent.value = Event(_currentWeather.value!!)
-        }
-    }
-
-    /**
-     * Factory for constructing SignUpViewModel with parameter
-     */
-    class UserViewModelFactory(
-        private val weatherRepository: WeatherRepository
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return UserViewModel(weatherRepository) as T
-            }
-            throw IllegalArgumentException("Unable to construct viewmodel")
         }
     }
 }
