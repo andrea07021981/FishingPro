@@ -18,7 +18,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class UserDataRepository @Inject constructor(
     private val userRemoteDataSource: UserSource,
-    val userLocalDataSource: UserLocalDataSource
+    private val userLocalDataSource: UserSource
 ) : UserRepository{
 
     override suspend fun retrieveUser(email: String, password: String, ioDispatcher: CoroutineDispatcher): Flow<Result<FirebaseUser>> {

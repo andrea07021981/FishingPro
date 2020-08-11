@@ -39,6 +39,7 @@ buildscript {
         version_htextview = "0.1.6"
         version_navigation_ui = "2.3.0"
         version_hilt = "2.28.3-alpha"
+        version_app_center_sdk = '3.3.0'
     }
     repositories {
         google()

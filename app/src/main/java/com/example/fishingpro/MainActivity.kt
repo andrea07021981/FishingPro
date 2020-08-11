@@ -18,7 +18,11 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -66,6 +70,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        // Microsoft App Config
+        AppCenter.start(
+            application, "95a1ea7a-69cf-44fa-a7ad-526fb81a4498",
+            Analytics::class.java, Crashes::class.java
+        )
     }
 
     override fun onStart() {

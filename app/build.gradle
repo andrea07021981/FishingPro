@@ -205,4 +205,8 @@ dependencies {
     // ViewModel support dependencies:
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02'
     kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
+
+    // Microsoft app center
+    implementation "com.microsoft.appcenter:appcenter-analytics:${version_app_center_sdk}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${version_app_center_sdk}"
 }
