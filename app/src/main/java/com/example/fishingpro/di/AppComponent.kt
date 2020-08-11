@@ -2,19 +2,36 @@ package com.example.fishingpro.di
 
 import android.content.Context
 import com.example.fishingpro.data.source.UserSource
+import com.example.fishingpro.data.source.WeatherSource
 import com.example.fishingpro.data.source.local.datasource.UserLocalDataSource
 import com.example.fishingpro.data.source.remote.datasource.UserRemoteDataSource
+import com.example.fishingpro.data.source.remote.datasource.WeatherRemoteDataSource
+import com.example.fishingpro.data.source.remote.service.weather.ApiClient
+import com.example.fishingpro.data.source.remote.service.weather.ApiEndPoint
+import com.example.fishingpro.data.source.remote.service.weather.WeatherService
 import com.example.fishingpro.data.source.repository.UserDataRepository
 import com.example.fishingpro.data.source.repository.UserRepository
+import com.example.fishingpro.data.source.repository.WeatherDataRepository
+import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.migration.DisableInstallInCheck
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi
@@ -52,4 +69,77 @@ object BaseModule {
         userLocalDataSource: UserLocalDataSource): UserRepository {
         return UserDataRepository(userRemoteDataSource, userLocalDataSource)
     }
+
+    // Weather DI
+
+    @Provides
+    fun provideWeatherRemoteDataSource(weatherService: WeatherService): WeatherSource {
+        return WeatherRemoteDataSource(
+            weatherService
+        )
+    }
+
+    @Provides
+    fun provideWeatherRepository(weatherSource: WeatherSource): WeatherRepository {
+        return WeatherDataRepository(
+            weatherSource
+        )
+    }
 }
+
+@Module
+@InstallIn(ApplicationComponent::class)
+object NetworkModule {
+
+    @Provides
+    @Singleton
+    fun provideKotlinJsonAdapterFactory(): KotlinJsonAdapterFactory = KotlinJsonAdapterFactory()
+
+    @Provides
+    @Singleton
+    fun provideInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BASIC
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttp(interceptor: HttpLoggingInterceptor): OkHttpClient {
+        return OkHttpClient
+            .Builder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(interceptor)
+            .build()
+    }
+
+    @Provides
+    fun provideMoshi(kotlinJsonAdapterFactory: KotlinJsonAdapterFactory): Moshi {
+        return Moshi.Builder()
+            .add(kotlinJsonAdapterFactory)
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMoshiConverterFactory(moshi: Moshi): MoshiConverterFactory =
+        MoshiConverterFactory.create(moshi)
+
+    @Singleton
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient, moshiConverterFactory: MoshiConverterFactory): Retrofit {
+        return Retrofit.Builder()
+            .addConverterFactory(moshiConverterFactory)
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .baseUrl(ApiEndPoint.BASE_URL)
+            .client(okHttpClient)
+            .build()
+    }
+
+    @Provides
+    fun provideRetrofitService(retrofit: Retrofit): WeatherService = retrofit.create(
+        WeatherService::class.java)
+
+}
+

@@ -45,20 +45,4 @@ class WeatherViewModel(
             }
         }
     }
-
-    /**
-     * Factory for constructing WeatherViewModel with parameter
-     */
-    class WeatherViewModelFactory(
-        private val weatherRepository: WeatherRepository,
-        private val weatherDomain: LocalWeatherDomain
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(WeatherViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return WeatherViewModel(weatherRepository, weatherDomain) as T
-            }
-            throw IllegalArgumentException("Unable to construct viewmodel")
-        }
-    }
 }

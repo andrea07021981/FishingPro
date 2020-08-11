@@ -22,12 +22,13 @@ import com.example.fishingpro.data.source.repository.WeatherDataRepository
 import com.example.fishingpro.databinding.FragmentUserBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserFragment : Fragment() {
 
-    private val userViewModel by viewModels<UserViewModel> {
-        UserViewModel.UserViewModelFactory(WeatherDataRepository.getRepository(requireNotNull(activity).application))
-    }
+    private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var dataBinding: FragmentUserBinding
     private lateinit var locationManager: LocationManager
