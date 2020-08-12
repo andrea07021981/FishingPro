@@ -1,6 +1,7 @@
 package com.example.fishingpro.data.source.local.datasource
 
 import com.example.fishingpro.data.Result
+import com.example.fishingpro.data.domain.LocalUser
 import com.example.fishingpro.data.source.UserSource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -12,6 +13,10 @@ import javax.inject.Inject
 class UserLocalDataSource @Inject constructor(
 ) : UserSource {
     override suspend fun getUser(email: String, password: String): Flow<Result<FirebaseUser>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getCompleteUser(userUID: String): Flow<Result<LocalUser?>> {
         TODO("Not yet implemented")
     }
 

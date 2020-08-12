@@ -15,6 +15,10 @@ import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.data.source.repository.WeatherDataRepository
 import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -53,12 +57,18 @@ abstract class AppModule {
 object BaseModule {
 
     @Provides
-    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = Firebase.auth
 
     @Provides
-    fun provideUserRemoteDataSource(firebaseAuth: FirebaseAuth): UserSource {
+    @Singleton
+    fun provideFirestore(): FirebaseFirestore = Firebase.firestore
+
+    @Provides
+    fun provideUserRemoteDataSource(firebaseAuth: FirebaseAuth, firebaseFirestore: FirebaseFirestore): UserSource {
         return UserRemoteDataSource(
-            firebaseAuth
+            firebaseAuth,
+            firebaseFirestore
         )
     }
 

@@ -1,5 +1,6 @@
 package com.example.fishingpro.user
 
+import android.util.Log
 import android.view.View
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -7,17 +8,22 @@ import com.example.fishingpro.Event
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalWeatherDomain
 import com.example.fishingpro.data.domain.WeatherDomain
+import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.lang.Exception
 import java.util.*
 
+@ExperimentalCoroutinesApi
 class UserViewModel @ViewModelInject constructor(
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _userEvent = MutableLiveData<Event<Unit>>()
@@ -55,13 +61,23 @@ class UserViewModel @ViewModelInject constructor(
             viewModelScope.launch {
                 loadWeather(latLon)
                 //Add other tasks here
-
+                loadUserInfo()
                 //End jobs
                 _status.postValue(View.GONE)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    //TODO manage all states result
+    private suspend fun loadUserInfo() = withContext(Dispatchers.IO){
+        userRepository.retrieveCompleteUser(Firebase.auth.uid.toString()).onEach {result ->
+            when (result) {
+                is Result.Success -> Log.d("TAG","Test->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${result.data}")
+                else -> print("To complete")
+            }
+        }.launchIn(viewModelScope)
     }
 
     @Throws(Exception::class)
