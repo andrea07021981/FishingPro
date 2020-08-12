@@ -20,6 +20,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'BASE_WEATHER_URL', "\"https://api.openweathermap.org/data/2.5/\""
     }
 
     buildTypes {
@@ -178,6 +180,9 @@ dependencies {
 
     //Firebase Auth
     implementation "com.google.firebase:firebase-auth-ktx:$version_auth"
+
+    //Firebase firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.5.0'
 
     //Firebase crashlytics and analytics
     implementation "com.google.firebase:firebase-crashlytics:$version_crashlytics"
