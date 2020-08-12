@@ -1,6 +1,7 @@
 package com.example.fishingpro.di
 
 import android.content.Context
+import com.example.fishingpro.BuildConfig
 import com.example.fishingpro.data.source.UserSource
 import com.example.fishingpro.data.source.WeatherSource
 import com.example.fishingpro.data.source.local.datasource.UserLocalDataSource
@@ -92,6 +93,8 @@ object BaseModule {
 object NetworkModule {
 
     @Provides
+    fun provideBaseUrl() = BuildConfig.BASE_WEATHER_URL
+    @Provides
     @Singleton
     fun provideKotlinJsonAdapterFactory(): KotlinJsonAdapterFactory = KotlinJsonAdapterFactory()
 
@@ -128,11 +131,11 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(okHttpClient: OkHttpClient, moshiConverterFactory: MoshiConverterFactory): Retrofit {
+    fun provideRetrofit(okHttpClient: OkHttpClient, moshiConverterFactory: MoshiConverterFactory, BASE_URL: String): Retrofit {
         return Retrofit.Builder()
             .addConverterFactory(moshiConverterFactory)
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .baseUrl(ApiEndPoint.BASE_URL)
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
             .build()
     }
