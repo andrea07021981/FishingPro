@@ -6,25 +6,30 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.Event
 import com.example.fishingpro.data.Result
+import com.example.fishingpro.data.domain.LocalUser
 import com.example.fishingpro.data.domain.LocalWeatherDomain
 import com.example.fishingpro.data.domain.WeatherDomain
 import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import java.lang.Exception
-import java.util.*
 
 @ExperimentalCoroutinesApi
 class UserViewModel @ViewModelInject constructor(
     private val weatherRepository: WeatherRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
+
+    companion object {
+        private val TAG = UserViewModel::class.java.simpleName
+    }
 
     private val _userEvent = MutableLiveData<Event<Unit>>()
     val userEvent: LiveData<Event<Unit>>
@@ -46,6 +51,10 @@ class UserViewModel @ViewModelInject constructor(
     val status: LiveData<Int>
         get() = _status
 
+    private val _userLogged = MutableLiveData<String?>()
+    val userLogged: LiveData<String?>
+        get() = _userLogged
+
     var currentDate = System.currentTimeMillis()
 
 
@@ -56,12 +65,29 @@ class UserViewModel @ViewModelInject constructor(
     }
     */
 
+    //TODO add to a future abstract class
+    private val handler = CoroutineExceptionHandler { _, exception ->
+        println("Exception thrown within parent: $exception.")
+    }
+
+    private val childExceptionHandler = CoroutineExceptionHandler{ _, exception ->
+        println("Exception thrown in one of the children: $exception.")
+    }
+
+    /**
+     * Init the various sections. We can use launch and parallel coroutines because they are not related each other
+     */
     private fun initData(latLon: LatLng) {
         try {
-            viewModelScope.launch {
-                loadWeather(latLon)
-                //Add other tasks here
-                loadUserInfo()
+            viewModelScope.launch(handler) {
+                //With supervisor, if one fails the other jobs keep working
+                supervisorScope {
+                    //Request weather
+                    val jobWeather = launch(childExceptionHandler) { loadWeather(latLon) }
+                    //Add other tasks here
+                    val jobUser = launch(childExceptionHandler) { loadUserInfo() }
+                }
+            }.invokeOnCompletion {
                 //End jobs
                 _status.postValue(View.GONE)
             }
@@ -70,18 +96,31 @@ class UserViewModel @ViewModelInject constructor(
         }
     }
 
-    //TODO manage all states result
-    private suspend fun loadUserInfo() = withContext(Dispatchers.IO){
-        userRepository.retrieveCompleteUser(Firebase.auth.uid.toString()).onEach {result ->
-            when (result) {
-                is Result.Success -> Log.d("TAG","Test->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ${result.data}")
-                else -> print("To complete")
+    //Change the context to main
+    private suspend fun loadUserInfo() = withContext(Dispatchers.Main){
+        userRepository.retrieveCompleteUser(Firebase.auth.uid.toString())
+            .onEach { result ->
+                check(result !is Result.Error && result !is Result.ExError)
+                when (result) {
+                    is Result.Success -> _userLogged.value = result.data?.FirstName
+                    is Result.Loading -> _userLogged.value = LocalUser().FirstName
+                }
             }
-        }.launchIn(viewModelScope)
+            .catch { e ->
+                e.printStackTrace()
+                _userLogged.value = null
+            }
+            .onCompletion {
+                Log.d(TAG, "Done")
+            }
+            .launchIn(viewModelScope)
     }
 
+    /**
+     * It requests the weather, we can keep the parent context with coroutineScope
+     */
     @Throws(Exception::class)
-    private suspend fun loadWeather(latLon: LatLng) = withContext(Dispatchers.IO) {
+    private suspend fun loadWeather(latLon: LatLng) = coroutineScope {
         val liveWeatherResult = weatherRepository.retrieveLiveWeather(latLon.latitude, latLon.longitude)
         if (liveWeatherResult is Result.Success) {
             _currentWeather.postValue(liveWeatherResult.data)
