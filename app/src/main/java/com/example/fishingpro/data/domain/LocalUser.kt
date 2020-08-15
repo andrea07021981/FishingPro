@@ -5,5 +5,5 @@ data class LocalUser(
     var FirstName: String,
     var LastName: String
 ) {
-    constructor(): this("","", "")
+    constructor(): this("0","None", "None")
 }

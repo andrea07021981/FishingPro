@@ -1,9 +1,11 @@
 package com.example.fishingpro.login
 
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.Event
+import com.example.fishingpro.MainActivity
 import com.example.fishingpro.constant.Authenticated
 import com.example.fishingpro.constant.Authenticating
 import com.example.fishingpro.constant.InvalidAuthentication
@@ -11,17 +13,34 @@ import com.example.fishingpro.constant.LoginAuthenticationStates
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.source.repository.UserRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+//TODO create a abstract class for all the viewmodels https://medium.com/kinandcartacreated/kotlin-coroutines-in-android-part-7-65f65f85824d
+// Add these handlers for lauch coroutines
+// ADd DSL Domain-Specific Language
+/*
+private val handler = CoroutineExceptionHandler { context, exception ->
+        println("Exception thrown somewhere within parent or child: $exception.")
+    }
 
+    private val childExceptionHandler = CoroutineExceptionHandler{ _, exception ->
+        println("Exception thrown in one of the children: $exception.")
+    }
+
+ */
 @ExperimentalCoroutinesApi
 class LoginViewModel @ViewModelInject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
+
+    companion object {
+        private val TAG = LoginViewModel::class.java.simpleName
+    }
 
     var emailValue = MutableLiveData<String>()
         @VisibleForTesting set // this allow us to use this set only for test
@@ -57,14 +76,20 @@ class LoginViewModel @ViewModelInject constructor(
 
     private fun doLogin() {
         viewModelScope.launch {
-            repository.retrieveUser(emailValue.value.toString(), passwordValue.value.toString()).onEach { result ->
-                when (result) {
-                    is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
-                    is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
-                    is Result.ExError -> _loginAuthenticationState.value = InvalidAuthentication(result.exception.toString())
-                    is Result.Loading -> _loginAuthenticationState.value = Authenticating()
+            repository.retrieveUser(emailValue.value.toString(), passwordValue.value.toString())
+                .onEach { result ->
+                    when (result) {
+                        is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
+                        is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
+                        is Result.ExError -> _loginAuthenticationState.value = InvalidAuthentication(result.exception.toString())
+                        is Result.Loading -> _loginAuthenticationState.value = Authenticating()
+                    }
                 }
-            }.launchIn(viewModelScope)
+                .catch { e ->
+                    e.printStackTrace()
+                }
+                .onCompletion { Log.d(TAG, "Done") }
+                .launchIn(viewModelScope)
         }
     }
 

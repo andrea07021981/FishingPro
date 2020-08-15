@@ -41,7 +41,7 @@
                         app:contentScrim="?attr/colorPrimary"
                         app:expandedTitleMarginStart="28dp"
                         app:expandedTitleMarginEnd="64dp"
-                        app:title="User name">
+                        app:title="@{userViewModel.userLogged}">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/mainbackdrop"
