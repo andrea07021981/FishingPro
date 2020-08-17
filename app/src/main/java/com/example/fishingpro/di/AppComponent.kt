@@ -1,12 +1,18 @@
 package com.example.fishingpro.di
 
 import android.content.Context
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentFactory
+import androidx.navigation.fragment.navArgs
 import com.example.fishingpro.BuildConfig
+import com.example.fishingpro.data.domain.LocalWeatherDomain
+import com.example.fishingpro.data.domain.WeatherDomain
 import com.example.fishingpro.data.source.UserSource
 import com.example.fishingpro.data.source.WeatherSource
 import com.example.fishingpro.data.source.local.datasource.UserLocalDataSource
 import com.example.fishingpro.data.source.remote.datasource.UserRemoteDataSource
 import com.example.fishingpro.data.source.remote.datasource.WeatherRemoteDataSource
+import com.example.fishingpro.data.source.remote.datatranferobject.Weather
 import com.example.fishingpro.data.source.remote.service.weather.ApiClient
 import com.example.fishingpro.data.source.remote.service.weather.ApiEndPoint
 import com.example.fishingpro.data.source.remote.service.weather.WeatherService
@@ -14,6 +20,8 @@ import com.example.fishingpro.data.source.repository.UserDataRepository
 import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.data.source.repository.WeatherDataRepository
 import com.example.fishingpro.data.source.repository.WeatherRepository
+import com.example.fishingpro.weather.WeatherFragment
+import com.example.fishingpro.weather.WeatherFragmentArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -82,12 +90,23 @@ object BaseModule {
     }
 
     // Weather DI
-
     @Provides
     fun provideWeatherRemoteDataSource(weatherService: WeatherService): WeatherSource {
         return WeatherRemoteDataSource(
             weatherService
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideMainFragmentFactory(): WeatherFragment {
+        //TODO solve it, crash
+        return WeatherFragment()
+    }
+
+    @Provides
+    fun provideWeatherDomain(fragment: WeatherFragment): LocalWeatherDomain{
+        return fragment.navArgs<WeatherFragmentArgs>().value.localWeatherDomain
     }
 
     @Provides

@@ -1,5 +1,6 @@
 package com.example.fishingpro.weather
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalWeatherDomain
@@ -9,7 +10,7 @@ import com.example.fishingpro.user.UserViewModel
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
-class WeatherViewModel(
+class WeatherViewModel @ViewModelInject constructor(
     private val weatherRepository: WeatherRepository,
     private val localWeatherDomain: LocalWeatherDomain
 ) : ViewModel() {
@@ -28,7 +29,6 @@ class WeatherViewModel(
         get() = _currentWeather
 
     init {
-        //TODO add check for emty
         if (localWeatherDomain.wWeather.isNotEmpty()) {
             _currentWeather.value = localWeatherDomain.wWeather.getOrNull(0)
             loadWeeklyWeather(LatLng(localWeatherDomain.wCoord.wLat, localWeatherDomain.wCoord.wLon))
