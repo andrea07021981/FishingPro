@@ -4,9 +4,10 @@ import android.os.Parcelable
 import com.example.fishingpro.data.source.remote.datatranferobject.Sys
 import com.example.fishingpro.data.source.remote.datatranferobject.Weather
 import kotlinx.android.parcel.Parcelize
+import javax.inject.Inject
 
 @Parcelize
-data class LocalWeatherDomain(
+data class LocalWeatherDomain @Inject constructor(
     val wBase: String,
     val wClouds: CloudsDomain,
     val wCod: Int,
@@ -26,7 +27,7 @@ data class LocalWeatherDomain(
 }
 
 @Parcelize
-data class MainDomain(
+data class MainDomain @Inject constructor(
     val wFeelsLike: Double,
     val wHumidity: Int,
     val wPressure: Int,
@@ -36,18 +37,18 @@ data class MainDomain(
 ) : Parcelable
 
 @Parcelize
-data class CloudsDomain(
+data class CloudsDomain @Inject constructor(
     val wAll: Int
 ) : Parcelable
 
 @Parcelize
-data class CoordDomain(
+data class CoordDomain @Inject constructor(
     val wLat: Double,
     val wLon: Double
 ) : Parcelable
 
 @Parcelize
-data class SysDomain(
+data class SysDomain @Inject constructor(
     val wCountry: String,
     val wId: Int?,
     val wMessage: Double?,
@@ -57,7 +58,7 @@ data class SysDomain(
 ) : Parcelable
 
 @Parcelize
-data class WeatherDomain(
+data class WeatherDomain @Inject constructor(
     val wDescription: String,
     val wIcon: String,
     val wId: Int,
@@ -65,7 +66,7 @@ data class WeatherDomain(
 ) : Parcelable
 
 @Parcelize
-data class WindDomain(
+data class WindDomain @Inject constructor(
     val wDeg: Double,
     val wSpeed: Double
 ) : Parcelable

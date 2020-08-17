@@ -76,6 +76,7 @@ class LoginViewModel @ViewModelInject constructor(
 
     private fun doLogin() {
         viewModelScope.launch {
+            //WE could use transform and collect, since we don't need to lunch in another scope
             repository.retrieveUser(emailValue.value.toString(), passwordValue.value.toString())
                 .onEach { result ->
                     when (result) {

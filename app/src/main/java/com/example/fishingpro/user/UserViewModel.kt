@@ -75,7 +75,7 @@ class UserViewModel @ViewModelInject constructor(
     }
 
     /**
-     * Init the various sections. We can use launch and parallel coroutines because they are not related each other
+     * Init the various sections. We can use launch and parallel coroutines (context of parent if not declared) because they are not related each other, we don't need the withContext or coroutineScope
      */
     private fun initData(latLon: LatLng) {
         try {
@@ -96,7 +96,9 @@ class UserViewModel @ViewModelInject constructor(
         }
     }
 
-    //Change the context to main
+    /**
+     * Change the context to main
+     */
     private suspend fun loadUserInfo() = withContext(Dispatchers.Main){
         userRepository.retrieveCompleteUser(Firebase.auth.uid.toString())
             .onEach { result ->

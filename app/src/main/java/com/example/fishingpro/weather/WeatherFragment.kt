@@ -11,11 +11,10 @@ import androidx.navigation.ActivityNavigator
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
-import com.example.fishingpro.R
-import com.example.fishingpro.data.source.repository.WeatherDataRepository
-import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.example.fishingpro.databinding.FragmentWeatherBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class WeatherFragment : Fragment() {
 
     private val weatherDomain: WeatherFragmentArgs by navArgs()
@@ -33,9 +32,13 @@ class WeatherFragment : Fragment() {
             it.lifecycleOwner = this
             it.weatherViewModel = weatherViewModel
             //TODO check time to load image
-            it.forecastRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            it.forecastRecyclerView.layoutManager = LinearLayoutManager(
+                activity,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
             it.forecastRecyclerView.adapter = WeatherAdapter(
-                WeatherAdapter.OnWeatherClickListener {localWeather ->
+                WeatherAdapter.OnWeatherClickListener { localWeather ->
                     print("Selected weather ${localWeather.wId}")
                 })
         }
