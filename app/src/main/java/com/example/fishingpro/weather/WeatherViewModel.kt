@@ -1,5 +1,6 @@
 package com.example.fishingpro.weather
 
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.data.Result
@@ -12,8 +13,10 @@ import kotlinx.coroutines.launch
 
 class WeatherViewModel @ViewModelInject constructor(
     private val weatherRepository: WeatherRepository,
-    private val localWeatherDomain: LocalWeatherDomain
+    @Assisted private val savedStateHandle: SavedStateHandle // IMP It contains the navargs and it avoid manual injection
 ) : ViewModel() {
+
+    private var localWeatherDomain = savedStateHandle.get<LocalWeatherDomain>("localWeatherDomain") ?: LocalWeatherDomain()
 
     private val _currentWeatherDomain: MutableLiveData<LocalWeatherDomain>
         get() = MutableLiveData(localWeatherDomain)

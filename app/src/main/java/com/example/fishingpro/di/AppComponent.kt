@@ -106,7 +106,7 @@ object BaseModule {
 
     @Provides
     fun provideWeatherDomain(fragment: WeatherFragment): LocalWeatherDomain{
-        return fragment.navArgs<WeatherFragmentArgs>().value.localWeatherDomain
+        return LocalWeatherDomain() //TODO test before solving with hilt
     }
 
     @Provides
