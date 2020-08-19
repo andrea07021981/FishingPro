@@ -51,7 +51,11 @@ class SignUpViewModel @ViewModelInject constructor(
         if (checkValidValues()) {
             viewModelScope.launch {
                 //If the user is correctly created, it also logged in so we can move directly to the home page
-                repository.saveUser(emailValue.value.toString(), passwordValue.value.toString()).onEach { result ->
+                repository.saveUser(
+                    emailValue.value.toString(),
+                    passwordValue.value.toString(),
+                    firstNameValue.value.toString(),
+                    lastNameValue.value.toString()).onEach { result ->
                     when (result) {
                         is Result.Success -> _loginAuthenticationState.value = Authenticated(user = result.data)
                         is Result.Error -> _loginAuthenticationState.value = InvalidAuthentication(result.message)
@@ -77,7 +81,7 @@ class SignUpViewModel @ViewModelInject constructor(
         errorPassword.value = passwordValue.value.isNullOrEmpty()
         errorFirstName.value = firstNameValue.value.isNullOrEmpty()
         errorLastName.value = lastNameValue.value.isNullOrEmpty()
-        return (errorEmail.value!! && errorPassword.value!! && errorFirstName.value!! && errorLastName.value!!)
+        return !(errorEmail.value!! || errorPassword.value!! || errorFirstName.value!! || errorLastName.value!!)
     }
 
     /**
