@@ -51,7 +51,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="400dp"
                     android:background="@android:color/transparent">
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -60,7 +60,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
                         android:textColorHint="@color/primaryTextColor"
                         app:boxStrokeColor="@color/primaryTextColor"
@@ -69,6 +69,7 @@
                         app:hintTextColor="@color/primaryTextColor"
                         app:layout_constraintBottom_toTopOf="@+id/layoutPassword"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
@@ -93,14 +94,14 @@
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginBottom="32dp"
                         android:textColorHint="@color/primaryTextColor"
                         app:boxStrokeColor="@color/primaryTextColor"
                         app:errorEnabled="true"
                         app:hasError="@{safeUnbox(signupViewModel.errorPassword)}"
                         app:hintTextColor="@color/primaryTextColor"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/layoutFirst"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/layoutEmail">
 
@@ -115,6 +116,74 @@
                             android:inputType="textPassword"
                             android:singleLine="true"
                             android:text="@={signupViewModel.passwordValue}"
+                            android:textColor="@color/primaryTextColor"
+                            android:textColorHint="@color/primaryTextColor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutFirst"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:textColorHint="@color/primaryTextColor"
+                        app:boxStrokeColor="@color/primaryTextColor"
+                        app:errorEnabled="true"
+                        app:hasError="@{safeUnbox(signupViewModel.errorFirstName)}"
+                        app:hintTextColor="@color/primaryTextColor"
+                        app:layout_constraintBottom_toTopOf="@+id/layoutLast"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layoutPassword">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFirst"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/lock_white_24dp"
+                            android:drawablePadding="10dp"
+                            android:hint="@string/first_name"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:singleLine="true"
+                            android:text="@={signupViewModel.firstNameValue}"
+                            android:textColor="@color/primaryTextColor"
+                            android:textColorHint="@color/primaryTextColor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutLast"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:textColorHint="@color/primaryTextColor"
+                        app:boxStrokeColor="@color/primaryTextColor"
+                        app:errorEnabled="true"
+                        app:hasError="@{safeUnbox(signupViewModel.errorLastName)}"
+                        app:hintTextColor="@color/primaryTextColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layoutFirst">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etLast"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/lock_white_24dp"
+                            android:drawablePadding="10dp"
+                            android:hint="@string/last_name"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:singleLine="true"
+                            android:text="@={signupViewModel.lastNameValue}"
                             android:textColor="@color/primaryTextColor"
                             android:textColorHint="@color/primaryTextColor" />
                     </com.google.android.material.textfield.TextInputLayout>
