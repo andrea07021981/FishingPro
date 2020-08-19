@@ -1,16 +1,10 @@
 package com.example.fishingpro.data.source.repository
 
-import android.app.Application
-import android.content.Context
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalUser
 import com.example.fishingpro.data.source.UserSource
-import com.example.fishingpro.data.source.local.datasource.UserLocalDataSource
-import com.example.fishingpro.data.source.remote.datasource.UserRemoteDataSource
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -35,9 +29,9 @@ class UserDataRepository @Inject constructor(
         }
     }
 
-    override suspend fun saveUser(email: String, password: String, ioDispatcher: CoroutineDispatcher): Flow<Result<FirebaseUser>> {
+    override suspend fun saveUser(email: String, password: String, firstName: String, lastName: String, ioDispatcher: CoroutineDispatcher): Flow<Result<FirebaseUser>> {
         return withContext(ioDispatcher) {
-            userRemoteDataSource.saveUser(email, password)
+            userRemoteDataSource.saveUser(email, password, firstName, lastName)
         }
     }
 }

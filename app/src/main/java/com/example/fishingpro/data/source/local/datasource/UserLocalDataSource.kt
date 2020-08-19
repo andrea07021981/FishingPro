@@ -3,7 +3,6 @@ package com.example.fishingpro.data.source.local.datasource
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalUser
 import com.example.fishingpro.data.source.UserSource
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +19,12 @@ class UserLocalDataSource @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun saveUser(email: String, password: String): Flow<Result<FirebaseUser>> {
+    override suspend fun saveUser(
+        email: String,
+        password: String,
+        firstName: String,
+        lastName: String
+    ): Flow<Result<FirebaseUser>> {
         TODO("Not yet implemented")
     }
 
