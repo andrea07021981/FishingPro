@@ -18,7 +18,9 @@ import com.example.fishingpro.weather.WeatherFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
@@ -60,8 +62,19 @@ object BaseModule {
 
     @Provides
     @Singleton
-    fun provideFirestore(): FirebaseFirestore = Firebase.firestore
+    fun provideFirestore(): FirebaseFirestore =
+        Firebase.firestore.apply {
+            firestoreSettings.apply {
+                firestoreSettings {
+                    isPersistenceEnabled = true
+                    FirebaseFirestoreSettings.Builder()
+                        .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+                        .build()
+                }
+            }
+        }
 
+    @ExperimentalCoroutinesApi
     @Provides
     fun provideUserRemoteDataSource(firebaseAuth: FirebaseAuth, firebaseFirestore: FirebaseFirestore): UserSource {
         return UserRemoteDataSource(

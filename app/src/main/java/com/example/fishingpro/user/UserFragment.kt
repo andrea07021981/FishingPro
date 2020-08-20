@@ -1,7 +1,9 @@
 package com.example.fishingpro.user
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context.LOCATION_SERVICE
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
@@ -50,7 +52,28 @@ class UserFragment : Fragment() {
             }
         }
         userViewModel.userEvent.observe(this.viewLifecycleOwner, EventObserver {
-            findNavController().popBackStack()
+            AlertDialog.Builder(requireNotNull(activity))
+                .setTitle("Log Out")
+                .setMessage("Would you like to log out?")
+                .setCancelable(false)
+                .setNegativeButton("Cancel") { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                }
+                .setPositiveButton("Ok") {dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                    userViewModel.logOutUser()
+                }
+                .create()
+                .show()
+        })
+        userViewModel.userLogOutEvent.observe(viewLifecycleOwner, EventObserver {
+            it.let { out ->
+                if (out) {
+                    findNavController().popBackStack()
+                } else {
+                    Toast.makeText(requireNotNull(activity), "Error log out", Toast.LENGTH_LONG).show()
+                }
+            }
         })
         userViewModel.weatherEvent.observe(this.viewLifecycleOwner, EventObserver {
             it.let {

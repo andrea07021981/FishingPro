@@ -12,6 +12,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
 class UserRemoteDataSource @Inject constructor(
@@ -87,5 +88,10 @@ class UserRemoteDataSource @Inject constructor(
             e.printStackTrace()
             emit(Result.Error("Login Save Failed"))
         }
+    }
+
+    override suspend fun logUserOut(coroutineContext: CoroutineContext) = withContext(coroutineContext){
+        firebaseAuth.signOut()
+        if (firebaseAuth.currentUser != null) throw Exception()
     }
 }

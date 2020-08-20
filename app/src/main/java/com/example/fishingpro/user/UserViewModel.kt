@@ -12,6 +12,7 @@ import com.example.fishingpro.data.domain.WeatherDomain
 import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
@@ -34,6 +35,10 @@ class UserViewModel @ViewModelInject constructor(
     private val _userEvent = MutableLiveData<Event<Unit>>()
     val userEvent: LiveData<Event<Unit>>
         get() = _userEvent
+
+    private val _userLogOutEvent = MutableLiveData<Event<Boolean>>()
+    val userLogOutEvent: LiveData<Event<Boolean>>
+        get() = _userLogOutEvent
 
     private val _currentWeatherDetail = MutableLiveData<WeatherDomain>()
     val currentWeatherDetail: LiveData<WeatherDomain>
@@ -96,6 +101,18 @@ class UserViewModel @ViewModelInject constructor(
         }
     }
 
+    @Throws(Exception::class)
+    fun logOutUser() {
+        viewModelScope.launch {
+            _userLogOutEvent.value = try {
+                userRepository.logOut()
+                Event(true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Event(false)
+            }
+        }
+    }
     /**
      * Change the context to main
      */

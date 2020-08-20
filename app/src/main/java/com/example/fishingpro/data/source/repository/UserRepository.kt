@@ -16,4 +16,6 @@ interface UserRepository {
     suspend fun retrieveCompleteUser(userUID: String, ioDispatcher: CoroutineDispatcher = Dispatchers.IO): Flow<Result<LocalUser?>>
 
     suspend fun saveUser(email: String, password: String, firstName: String, lastName: String, ioDispatcher: CoroutineDispatcher = Dispatchers.IO): Flow<Result<FirebaseUser>>
+
+    suspend fun logOut()
 }
