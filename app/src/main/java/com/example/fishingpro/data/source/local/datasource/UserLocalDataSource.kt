@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
 @ExperimentalCoroutinesApi
 class UserLocalDataSource @Inject constructor(
@@ -25,6 +26,10 @@ class UserLocalDataSource @Inject constructor(
         firstName: String,
         lastName: String
     ): Flow<Result<FirebaseUser>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun logUserOut(coroutineContext: CoroutineContext) {
         TODO("Not yet implemented")
     }
 

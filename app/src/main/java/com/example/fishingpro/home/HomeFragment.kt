@@ -48,7 +48,7 @@ class HomeFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         return loadFragment(when (item.itemId) {
                 R.id.user_page -> userFragment
-                R.id.map_page -> MapFragment()
+                R.id.map_page -> mapFragment
                 else -> null
             }
         )
