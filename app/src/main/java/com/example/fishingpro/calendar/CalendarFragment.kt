@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class CalendarFragment() : Fragment() {
 
-    private val calendarViewModel: CalendarViewModel by viewModels{
-        CalendarViewModel.CalendarViewModelFactory()
-    }
+    private val calendarViewModel: CalendarViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

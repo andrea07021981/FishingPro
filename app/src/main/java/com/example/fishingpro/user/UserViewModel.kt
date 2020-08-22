@@ -36,6 +36,10 @@ class UserViewModel @ViewModelInject constructor(
     val userEvent: LiveData<Event<Unit>>
         get() = _userEvent
 
+    private val _calendarEvent = MutableLiveData<Event<Unit>>()
+    val calendarEvent: LiveData<Event<Unit>>
+        get() = _calendarEvent
+
     private val _userLogOutEvent = MutableLiveData<Event<Boolean>>()
     val userLogOutEvent: LiveData<Event<Boolean>>
         get() = _userLogOutEvent
@@ -101,7 +105,6 @@ class UserViewModel @ViewModelInject constructor(
         }
     }
 
-    @Throws(Exception::class)
     fun logOutUser() {
         viewModelScope.launch {
             _userLogOutEvent.value = try {
@@ -161,5 +164,9 @@ class UserViewModel @ViewModelInject constructor(
         _currentWeather.value?.let {
             _weatherEvent.value = Event(_currentWeather.value!!)
         }
+    }
+
+    fun goToCalendar() {
+        _calendarEvent.value = Event(Unit)
     }
 }

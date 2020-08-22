@@ -89,6 +89,9 @@ class UserFragment : Fragment() {
                     .navigate(R.id.weatherFragment, bundle, null, extras)
             }
         })
+        userViewModel.calendarEvent.observe(viewLifecycleOwner, EventObserver {
+
+        })
         locationManager = (requireNotNull(activity).getSystemService(LOCATION_SERVICE) as LocationManager?)!!
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)

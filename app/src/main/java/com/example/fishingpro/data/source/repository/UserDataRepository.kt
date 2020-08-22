@@ -27,7 +27,6 @@ class UserDataRepository @Inject constructor(
 
     override suspend fun retrieveCompleteUser(userUID: String, ioDispatcher: CoroutineDispatcher): Flow<Result<LocalUser?>> {
         return withContext(ioDispatcher) {
-            //TODO check local before, then online if network ok
             userRemoteDataSource.getCompleteUser(userUID)
         }
     }
