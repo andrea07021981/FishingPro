@@ -270,7 +270,8 @@
                             android:layout_height="match_parent"
                             android:layout_margin="10sp"
                             android:layout_marginTop="16dp"
-                            app:cardElevation="4dp">
+                            app:cardElevation="4dp"
+                            android:onClick="@{() -> userViewModel.goToCalendar()}">
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:layout_width="match_parent"

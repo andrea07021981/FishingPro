@@ -2,6 +2,7 @@ package com.example.fishingpro.di
 
 import android.content.Context
 import com.example.fishingpro.BuildConfig
+import com.example.fishingpro.calendar.CalendarFragment
 import com.example.fishingpro.data.source.UserSource
 import com.example.fishingpro.data.source.WeatherSource
 import com.example.fishingpro.data.source.local.datasource.UserLocalDataSource
@@ -117,6 +118,12 @@ object BaseModule {
     @Provides
     fun provideMapFragmentFactory(): MapFragment {
         return MapFragment()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCalendarFragmentFactory(): CalendarFragment {
+        return CalendarFragment()
     }
 
     @Provides

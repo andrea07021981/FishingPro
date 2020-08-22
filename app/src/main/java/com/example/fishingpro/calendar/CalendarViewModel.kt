@@ -4,15 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.login.LoginViewModel
+import javax.inject.Inject
 
-class CalendarViewModel(
+class CalendarViewModel @Inject constructor(
 
 ) : ViewModel() {
-
-    init {
-
-    }
-    //TODO from here fish calendar
 
     class CalendarViewModelFactory() : ViewModelProvider.NewInstanceFactory() {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
