@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_userFragment_to_weatherFragment"
             app:destination="@id/weatherFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment" />
     </fragment>
     <fragment
         android:id="@+id/weatherFragment"
@@ -61,4 +64,9 @@
             android:name="localWeatherDomain"
             app:argType="com.example.fishingpro.data.domain.LocalWeatherDomain" />
     </fragment>
+    <fragment
+        android:id="@+id/calendarFragment"
+        tools:layout="@layout/fragment_calendar"
+        android:name="com.example.fishingpro.calendar.CalendarFragment"
+        android:label="CalendarFragment" />
 </navigation>

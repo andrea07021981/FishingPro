@@ -1,5 +1,6 @@
 package com.example.fishingpro.data.source.remote.datasource
 
+import android.util.Log
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.await
 import com.example.fishingpro.data.domain.LocalUser
