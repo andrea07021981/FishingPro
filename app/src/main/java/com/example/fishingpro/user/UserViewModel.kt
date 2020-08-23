@@ -2,6 +2,7 @@ package com.example.fishingpro.user
 
 import android.util.Log
 import android.view.View
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.Event
@@ -25,7 +26,8 @@ import java.lang.Exception
 @ExperimentalCoroutinesApi
 class UserViewModel @ViewModelInject constructor(
     private val weatherRepository: WeatherRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     companion object {

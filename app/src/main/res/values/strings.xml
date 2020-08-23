@@ -33,5 +33,6 @@
     <string name="loading_progress">Loading</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="filter">Filter</string>
 
 </resources>
