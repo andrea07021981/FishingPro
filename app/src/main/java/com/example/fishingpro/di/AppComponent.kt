@@ -3,9 +3,11 @@ package com.example.fishingpro.di
 import android.content.Context
 import com.example.fishingpro.BuildConfig
 import com.example.fishingpro.calendar.CalendarFragment
+import com.example.fishingpro.data.source.CalendarSource
 import com.example.fishingpro.data.source.UserSource
 import com.example.fishingpro.data.source.WeatherSource
 import com.example.fishingpro.data.source.local.datasource.UserLocalDataSource
+import com.example.fishingpro.data.source.remote.datasource.CalendarRemoteDataSource
 import com.example.fishingpro.data.source.remote.datasource.UserRemoteDataSource
 import com.example.fishingpro.data.source.remote.datasource.WeatherRemoteDataSource
 import com.example.fishingpro.data.source.remote.service.weather.WeatherService
@@ -80,6 +82,13 @@ object BaseModule {
     fun provideUserRemoteDataSource(firebaseAuth: FirebaseAuth, firebaseFirestore: FirebaseFirestore): UserSource {
         return UserRemoteDataSource(
             firebaseAuth,
+            firebaseFirestore
+        )
+    }
+
+    @Provides
+    fun provideCalendarRemoteDataSource(firebaseFirestore: FirebaseFirestore): CalendarSource {
+        return CalendarRemoteDataSource(
             firebaseFirestore
         )
     }

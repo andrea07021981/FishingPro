@@ -76,6 +76,8 @@ class MainActivity : AppCompatActivity() {
             application, "95a1ea7a-69cf-44fa-a7ad-526fb81a4498",
             Analytics::class.java, Crashes::class.java
         )
+        //Track the event of app starting
+        Analytics.trackEvent("Application started");
     }
 
     override fun onStart() {

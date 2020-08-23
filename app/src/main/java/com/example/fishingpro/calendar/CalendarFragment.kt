@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.adapters.CalendarViewBindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.fishingpro.databinding.FragmentCalendarBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -26,6 +27,9 @@ class CalendarFragment() : Fragment() {
         dataBinding = FragmentCalendarBinding.inflate(inflater).also {
             it.calendarViewModel = calendarViewModel
             it.lifecycleOwner = this
+        }
+        dataBinding.calendarToolbar.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
         return dataBinding.root
     }
