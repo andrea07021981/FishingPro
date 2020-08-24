@@ -44,7 +44,8 @@ class UserRemoteDataSource @Inject constructor(
             if (document.data.isNullOrEmpty()) {
                 emit(Result.Error("No Data"))
             } else {
-                emit(Result.Success(document.toObject(LocalUser::class.java)))
+                val user = document.toObject(LocalUser::class.java).apply { this?.userUID = userUID }
+                emit(Result.Success(user))
             }
         } catch (e: FirebaseFirestoreException) {
             emit(Result.ExError(e))

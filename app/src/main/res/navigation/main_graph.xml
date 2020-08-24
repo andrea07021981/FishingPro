@@ -68,5 +68,10 @@
         android:id="@+id/calendarFragment"
         tools:layout="@layout/fragment_calendar"
         android:name="com.example.fishingpro.calendar.CalendarFragment"
-        android:label="CalendarFragment" />
+        android:label="CalendarFragment" >
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue="0" />
+    </fragment>
 </navigation>

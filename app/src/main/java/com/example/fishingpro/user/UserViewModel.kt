@@ -38,8 +38,8 @@ class UserViewModel @ViewModelInject constructor(
     val userEvent: LiveData<Event<Unit>>
         get() = _userEvent
 
-    private val _calendarEvent = MutableLiveData<Event<Unit>>()
-    val calendarEvent: LiveData<Event<Unit>>
+    private val _calendarEvent = MutableLiveData<Event<String>>()
+    val calendarEvent: LiveData<Event<String>>
         get() = _calendarEvent
 
     private val _userLogOutEvent = MutableLiveData<Event<Boolean>>()
@@ -62,8 +62,8 @@ class UserViewModel @ViewModelInject constructor(
     val status: LiveData<Int>
         get() = _status
 
-    private val _userLogged = MutableLiveData<String?>()
-    val userLogged: LiveData<String?>
+    private val _userLogged = MutableLiveData<LocalUser?>()
+    val userLogged: LiveData<LocalUser?>
         get() = _userLogged
 
     var currentDate = System.currentTimeMillis()
@@ -126,8 +126,8 @@ class UserViewModel @ViewModelInject constructor(
             .onEach { result ->
                 check(result !is Result.Error && result !is Result.ExError)
                 when (result) {
-                    is Result.Success -> _userLogged.value = result.data?.FirstName
-                    is Result.Loading -> _userLogged.value = LocalUser().FirstName
+                    is Result.Success -> _userLogged.value = result.data
+                    is Result.Loading -> _userLogged.value = LocalUser()
                 }
             }
             .catch { e ->
@@ -137,7 +137,7 @@ class UserViewModel @ViewModelInject constructor(
             .onCompletion {
                 Log.d(TAG, "Done")
             }
-            .launchIn(viewModelScope)
+            .launchIn(this@UserViewModel.viewModelScope)
     }
 
     /**
@@ -169,6 +169,6 @@ class UserViewModel @ViewModelInject constructor(
     }
 
     fun goToCalendar() {
-        _calendarEvent.value = Event(Unit)
+        _calendarEvent.value = Event(_userLogged.value!!.userUID)
     }
 }

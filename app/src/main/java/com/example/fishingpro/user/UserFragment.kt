@@ -91,7 +91,7 @@ class UserFragment : Fragment() {
         })
         userViewModel.calendarEvent.observe(viewLifecycleOwner, EventObserver {
             findNavController()
-                .navigate(R.id.calendarFragment)
+                .navigate(R.id.calendarFragment, bundleOf("userId" to it))
         })
         locationManager = (requireNotNull(activity).getSystemService(LOCATION_SERVICE) as LocationManager?)!!
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))

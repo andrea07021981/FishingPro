@@ -11,10 +11,7 @@ import com.example.fishingpro.data.source.remote.datasource.CalendarRemoteDataSo
 import com.example.fishingpro.data.source.remote.datasource.UserRemoteDataSource
 import com.example.fishingpro.data.source.remote.datasource.WeatherRemoteDataSource
 import com.example.fishingpro.data.source.remote.service.weather.WeatherService
-import com.example.fishingpro.data.source.repository.UserDataRepository
-import com.example.fishingpro.data.source.repository.UserRepository
-import com.example.fishingpro.data.source.repository.WeatherDataRepository
-import com.example.fishingpro.data.source.repository.WeatherRepository
+import com.example.fishingpro.data.source.repository.*
 import com.example.fishingpro.map.MapFragment
 import com.example.fishingpro.user.UserFragment
 import com.example.fishingpro.weather.WeatherFragment
@@ -91,6 +88,13 @@ object BaseModule {
         return CalendarRemoteDataSource(
             firebaseFirestore
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideCalendarDataRepository(
+        calendarRemoteDataSource: CalendarSource): CalendarRepository {
+        return CalendarDataRepository(calendarRemoteDataSource)
     }
 
     @Singleton
