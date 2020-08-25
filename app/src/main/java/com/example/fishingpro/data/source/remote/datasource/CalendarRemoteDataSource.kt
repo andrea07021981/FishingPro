@@ -1,6 +1,5 @@
 package com.example.fishingpro.data.source.remote.datasource
 
-import android.util.Log
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.await
 import com.example.fishingpro.data.domain.LocalCatch
@@ -15,7 +14,7 @@ import javax.inject.Inject
 class CalendarRemoteDataSource @Inject constructor(
     val firestore: FirebaseFirestore
 ) : CalendarSource {
-    override suspend fun retrieveCatches(userId: String): Flow<Result<List<LocalCatch?>>> = flow {
+    override fun retrieveCatches(userId: String?): Flow<Result<List<LocalCatch?>>> = flow {
         emit(Result.Loading)
         try {
             val request = firestore.collection("Catch").whereEqualTo("UserId", userId).get().await()

@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface CalendarSource {
 
-    suspend fun retrieveCatches(userId: String): Flow<Result<List<LocalCatch?>>>
+    fun retrieveCatches(userId: String?): Flow<Result<List<LocalCatch?>>>
 }
