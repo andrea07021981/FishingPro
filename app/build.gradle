@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.fishingpro"
-        minSdkVersion 26
+        minSdkVersion 28
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -23,6 +23,27 @@ android {
 
         buildConfigField 'String', 'BASE_WEATHER_URL', "\"https://api.openweathermap.org/data/2.5/\""
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/main.kotlin_module'
+    }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+    useLibrary 'android.test.runner'
+
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
 
     buildTypes {
         release {
@@ -46,8 +67,8 @@ android {
     }
 
     // Enables data binding.
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 
     // Enable parcellable
