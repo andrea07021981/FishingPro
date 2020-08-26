@@ -40,7 +40,7 @@ class CalendarFragment() : Fragment() {
             it.lifecycleOwner = this
             it.calendarRecycleView.layoutManager = LinearLayoutManager(
                 activity,
-                LinearLayoutManager.HORIZONTAL,
+                LinearLayoutManager.VERTICAL,
                 false
             )
             it.calendarRecycleView.adapter = CalendarAdapter(CalendarAdapter.OnCalendarClickListener {
