@@ -24,3 +24,7 @@ data class Authenticated(
 data class InvalidAuthentication(
     override val message: String = "Authentication error"
 ) : LoginAuthenticationStates(message)
+
+data class Idle(
+    override val message: String = "None"
+) : LoginAuthenticationStates(message)
