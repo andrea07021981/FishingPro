@@ -17,7 +17,7 @@ class FishingProApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        FirebaseApp.initializeApp(this)
+        //FirebaseApp.initializeApp(this)
         // Obtain the FirebaseAnalytics instance.
         firebaseAnalytics = Firebase.analytics
         // Test
