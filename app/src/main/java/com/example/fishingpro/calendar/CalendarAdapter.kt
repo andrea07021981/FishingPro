@@ -9,7 +9,7 @@ import com.example.fishingpro.data.domain.LocalCatch
 import com.example.fishingpro.databinding.CalendarItemBinding
 
 class CalendarAdapter(
-    val onClickListener: OnCalendarClickListener
+    private val onClickListener: OnCalendarClickListener
 ) : ListAdapter<LocalCatch, CalendarAdapter.CalendarViewHolder>(
     DiffCallback
 ){
