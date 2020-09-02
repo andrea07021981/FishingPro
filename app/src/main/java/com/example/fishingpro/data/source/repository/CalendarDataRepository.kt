@@ -2,6 +2,7 @@ package com.example.fishingpro.data.source.repository
 
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalCatch
+import com.example.fishingpro.data.domain.LocalDailyCatch
 import com.example.fishingpro.data.source.CalendarSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ class CalendarDataRepository @Inject constructor(
     override fun retrieveCatches(
         userId: String,
         ioDispatcher: CoroutineDispatcher
-    ): Flow<Result<List<LocalCatch?>>> {
+    ): Flow<Result<List<LocalDailyCatch?>>> {
         return calendarRemoteDataSource.retrieveCatches(userId)
     }
 }

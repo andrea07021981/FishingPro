@@ -55,6 +55,14 @@ class LoginViewModelTest {
         hiltRule.inject()
     }
 
+    //TODO junit5, we can use Nested class to maintain order
+    //@Nested
+    inner class UserActions {
+        @Test
+        fun some_action() {}
+    }
+
+    
     @Test
     fun onSignInClick_userLogged_valid() = runBlocking{
         //Given user name and pass
