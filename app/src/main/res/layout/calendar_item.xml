@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="localCatch"
-            type="com.example.fishingpro.data.domain.LocalCatch" />
+            name="localDailyCatch"
+            type="com.example.fishingpro.data.domain.LocalDailyCatch" />
 
         <variable
             name="calendarCallBack"
@@ -35,7 +35,8 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:padding="10dp"
-                android:text="16"
+                app:formatDay="@{localDailyCatch.date}"
+                tools:text="16"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="36sp"
@@ -63,6 +64,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/linearLayout2"
                 app:layout_constraintTop_toTopOf="parent"
+                app:countCatches="@{localDailyCatch.fish}"
                 tools:text="12" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -101,7 +103,7 @@
                     android:layout_marginBottom="10dp"
                     android:textSize="15sp"
                     android:textColor="@android:color/white"
-                    app:formatMonthYear="@{localCatch.date}"
+                    app:formatMonthYear="@{localDailyCatch.date}"
                     tools:text="December 2020" />
 
                 <TextView
@@ -110,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
                     android:textColor="@android:color/white"
-                    app:formatWeekDay="@{localCatch.date}"
+                    app:formatWeekDay="@{localDailyCatch.date}"
                     tools:text="Monday" />
             </LinearLayout>
 

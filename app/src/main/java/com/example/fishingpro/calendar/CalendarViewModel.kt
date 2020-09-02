@@ -5,6 +5,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalCatch
+import com.example.fishingpro.data.domain.LocalDailyCatch
 import com.example.fishingpro.data.source.repository.CalendarRepository
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.coroutineScope
@@ -16,10 +17,12 @@ class CalendarViewModel @ViewModelInject constructor(
     @Assisted val userId: SavedStateHandle
 ) : ViewModel() {
 
-    private val _catches: LiveData<Result<List<LocalCatch?>>> =
-            calendarRepository.retrieveCatches(userId.get<String>("userId") ?: "0").asLiveData(viewModelScope.coroutineContext)
+    private val _catches: LiveData<Result<List<LocalDailyCatch?>>> =
+            calendarRepository.retrieveCatches(
+                userId.get<String>("userId") ?: "0"
+            ).asLiveData(viewModelScope.coroutineContext)
 
-    val catches: LiveData<Result<List<LocalCatch?>>>
+    val catches: LiveData<Result<List<LocalDailyCatch?>>>
         get() = _catches
 
     init {
