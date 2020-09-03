@@ -10,8 +10,8 @@
             type="com.example.fishingpro.data.domain.LocalDailyCatch" />
 
         <variable
-            name="calendarCallBack"
-            type="com.example.fishingpro.calendar.CalendarAdapter.OnCalendarClickListener" />
+            name="fishCallBack"
+            type="com.example.fishingpro.fish.FishAdapter.OnFishClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView

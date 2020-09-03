@@ -1,6 +1,5 @@
 package com.example.fishingpro.util
 
-import android.widget.CalendarView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
@@ -31,11 +30,6 @@ fun ImageView.setWeatherState(weather: String?) {
                     .error(R.drawable.ic_baseline_broken_image_24))
             .into(this)
     }
-}
-
-@BindingAdapter("setDate")
-fun CalendarView.setDate(date: Long) {
-    setDate(date, true, true)
 }
 
 @BindingAdapter("setDateOfMonth")

@@ -38,9 +38,9 @@ class UserViewModel @ViewModelInject constructor(
     val userEvent: LiveData<Event<Unit>>
         get() = _userEvent
 
-    private val _calendarEvent = MutableLiveData<Event<String>>()
-    val calendarEvent: LiveData<Event<String>>
-        get() = _calendarEvent
+    private val _fishEvent = MutableLiveData<Event<String>>()
+    val fishEvent: LiveData<Event<String>>
+        get() = _fishEvent
 
     private val _userLogOutEvent = MutableLiveData<Event<Boolean>>()
     val userLogOutEvent: LiveData<Event<Boolean>>
@@ -168,7 +168,7 @@ class UserViewModel @ViewModelInject constructor(
         }
     }
 
-    fun goToCalendar() {
-        _calendarEvent.value = Event(_userLogged.value!!.userUID)
+    fun goToCatches() {
+        _fishEvent.value = Event(_userLogged.value!!.userUID)
     }
 }

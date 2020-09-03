@@ -52,8 +52,8 @@
             android:id="@+id/action_userFragment_to_weatherFragment"
             app:destination="@id/weatherFragment" />
         <action
-            android:id="@+id/action_userFragment_to_calendarFragment"
-            app:destination="@id/calendarFragment" />
+            android:id="@+id/action_userFragment_to_fishFragment"
+            app:destination="@id/fishFragment" />
     </fragment>
     <fragment
         android:id="@+id/weatherFragment"
@@ -65,10 +65,10 @@
             app:argType="com.example.fishingpro.data.domain.LocalWeatherDomain" />
     </fragment>
     <fragment
-        android:id="@+id/calendarFragment"
-        tools:layout="@layout/fragment_calendar"
-        android:name="com.example.fishingpro.calendar.CalendarFragment"
-        android:label="CalendarFragment" >
+        android:id="@+id/fishFragment"
+        tools:layout="@layout/fragment_fish"
+        android:name="com.example.fishingpro.fish.FishFragment"
+        android:label="FishFragment" >
         <argument
             android:name="userId"
             app:argType="string"

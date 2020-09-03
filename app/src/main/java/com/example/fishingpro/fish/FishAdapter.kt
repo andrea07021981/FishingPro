@@ -1,28 +1,27 @@
-package com.example.fishingpro.calendar
+package com.example.fishingpro.fish
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.fishingpro.data.domain.LocalCatch
 import com.example.fishingpro.data.domain.LocalDailyCatch
-import com.example.fishingpro.databinding.CalendarItemBinding
+import com.example.fishingpro.databinding.FishItemBinding
 
-class CalendarAdapter(
-    private val onClickListener: OnCalendarClickListener
-) : ListAdapter<LocalDailyCatch, CalendarAdapter.CalendarViewHolder>(
+class FishAdapter(
+    private val onClickListener: OnFishClickListener
+) : ListAdapter<LocalDailyCatch, FishAdapter.FishViewHolder>(
     DiffCallback
 ){
 
-    class CalendarViewHolder(
-        val binding: CalendarItemBinding
+    class FishViewHolder(
+        val binding: FishItemBinding
     ) :RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(clickListener: OnCalendarClickListener, item: LocalDailyCatch) {
+        fun bind(clickListener: OnFishClickListener, item: LocalDailyCatch) {
             with(binding) {
                 localDailyCatch = item
-                calendarCallBack = clickListener
+                fishCallBack = clickListener
                 executePendingBindings()
             }
         }
@@ -31,18 +30,18 @@ class CalendarAdapter(
             //It creates a static version for java
             @JvmStatic val from = {parent: ViewGroup ->
                 val inflater = LayoutInflater.from(parent.context)
-                val binding = CalendarItemBinding.inflate(inflater)
-                CalendarViewHolder(binding) }
+                val binding = FishItemBinding.inflate(inflater)
+                FishViewHolder(binding) }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
-        return CalendarViewHolder.from(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FishViewHolder {
+        return FishViewHolder.from(
             parent
         )
     }
 
-    override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: FishViewHolder, position: Int) {
         return holder.bind(onClickListener, getItem(position))
     }
 
@@ -60,7 +59,7 @@ class CalendarAdapter(
         }
     }
 
-    class OnCalendarClickListener(
+    class OnFishClickListener(
         val clickListener: (catch: LocalDailyCatch) -> Unit
     ) {
         fun onClick(catch: LocalDailyCatch) = clickListener(catch)
