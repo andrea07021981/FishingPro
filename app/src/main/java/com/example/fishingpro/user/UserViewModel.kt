@@ -122,7 +122,7 @@ class UserViewModel @ViewModelInject constructor(
     }
 
     private suspend fun loadCatchesData() = coroutineScope{
-
+        //TODO add reading fish catches and populate the chart
     }
 
     /**
