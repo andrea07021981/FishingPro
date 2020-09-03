@@ -1,57 +1,54 @@
-package com.example.fishingpro.calendar
+package com.example.fishingpro.fish
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.adapters.CalendarViewBindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.fishingpro.databinding.FragmentCalendarBinding
+import com.example.fishingpro.databinding.FragmentFishBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class CalendarFragment() : Fragment() {
+class FishFragment() : Fragment() {
 
     companion object {
-        val TAG = CalendarFragment::class.java.simpleName
+        val TAG = FishFragment::class.java.simpleName
     }
 
-    private val argUserId: CalendarFragmentArgs by navArgs()
+    private val argUserId: FishFragmentArgs by navArgs()
 
-    private val calendarViewModel: CalendarViewModel by viewModels()
-    private lateinit var dataBinding: FragmentCalendarBinding
+    private val fishViewModel: FishViewModel by viewModels()
+    private lateinit var dataBinding: FragmentFishBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = FragmentCalendarBinding.inflate(inflater).also {
-            it.calendarViewModel = calendarViewModel
+        dataBinding = FragmentFishBinding.inflate(inflater).also {
+            it.fishViewModel = fishViewModel
             it.lifecycleOwner = this
-            it.calendarRecycleView.layoutManager = LinearLayoutManager(
+            it.fishRecycleView.layoutManager = LinearLayoutManager(
                 activity,
                 LinearLayoutManager.VERTICAL,
                 false
             )
-            it.calendarRecycleView.adapter = CalendarAdapter(CalendarAdapter.OnCalendarClickListener {
+            it.fishRecycleView.adapter = FishAdapter(FishAdapter.OnFishClickListener {
                 Log.d(TAG, "Clicked")
             })
         }
-        dataBinding.calendarToolbar.setNavigationOnClickListener {
+        dataBinding.fishToolbar.setNavigationOnClickListener {
             findNavController().popBackStack()
         }
 
-        calendarViewModel.catches.observe(viewLifecycleOwner, {
+        fishViewModel.catches.observe(viewLifecycleOwner, {
             print(it)
         })
         return dataBinding.root

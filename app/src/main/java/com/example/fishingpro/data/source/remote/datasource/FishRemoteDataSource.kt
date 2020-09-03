@@ -1,26 +1,23 @@
 package com.example.fishingpro.data.source.remote.datasource
 
 import com.example.fishingpro.data.Result
-import com.example.fishingpro.data.await
 import com.example.fishingpro.data.domain.FishData
 import com.example.fishingpro.data.domain.LocalCatch
 import com.example.fishingpro.data.domain.LocalDailyCatch
-import com.example.fishingpro.data.source.CalendarSource
+import com.example.fishingpro.data.source.FishSource
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
-import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
-class CalendarRemoteDataSource @Inject constructor(
+class FishRemoteDataSource @Inject constructor(
     val firestore: FirebaseFirestore
-) : CalendarSource {
+) : FishSource {
 
     //Callbackflow is a good way to emit values inside listeners
     override fun retrieveCatches(userId: String): Flow<Result<List<LocalDailyCatch?>>> = callbackFlow {

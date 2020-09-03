@@ -250,4 +250,7 @@ dependencies {
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:${version_hilt_test}"
     // ...with Java.
     androidTestAnnotationProcessor "com.google.dagger:hilt-android-compiler:${version_hilt_test}"
+
+    //Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

@@ -1,24 +1,19 @@
-package com.example.fishingpro.calendar
+package com.example.fishingpro.fish
 
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.data.Result
-import com.example.fishingpro.data.domain.LocalCatch
 import com.example.fishingpro.data.domain.LocalDailyCatch
-import com.example.fishingpro.data.source.repository.CalendarRepository
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import com.example.fishingpro.data.source.repository.FishRepository
 
-class CalendarViewModel @ViewModelInject constructor(
-    private val calendarRepository: CalendarRepository,
+class FishViewModel @ViewModelInject constructor(
+    private val fishRepository: FishRepository,
     @Assisted val userId: SavedStateHandle
 ) : ViewModel() {
 
     private val _catches: LiveData<Result<List<LocalDailyCatch?>>> =
-            calendarRepository.retrieveCatches(
+            fishRepository.retrieveCatches(
                 userId.get<String>("userId") ?: "0"
             ).asLiveData(viewModelScope.coroutineContext)
 

@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="calendarViewModel"
-            type="com.example.fishingpro.calendar.CalendarViewModel" />
+            name="fishViewModel"
+            type="com.example.fishingpro.fish.FishViewModel" />
     </data>
 
     <LinearLayout
@@ -16,14 +16,14 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/calendar_toolbar"
+            android:id="@+id/fish_toolbar"
             android:minHeight="?attr/actionBarSize"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:titleTextColor="@android:color/white"
             app:navigationIcon="?attr/homeAsUpIndicator"
             android:background="?attr/colorPrimary"
-            app:menu="@menu/menu_calendar">
+            app:menu="@menu/menu_fish">
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/calendar_recycle_view"
+                android:id="@+id/fish_recycle_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
@@ -39,7 +39,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:dataList="@{calendarViewModel.catches}"
+                app:dataList="@{fishViewModel.catches}"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

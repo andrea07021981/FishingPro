@@ -89,9 +89,9 @@ class UserFragment : Fragment() {
                     .navigate(R.id.weatherFragment, bundle, null, extras)
             }
         })
-        userViewModel.calendarEvent.observe(viewLifecycleOwner, EventObserver {
+        userViewModel.fishEvent.observe(viewLifecycleOwner, EventObserver {
             findNavController()
-                .navigate(R.id.calendarFragment, bundleOf("userId" to it))
+                .navigate(R.id.fishFragment, bundleOf("userId" to it))
         })
         locationManager = (requireNotNull(activity).getSystemService(LOCATION_SERVICE) as LocationManager?)!!
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))

@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 
-interface CalendarRepository {
+interface FishRepository {
 
     fun retrieveCatches(userId: String, ioDispatcher: CoroutineDispatcher = Dispatchers.IO): Flow<Result<List<LocalDailyCatch?>>>
 }

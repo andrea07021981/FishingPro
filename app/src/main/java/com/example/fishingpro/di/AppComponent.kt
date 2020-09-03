@@ -2,12 +2,12 @@ package com.example.fishingpro.di
 
 import android.content.Context
 import com.example.fishingpro.BuildConfig
-import com.example.fishingpro.calendar.CalendarFragment
-import com.example.fishingpro.data.source.CalendarSource
+import com.example.fishingpro.fish.FishFragment
+import com.example.fishingpro.data.source.FishSource
 import com.example.fishingpro.data.source.UserSource
 import com.example.fishingpro.data.source.WeatherSource
 import com.example.fishingpro.data.source.local.datasource.UserLocalDataSource
-import com.example.fishingpro.data.source.remote.datasource.CalendarRemoteDataSource
+import com.example.fishingpro.data.source.remote.datasource.FishRemoteDataSource
 import com.example.fishingpro.data.source.remote.datasource.UserRemoteDataSource
 import com.example.fishingpro.data.source.remote.datasource.WeatherRemoteDataSource
 import com.example.fishingpro.data.source.remote.service.weather.WeatherService
@@ -84,17 +84,17 @@ object BaseModule {
     }
 
     @Provides
-    fun provideCalendarRemoteDataSource(firebaseFirestore: FirebaseFirestore): CalendarSource {
-        return CalendarRemoteDataSource(
+    fun provideFishRemoteDataSource(firebaseFirestore: FirebaseFirestore): FishSource {
+        return FishRemoteDataSource(
             firebaseFirestore
         )
     }
 
     @Singleton
     @Provides
-    fun provideCalendarDataRepository(
-        calendarRemoteDataSource: CalendarSource): CalendarRepository {
-        return CalendarDataRepository(calendarRemoteDataSource)
+    fun provideFishDataRepository(
+        fishRemoteDataSource: FishSource): FishRepository {
+        return FishDataRepository(fishRemoteDataSource)
     }
 
     @Singleton
@@ -135,8 +135,8 @@ object BaseModule {
 
     @Singleton
     @Provides
-    fun provideCalendarFragmentFactory(): CalendarFragment {
-        return CalendarFragment()
+    fun provideFishFragmentFactory(): FishFragment {
+        return FishFragment()
     }
 
     @Provides
