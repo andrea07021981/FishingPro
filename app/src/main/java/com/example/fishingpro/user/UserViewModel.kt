@@ -97,6 +97,8 @@ class UserViewModel @ViewModelInject constructor(
                     val jobWeather = launch(childExceptionHandler) { loadWeather(latLon) }
                     //Add other tasks here
                     val jobUser = launch(childExceptionHandler) { loadUserInfo() }
+
+                    val jobFish = launch(childExceptionHandler) { loadCatchesData() }
                 }
             }.invokeOnCompletion {
                 //End jobs
@@ -118,6 +120,11 @@ class UserViewModel @ViewModelInject constructor(
             }
         }
     }
+
+    private suspend fun loadCatchesData() = coroutineScope{
+
+    }
+
     /**
      * Change the context to main
      */

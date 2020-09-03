@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.Context.LOCATION_SERVICE
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,11 +25,19 @@ import com.example.fishingpro.EventObserver
 import com.example.fishingpro.R
 import com.example.fishingpro.data.source.repository.WeatherDataRepository
 import com.example.fishingpro.databinding.FragmentUserBinding
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -38,6 +48,7 @@ class UserFragment : Fragment() {
     private lateinit var dataBinding: FragmentUserBinding
     private lateinit var locationManager: LocationManager
     private var fusedLocationClient: FusedLocationProviderClient? = null
+    private lateinit var chart: LineChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +62,8 @@ class UserFragment : Fragment() {
                 userViewModel.backToLogin()
             }
         }
+        prepareChart()
+
         userViewModel.userEvent.observe(this.viewLifecycleOwner, EventObserver {
             AlertDialog.Builder(requireNotNull(activity))
                 .setTitle("Log Out")
@@ -97,6 +110,69 @@ class UserFragment : Fragment() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         return dataBinding.root
+    }
+
+    //TODO refactor it
+    fun prepareChart() {
+        chart.animateX(1500)
+        // no description text
+        // no description text
+        chart.description.isEnabled = false
+
+        // enable touch gestures
+        // enable touch gestures
+        chart.setTouchEnabled(true)
+
+        chart.dragDecelerationFrictionCoef = 0.9f
+
+        // enable scaling and dragging
+        // enable scaling and dragging
+        chart.isDragEnabled = true
+        chart.setScaleEnabled(true)
+        chart.setDrawGridBackground(false)
+        chart.isHighlightPerDragEnabled = true
+
+        // set an alternative background color
+        // set an alternative background color
+        chart.setBackgroundColor(Color.WHITE)
+        chart.setViewPortOffsets(0f, 0f, 0f, 0f)
+
+        // get the legend (only possible after setting data)
+        // get the legend (only possible after setting data)
+        val l = chart.legend
+        l.isEnabled = false
+
+        val xAxis = chart.xAxis
+        xAxis.position = XAxis.XAxisPosition.TOP_INSIDE
+        xAxis.textSize = 10f
+        xAxis.textColor = Color.WHITE
+        xAxis.setDrawAxisLine(false)
+        xAxis.setDrawGridLines(true)
+        xAxis.textColor = ContextCompat.getColor(requireActivity().applicationContext, R.color.primaryColor)
+        xAxis.setCenterAxisLabels(true)
+        xAxis.granularity = 1f // one hour
+
+
+        xAxis.valueFormatter = object : ValueFormatter() {
+            private val mFormat: SimpleDateFormat = SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH)
+            override fun getFormattedValue(value: Float): String {
+                val millis: Long = TimeUnit.HOURS.toMillis(value.toLong())
+                return mFormat.format(Date(millis))
+            }
+        }
+
+        val leftAxis = chart.axisLeft
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+        leftAxis.textColor = ColorTemplate.getHoloBlue()
+        leftAxis.setDrawGridLines(true)
+        leftAxis.isGranularityEnabled = true
+        leftAxis.axisMinimum = 0f
+        leftAxis.axisMaximum = 100F
+        leftAxis.yOffset = -9f
+        leftAxis.textColor = ContextCompat.getColor(requireActivity().applicationContext, R.color.primaryColor)
+
+        val rightAxis = chart.axisRight
+        rightAxis.isEnabled = false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
