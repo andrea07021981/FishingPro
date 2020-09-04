@@ -3,7 +3,6 @@ package com.example.fishingpro.user
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context.LOCATION_SERVICE
-import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
@@ -23,17 +22,20 @@ import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import com.example.fishingpro.EventObserver
 import com.example.fishingpro.R
-import com.example.fishingpro.data.source.repository.WeatherDataRepository
+import com.example.fishingpro.data.domain.LocalDailyCatch
 import com.example.fishingpro.databinding.FragmentUserBinding
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_user.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,6 +51,7 @@ class UserFragment : Fragment() {
     private lateinit var locationManager: LocationManager
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private lateinit var chart: LineChart
+    //TODO change to barchar
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,6 +65,7 @@ class UserFragment : Fragment() {
                 userViewModel.backToLogin()
             }
         }
+        chart = dataBinding.root.catches_chart
         prepareChart()
 
         userViewModel.userEvent.observe(this.viewLifecycleOwner, EventObserver {
@@ -105,6 +109,11 @@ class UserFragment : Fragment() {
         userViewModel.fishEvent.observe(viewLifecycleOwner, EventObserver {
             findNavController()
                 .navigate(R.id.fishFragment, bundleOf("userId" to it))
+        })
+        userViewModel.catches.observe(viewLifecycleOwner, Observer {
+            //Update chart data
+            setData(it)
+
         })
         locationManager = (requireNotNull(activity).getSystemService(LOCATION_SERVICE) as LocationManager?)!!
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))
@@ -173,6 +182,40 @@ class UserFragment : Fragment() {
 
         val rightAxis = chart.axisRight
         rightAxis.isEnabled = false
+    }
+
+    private fun setData(dataCollection: List<LocalDailyCatch?>) { // now in hours
+        val catches: ArrayList<Entry> = ArrayList()
+        for (data in dataCollection) {
+            val y = data?.fish?.count() ?: 0
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+            val timeCollection = data?.date
+            val temp: Long = (timeCollection?.time ?: 0) / (1000*60*60)
+            catches.add(Entry(temp.toFloat(), y.toFloat())) // add one entry per hour
+        }
+
+        // create a data object with the data sets
+        val chartData = LineData();
+        chartData.setValueTextColor(Color.WHITE)
+        chartData.setValueTextSize(9f)
+
+        val setTemp = LineDataSet(catches, "DataSet temp")
+        setTemp.axisDependency = YAxis.AxisDependency.LEFT
+        setTemp.color = ColorTemplate.getHoloBlue()
+        setTemp.valueTextColor = ColorTemplate.getHoloBlue()
+        setTemp.lineWidth = 1.5f
+        setTemp.setDrawCircles(false)
+        setTemp.setDrawValues(false)
+        setTemp.fillAlpha = 65
+        setTemp.fillColor = ColorTemplate.getHoloBlue()
+        setTemp.highLightColor = Color.rgb(244, 117, 117)
+        setTemp.setDrawCircleHole(false)
+        chartData.addDataSet(setTemp);
+
+        //Deploy data to the chart
+        chart.data = chartData
+        chart.animateXY(2000, 2000)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

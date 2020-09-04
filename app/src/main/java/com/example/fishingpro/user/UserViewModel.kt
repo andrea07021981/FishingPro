@@ -7,26 +7,28 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.example.fishingpro.Event
 import com.example.fishingpro.data.Result
+import com.example.fishingpro.data.domain.LocalDailyCatch
 import com.example.fishingpro.data.domain.LocalUser
 import com.example.fishingpro.data.domain.LocalWeatherDomain
 import com.example.fishingpro.data.domain.WeatherDomain
+import com.example.fishingpro.data.source.repository.FishRepository
 import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import java.lang.Exception
 
 @ExperimentalCoroutinesApi
 class UserViewModel @ViewModelInject constructor(
     private val weatherRepository: WeatherRepository,
     private val userRepository: UserRepository,
+    private val fishRepository: FishRepository,
+    private val auth: FirebaseAuth,
     @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -66,8 +68,9 @@ class UserViewModel @ViewModelInject constructor(
     val userLogged: LiveData<LocalUser?>
         get() = _userLogged
 
-    var currentDate = System.currentTimeMillis()
-
+    private val _catches = MutableLiveData<List<LocalDailyCatch?>>()
+    val catches: LiveData<List<LocalDailyCatch?>>
+        get() = _catches
 
     /* TODO USE LIVE DATA AND COROUTINES FOR LOADING DATA IMMEDIATELY WITHOUT THE METHOD INITDATA
     val calendarEvents: LiveData<Calendar> = liveData {
@@ -122,14 +125,31 @@ class UserViewModel @ViewModelInject constructor(
     }
 
     private suspend fun loadCatchesData() = coroutineScope{
-        //TODO add reading fish catches and populate the chart
+        fishRepository.retrieveCatches(auth.uid.toString())
+            .onEach {
+                check(it !is Result.ExError) // Throw an exception
+            }
+            .catch {
+                Log.d(TAG, "Exception loading")
+            }
+            .transform {
+                if (it is Result.Success ) { //Emit only success
+                    emit(it)
+                }
+            }
+            .onCompletion {
+                Log.d(TAG, "Data loaded")
+            }
+            .collect {
+                _catches.value = it.data!!
+            }
     }
 
     /**
      * Change the context to main
      */
     private suspend fun loadUserInfo() = withContext(Dispatchers.Main){
-        userRepository.retrieveCompleteUser(Firebase.auth.uid.toString())
+        userRepository.retrieveCompleteUser(auth.uid.toString())
             .onEach { result ->
                 check(result !is Result.Error && result !is Result.ExError)
                 when (result) {
