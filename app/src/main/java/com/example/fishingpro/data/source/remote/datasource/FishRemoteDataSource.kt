@@ -58,6 +58,7 @@ class FishRemoteDataSource @Inject constructor(
                         )
                     }
                     offer(Result.Success(localDailyCatch))
+                    channel.close()
                 }
             }
             //Finally if collect is not in use or collecting any data we cancel this channel to prevent any leak and remove the subscription listener to the database
