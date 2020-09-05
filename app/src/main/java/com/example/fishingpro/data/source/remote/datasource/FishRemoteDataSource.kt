@@ -20,7 +20,7 @@ class FishRemoteDataSource @Inject constructor(
 ) : FishSource {
 
     //Callbackflow is a good way to emit values inside listeners
-    override fun retrieveCatches(userId: String): Flow<Result<List<LocalDailyCatch?>>> = callbackFlow {
+    override fun retrieveCatches(userId: String): Flow<Result<List<LocalDailyCatch>>> = callbackFlow {
         offer(Result.Loading)
         try {
             //Listen for every change in firebase db

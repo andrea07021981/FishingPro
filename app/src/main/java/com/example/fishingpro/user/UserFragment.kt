@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,22 +23,21 @@ import com.example.fishingpro.EventObserver
 import com.example.fishingpro.R
 import com.example.fishingpro.data.domain.LocalDailyCatch
 import com.example.fishingpro.databinding.FragmentUserBinding
-import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_user.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -50,7 +48,7 @@ class UserFragment : Fragment() {
     private lateinit var dataBinding: FragmentUserBinding
     private lateinit var locationManager: LocationManager
     private var fusedLocationClient: FusedLocationProviderClient? = null
-    private lateinit var chart: LineChart
+    private lateinit var chart: BarChart
     //TODO change to barchar
 
     override fun onCreateView(
@@ -76,7 +74,7 @@ class UserFragment : Fragment() {
                 .setNegativeButton("Cancel") { dialogInterface, _ ->
                     dialogInterface.dismiss()
                 }
-                .setPositiveButton("Ok") {dialogInterface, _ ->
+                .setPositiveButton("Ok") { dialogInterface, _ ->
                     dialogInterface.dismiss()
                     userViewModel.logOutUser()
                 }
@@ -88,7 +86,8 @@ class UserFragment : Fragment() {
                 if (out) {
                     findNavController().popBackStack()
                 } else {
-                    Toast.makeText(requireNotNull(activity), "Error log out", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireNotNull(activity), "Error log out", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         })
@@ -100,7 +99,8 @@ class UserFragment : Fragment() {
                     dataBinding.temperatureTextView
                 val extras = FragmentNavigatorExtras(
                     weatherImage to "weatherImage",
-                    weatherTemperature to "weatherTemperature")
+                    weatherTemperature to "weatherTemperature"
+                )
                 val bundle = bundleOf("localWeatherDomain" to it)
                 findNavController()
                     .navigate(R.id.weatherFragment, bundle, null, extras)
@@ -113,109 +113,74 @@ class UserFragment : Fragment() {
         userViewModel.catches.observe(viewLifecycleOwner, Observer {
             //Update chart data
             setData(it)
-
         })
         locationManager = (requireNotNull(activity).getSystemService(LOCATION_SERVICE) as LocationManager?)!!
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireNotNull(activity))
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(
+            requireNotNull(
+                activity
+            )
+        )
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         return dataBinding.root
     }
 
     //TODO refactor it
-    fun prepareChart() {
-        chart.animateX(1500)
-        // no description text
-        // no description text
+    private fun prepareChart() {
+        val xAxis: XAxis = chart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        val months = listOf(
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+        )
+        val formatter = IndexAxisValueFormatter(months)
+        xAxis.granularity = 1f
+        xAxis.valueFormatter = formatter
+
+        val yAxis = chart.axisLeft;
+        yAxis.textSize = 12f; // set the text size
+        yAxis.axisMinimum = 0f; // start at zero
+        yAxis.axisMaximum = 100f; // the axis maximum is 100
+        yAxis.textColor = Color.BLACK;
+        yAxis.granularity = 1f; // interval 1
+
+        //Hide right y label
+        chart.axisRight.isEnabled = false
         chart.description.isEnabled = false
-
-        // enable touch gestures
-        // enable touch gestures
-        chart.setTouchEnabled(true)
-
-        chart.dragDecelerationFrictionCoef = 0.9f
-
-        // enable scaling and dragging
-        // enable scaling and dragging
-        chart.isDragEnabled = true
-        chart.setScaleEnabled(true)
-        chart.setDrawGridBackground(false)
-        chart.isHighlightPerDragEnabled = true
-
-        // set an alternative background color
-        // set an alternative background color
-        chart.setBackgroundColor(Color.WHITE)
-        chart.setViewPortOffsets(0f, 0f, 0f, 0f)
-
-        // get the legend (only possible after setting data)
-        // get the legend (only possible after setting data)
-        val l = chart.legend
-        l.isEnabled = false
-
-        val xAxis = chart.xAxis
-        xAxis.position = XAxis.XAxisPosition.TOP_INSIDE
-        xAxis.textSize = 10f
-        xAxis.textColor = Color.WHITE
-        xAxis.setDrawAxisLine(false)
-        xAxis.setDrawGridLines(true)
-        xAxis.textColor = ContextCompat.getColor(requireActivity().applicationContext, R.color.primaryColor)
-        xAxis.setCenterAxisLabels(true)
-        xAxis.granularity = 1f // one hour
-
-
-        xAxis.valueFormatter = object : ValueFormatter() {
-            private val mFormat: SimpleDateFormat = SimpleDateFormat("dd MMM HH:mm", Locale.ENGLISH)
-            override fun getFormattedValue(value: Float): String {
-                val millis: Long = TimeUnit.HOURS.toMillis(value.toLong())
-                return mFormat.format(Date(millis))
-            }
-        }
-
-        val leftAxis = chart.axisLeft
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-        leftAxis.textColor = ColorTemplate.getHoloBlue()
-        leftAxis.setDrawGridLines(true)
-        leftAxis.isGranularityEnabled = true
-        leftAxis.axisMinimum = 0f
-        leftAxis.axisMaximum = 100F
-        leftAxis.yOffset = -9f
-        leftAxis.textColor = ContextCompat.getColor(requireActivity().applicationContext, R.color.primaryColor)
-
-        val rightAxis = chart.axisRight
-        rightAxis.isEnabled = false
+        chart.setFitBars(true)
     }
 
-    private fun setData(dataCollection: List<LocalDailyCatch?>) { // now in hours
-        val catches: ArrayList<Entry> = ArrayList()
-        for (data in dataCollection) {
-            val y = data?.fish?.count() ?: 0
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-            dateFormat.timeZone = TimeZone.getTimeZone("UTC")
-            val timeCollection = data?.date
-            val temp: Long = (timeCollection?.time ?: 0) / (1000*60*60)
-            catches.add(Entry(temp.toFloat(), y.toFloat())) // add one entry per hour
+    private fun setData(dataCollection: List<LocalDailyCatch>) { // now in hours
+        val catches = arrayListOf<BarEntry>()
+        for (data in dataCollection.groupBy {
+            val current = Calendar.getInstance()
+            current.time = it.date ?: Date()
+            current.get(Calendar.MONTH)
+        }) {
+            catches.add(BarEntry(data.key.toFloat(), data.value.count().toFloat()))
         }
 
-        // create a data object with the data sets
-        val chartData = LineData();
-        chartData.setValueTextColor(Color.WHITE)
-        chartData.setValueTextSize(9f)
-
-        val setTemp = LineDataSet(catches, "DataSet temp")
-        setTemp.axisDependency = YAxis.AxisDependency.LEFT
-        setTemp.color = ColorTemplate.getHoloBlue()
-        setTemp.valueTextColor = ColorTemplate.getHoloBlue()
-        setTemp.lineWidth = 1.5f
-        setTemp.setDrawCircles(false)
-        setTemp.setDrawValues(false)
-        setTemp.fillAlpha = 65
-        setTemp.fillColor = ColorTemplate.getHoloBlue()
-        setTemp.highLightColor = Color.rgb(244, 117, 117)
-        setTemp.setDrawCircleHole(false)
-        chartData.addDataSet(setTemp);
-
-        //Deploy data to the chart
-        chart.data = chartData
-        chart.animateXY(2000, 2000)
+        //Change the yAxis max and count
+        with(catches.maxOf { it.y }) {
+            chart.axisLeft.mAxisMaximum = toFloat()
+            chart.axisLeft.setLabelCount(this.toInt(), true); // force 6 labels
+        }
+        val barDataSet = BarDataSet(catches, "Catches")
+        barDataSet.barBorderWidth = 0.1f
+        barDataSet.colors = ColorTemplate.COLORFUL_COLORS.asList()
+        val barData = BarData(barDataSet)
+        chart.data = barData
+        chart.animateXY(5000, 5000)
+        chart.invalidate()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -228,7 +193,11 @@ class UserFragment : Fragment() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Toast.makeText(requireNotNull(activity), "Location must be granted for this app", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireNotNull(activity),
+                "Location must be granted for this app",
+                Toast.LENGTH_LONG
+            ).show()
             return
         }
         fusedLocationClient!!.lastLocation
@@ -240,7 +209,11 @@ class UserFragment : Fragment() {
                         userViewModel.updateLatLong(it.latitude, it.longitude)
                     }
                 } else {
-                    Toast.makeText(requireNotNull(activity), "Location must be granted for this app", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireNotNull(activity),
+                        "Location must be granted for this app",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
     }

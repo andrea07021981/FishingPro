@@ -14,7 +14,7 @@ class FishDataRepository @Inject constructor(
     override fun retrieveCatches(
         userId: String,
         ioDispatcher: CoroutineDispatcher
-    ): Flow<Result<List<LocalDailyCatch?>>> {
+    ): Flow<Result<List<LocalDailyCatch>>> {
         return fishRemoteDataSource.retrieveCatches(userId)
     }
 }

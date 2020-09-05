@@ -14,6 +14,7 @@ import com.example.fishingpro.data.domain.WeatherDomain
 import com.example.fishingpro.data.source.repository.FishRepository
 import com.example.fishingpro.data.source.repository.UserRepository
 import com.example.fishingpro.data.source.repository.WeatherRepository
+import com.example.fishingpro.data.succeeded
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -68,8 +69,8 @@ class UserViewModel @ViewModelInject constructor(
     val userLogged: LiveData<LocalUser?>
         get() = _userLogged
 
-    private val _catches = MutableLiveData<List<LocalDailyCatch?>>()
-    val catches: LiveData<List<LocalDailyCatch?>>
+    private val _catches = MutableLiveData<List<LocalDailyCatch>>()
+    val catches: LiveData<List<LocalDailyCatch>>
         get() = _catches
 
     /* TODO USE LIVE DATA AND COROUTINES FOR LOADING DATA IMMEDIATELY WITHOUT THE METHOD INITDATA
@@ -133,15 +134,15 @@ class UserViewModel @ViewModelInject constructor(
                 Log.d(TAG, "Exception loading")
             }
             .transform {
-                if (it is Result.Success ) { //Emit only success
-                    emit(it)
+                if (it.succeeded ) { //Emit only success
+                    emit(it as Result.Success)
                 }
             }
             .onCompletion {
                 Log.d(TAG, "Data loaded")
             }
             .collect {
-                _catches.value = it.data!!
+                _catches.value = it.data
             }
     }
 

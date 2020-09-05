@@ -9,5 +9,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface FishRepository {
 
-    fun retrieveCatches(userId: String, ioDispatcher: CoroutineDispatcher = Dispatchers.IO): Flow<Result<List<LocalDailyCatch?>>>
+    fun retrieveCatches(userId: String, ioDispatcher: CoroutineDispatcher = Dispatchers.IO): Flow<Result<List<LocalDailyCatch>>>
 }
