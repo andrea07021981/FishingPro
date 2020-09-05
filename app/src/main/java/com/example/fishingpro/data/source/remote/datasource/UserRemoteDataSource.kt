@@ -66,7 +66,7 @@ class UserRemoteDataSource @Inject constructor(
             }
             if (authResult.user != null) {
                 //Save the realdb
-                val dbUser = hashMapOf(
+                val dbUser = mapOf(
                     "FirstName" to firstName,
                     "LastName" to lastName
                 )

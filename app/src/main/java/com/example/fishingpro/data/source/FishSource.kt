@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface FishSource {
 
-    fun retrieveCatches(userId: String): Flow<Result<List<LocalDailyCatch?>>>
+    fun retrieveCatches(userId: String): Flow<Result<List<LocalDailyCatch>>>
 }

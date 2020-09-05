@@ -15,7 +15,7 @@ fun setCatchesDataList(recyclerView: RecyclerView, result: Result<List<LocalDail
     result.let {
         if (result is Result.Success) {
             val adapter = recyclerView.adapter as FishAdapter
-            adapter.submitList(result.data)
+            adapter.submitList(result.data.sortedBy { it.date })
         }
     }
 }

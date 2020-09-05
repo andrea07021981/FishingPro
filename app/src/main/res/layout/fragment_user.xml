@@ -280,7 +280,7 @@
                                 android:paddingStart="20sp"
                                 android:paddingEnd="20sp">
 
-                                <com.github.mikephil.charting.charts.LineChart
+                                <com.github.mikephil.charting.charts.BarChart
                                     android:id="@+id/catches_chart"
                                     android:layout_width="0dp"
                                     android:layout_height="0dp"
@@ -292,7 +292,7 @@
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-                                </com.github.mikephil.charting.charts.LineChart>
+                                </com.github.mikephil.charting.charts.BarChart>
 
                                 <TextView
                                     android:id="@+id/textView2"
