@@ -2,14 +2,16 @@ package com.example.fishingpro.fish
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.fishingpro.R
 import com.example.fishingpro.databinding.FragmentFishBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,7 +43,7 @@ class FishFragment() : Fragment() {
                 false
             )
             it.fishRecycleView.adapter = FishAdapter(FishAdapter.OnFishClickListener {
-                Log.d(TAG, "Clicked")
+                Log.d(TAG, "Clicked, open detail")
             })
         }
         dataBinding.fishToolbar.setNavigationOnClickListener {
@@ -51,6 +53,33 @@ class FishFragment() : Fragment() {
         fishViewModel.catches.observe(viewLifecycleOwner, {
             print(it)
         })
+        setHasOptionsMenu(true)
         return dataBinding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_fish, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter_month -> showFilterDialo()
+        }
+        return true
+    }
+
+    private fun showFilterDialo(){
+        with(requireNotNull(activity).supportFragmentManager){
+            val ft = beginTransaction()
+            val prev = findFragmentByTag("dialog")
+            if (prev != null) {
+                ft.remove(prev)
+            }
+            ft.addToBackStack(null)
+            // Create and show the dialog.
+            val newFragment: DialogFragment = FilterFragmentDialog()
+            newFragment.show(ft, "dialog")
+        }
     }
 }
