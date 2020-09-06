@@ -17,7 +17,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        app:cardUseCompatPadding="true"
+        app:strokeWidth="5dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="10sp"
         app:cardElevation="4dp">
@@ -52,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="24dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/circular_view"
                 android:gravity="center"
@@ -60,11 +61,11 @@
                 android:minHeight="40dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textStyle="bold"
+                app:countCatches="@{localDailyCatch.fish}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/linearLayout2"
                 app:layout_constraintTop_toTopOf="parent"
-                app:countCatches="@{localDailyCatch.fish}"
                 tools:text="12" />
 
             <androidx.constraintlayout.widget.Guideline
@@ -89,6 +90,7 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="0dp"
                 android:layout_height="76dp"
+                android:layout_marginEnd="16dp"
                 android:gravity="center"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -101,8 +103,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:textSize="15sp"
                     android:textColor="@android:color/white"
+                    android:textSize="15sp"
                     app:formatMonthYear="@{localDailyCatch.date}"
                     tools:text="December 2020" />
 
@@ -110,12 +112,22 @@
                     android:id="@+id/textView21"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:textColor="@android:color/white"
+                    android:textSize="15sp"
                     app:formatWeekDay="@{localDailyCatch.date}"
                     tools:text="Monday" />
             </LinearLayout>
 
+            <View
+                android:id="@+id/clickableOverlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="?attr/selectableItemBackground"
+                android:onClick="@{() -> fishCallBack.onClick(localDailyCatch)}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

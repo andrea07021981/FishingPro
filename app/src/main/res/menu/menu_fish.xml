@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_filter"
+        android:id="@+id/action_filter_month"
         android:orderInCategory="100"
         android:title="@string/filter"
         app:showAsAction="never" />
