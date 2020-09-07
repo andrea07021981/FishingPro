@@ -11,12 +11,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @BindingAdapter("dataList")
-fun setCatchesDataList(recyclerView: RecyclerView, result: Result<List<LocalDailyCatch>>?) {
+fun setCatchesDataList(recyclerView: RecyclerView, result: List<LocalDailyCatch>?) {
     result.let {
-        if (result is Result.Success) {
             val adapter = recyclerView.adapter as FishAdapter
-            adapter.submitList(result.data.sortedBy { it.date })
-        }
+            adapter.submitList(result?.sortedBy { it.date })
     }
 }
 

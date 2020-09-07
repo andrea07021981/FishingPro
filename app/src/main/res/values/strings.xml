@@ -34,5 +34,11 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="filter">Filter</string>
+    <string name="clear">Clear</string>
+
+    <plurals name="fish_plural">
+        <item quantity="one">%1$s fish</item>
+        <item quantity="other">%1$s fishes</item>
+    </plurals>
 
 </resources>
