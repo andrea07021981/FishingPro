@@ -7,4 +7,10 @@
         android:orderInCategory="100"
         android:title="@string/filter"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_filter_clear"
+        android:orderInCategory="100"
+        android:title="@string/clear"
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
 </menu>

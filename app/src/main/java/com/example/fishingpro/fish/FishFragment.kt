@@ -1,5 +1,6 @@
 package com.example.fishingpro.fish
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fishingpro.R
 import com.example.fishingpro.databinding.FragmentFishBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_fish.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
@@ -53,23 +55,29 @@ class FishFragment() : Fragment() {
         fishViewModel.catches.observe(viewLifecycleOwner, {
             print(it)
         })
+
+        fishViewModel.activeFilter.observe(viewLifecycleOwner) {
+            fish_toolbar.menu.findItem(R.id.action_filter_clear).isVisible = it
+        }
+
         setHasOptionsMenu(true)
+        dataBinding.fishToolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_filter_month -> {
+                    showFilterDialog()
+                    true
+                }
+                R.id.action_filter_clear ->  {
+                    fishViewModel.resetFilter()
+                    true
+                }
+                else -> return@setOnMenuItemClickListener true
+            }
+        }
         return dataBinding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_fish, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_filter_month -> showFilterDialo()
-        }
-        return true
-    }
-
-    private fun showFilterDialo(){
+    private fun showFilterDialog(){
         with(requireNotNull(activity).supportFragmentManager){
             val ft = beginTransaction()
             val prev = findFragmentByTag("dialog")
@@ -78,7 +86,9 @@ class FishFragment() : Fragment() {
             }
             ft.addToBackStack(null)
             // Create and show the dialog.
-            val newFragment: DialogFragment = FilterFragmentDialog()
+            val newFragment: DialogFragment = FilterFragmentDialog(FilterFragmentDialog.OnDialogDismissListener {
+                fishViewModel.refreshListByMonth(it.getLong("MONTH"))
+            })
             newFragment.show(ft, "dialog")
         }
     }
