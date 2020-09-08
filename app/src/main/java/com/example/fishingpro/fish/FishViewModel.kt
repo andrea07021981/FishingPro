@@ -36,7 +36,7 @@ class FishViewModel @ViewModelInject constructor(
 
     // This is the observable property, it changes every time the month filter changes (the original values never changes)
     val catches = Transformations.switchMap(_monthFilter) {
-        if (it != null && it > 0) {
+        if (it != null && it >= 0) {
             _activeFilter.value = true
             return@switchMap _catches.map { list ->
                 list.filter { catch ->

@@ -39,6 +39,7 @@ class FishRemoteDataSource @Inject constructor(
                     //Create a map grouped by the date
                     val groupByDate = dataMapped.groupBy { data -> data?.Date }
 
+                    // Convert localcatch to a LocalDailyCatch, with the date and the list of fishes for that day
                     val localDailyCatch = mutableListOf<LocalDailyCatch>()
                     groupByDate.forEach { (date, listCatches) ->
                         localDailyCatch.add(
