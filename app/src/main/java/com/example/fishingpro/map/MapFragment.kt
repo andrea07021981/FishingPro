@@ -14,7 +14,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MapFragment : Fragment() {
 
@@ -42,9 +45,8 @@ class MapFragment : Fragment() {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
-    private val mapViewModel by viewModels<MapViewModel> {
-        MapViewModel.MapViewModelFactory()
-    }
+
+    private val mapViewModel: MapViewModel by viewModels()
 
     private lateinit var dataBinding: FragmentMapBinding
 
