@@ -18,6 +18,7 @@ class FishViewModel @ViewModelInject constructor(
         private val TAG = FishViewModel::class.java.simpleName
         const val MONTH_NONE: Long = -1
     }
+
     private val _monthFilter = MutableLiveData<Long?>(MONTH_NONE)
 
     private val _activeFilter = MutableLiveData<Boolean>(false)
