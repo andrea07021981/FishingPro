@@ -47,6 +47,7 @@ class LoginViewModel @ViewModelInject constructor(
     var errorPassword = MutableLiveData<Boolean>()
     var errorEmail = MutableLiveData<Boolean>()
 
+    //Backing property
     private val _loginAuthenticationState = MutableLiveData<LoginAuthenticationStates>()
     val loginAuthenticationState: LiveData<LoginAuthenticationStates>
         get() = _loginAuthenticationState
