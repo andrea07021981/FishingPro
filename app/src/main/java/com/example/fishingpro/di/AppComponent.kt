@@ -64,13 +64,11 @@ object BaseModule {
     @Singleton
     fun provideFirestore(): FirebaseFirestore =
         Firebase.firestore.apply {
-            firestoreSettings.apply {
-                firestoreSettings {
-                    isPersistenceEnabled = true
-                    FirebaseFirestoreSettings.Builder()
-                        .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
-                        .build()
-                }
+            firestoreSettings {
+                isPersistenceEnabled = true
+                FirebaseFirestoreSettings.Builder()
+                    .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+                    .build()
             }
         }
 

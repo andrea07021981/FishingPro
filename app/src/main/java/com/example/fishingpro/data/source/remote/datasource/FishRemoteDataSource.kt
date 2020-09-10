@@ -68,17 +68,19 @@ class FishRemoteDataSource @Inject constructor(
                 catchesList.addAll(
                     groupByDate.map { (date, listCatches) ->
                         LocalDailyCatch(
-                            userId = userId,
-                            date = date ?: Date(),
-                            fish = listCatches.map { catch ->
-                                catch?.let { fish ->
-                                    FishData(
-                                        fishId = fish.FishId,
-                                        location = fish.Location,
-                                        weight = fish.Weight
-                                    )
+                            mapOf(
+                                "userId" to userId,
+                                "date" to date,
+                                "fish" to listCatches.map { catch ->
+                                    catch?.let { fish ->
+                                        FishData(
+                                            fishId = fish.FishId,
+                                            location = fish.Location,
+                                            weight = fish.Weight
+                                        )
+                                    }
                                 }
-                            }
+                            )
                         )
                     }
                 )

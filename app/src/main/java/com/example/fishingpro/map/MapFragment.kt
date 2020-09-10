@@ -1,6 +1,7 @@
 package com.example.fishingpro.map
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.example.fishingpro.R
 import com.example.fishingpro.databinding.FragmentMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -21,7 +23,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 @AndroidEntryPoint
 class MapFragment : Fragment() {
 
-    private val callback = OnMapReadyCallback { googleMap ->
+    private var googleMap: GoogleMap? = null
+
+    companion object {
+        private val TAG = MapFragment::class.java.simpleName
+    }
+
+    private val callback = OnMapReadyCallback { map ->
         /**
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
@@ -40,9 +48,10 @@ class MapFragment : Fragment() {
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-        val sydney = LatLng(-34.0, 151.0)
+        /*val sydney = LatLng(-34.0, 151.0)
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
+        googleMap = map
     }
 
 
@@ -58,6 +67,14 @@ class MapFragment : Fragment() {
         dataBinding = FragmentMapBinding.inflate(inflater).also {
             it.mapViewModel = mapViewModel
             it.lifecycleOwner = this
+        }
+        mapViewModel.catches.observe(viewLifecycleOwner) {
+            googleMap?.apply {
+                Log.d(TAG, it.title)
+                addMarker(
+                    it
+                )
+            }
         }
         return dataBinding.root
     }

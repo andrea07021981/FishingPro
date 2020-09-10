@@ -97,11 +97,11 @@ class UserViewModel @ViewModelInject constructor(
             viewModelScope.launch(handler) {
                 //With supervisor, if one fails the other jobs keep working
                 supervisorScope {
-                    //Request weather
+                    // Request weather
                     val jobWeather = launch(childExceptionHandler) { loadWeather(latLon) }
-                    //Add other tasks here
+                    // Request data from user
                     val jobUser = launch(childExceptionHandler) { loadUserInfo() }
-
+                    // Request catches data
                     val jobFish = launch(childExceptionHandler) { loadCatchesData() }
                 }
             }.invokeOnCompletion {
