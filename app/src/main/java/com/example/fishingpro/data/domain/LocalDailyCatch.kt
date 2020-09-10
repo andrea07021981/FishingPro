@@ -17,3 +17,15 @@ data class FishData(
     var location: GeoPoint?,
     var weight: Double
 )
+
+fun LocalDailyCatch.asDataMap(): List<LocalMapCatch> {
+    return fish.filterNotNull().map {
+        LocalMapCatch(
+            userId = userId,
+            date = date,
+            fishId = it.fishId,
+            location = it.location,
+            weight = it.weight
+        )
+    }
+}
