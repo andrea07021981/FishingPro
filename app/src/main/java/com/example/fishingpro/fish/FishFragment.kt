@@ -4,6 +4,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -36,7 +37,7 @@ class FishFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dataBinding = FragmentFishBinding.inflate(inflater).also {
+        dataBinding = FragmentFishBinding.inflate(inflater).also { it ->
             it.fishViewModel = fishViewModel
             it.lifecycleOwner = this
             it.fishRecycleView.layoutManager = LinearLayoutManager(
@@ -44,8 +45,10 @@ class FishFragment() : Fragment() {
                 LinearLayoutManager.VERTICAL,
                 false
             )
-            it.fishRecycleView.adapter = FishAdapter(FishAdapter.OnFishClickListener {
+            it.fishRecycleView.adapter = FishAdapter(FishAdapter.OnFishClickListener { catch ->
                 Log.d(TAG, "Clicked, open detail")
+                findNavController().navigate(R.id.catchDetailFragment,
+                    bundleOf("catchId" to catch.userId))
             })
         }
         dataBinding.fishToolbar.setNavigationOnClickListener {

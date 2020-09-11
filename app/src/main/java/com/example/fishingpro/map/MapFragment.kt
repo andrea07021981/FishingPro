@@ -16,8 +16,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -52,6 +55,7 @@ class MapFragment : Fragment() {
         googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
         googleMap = map
+        map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(44.394473, -79.680223))) //Fixed for now
     }
 
 
@@ -68,12 +72,10 @@ class MapFragment : Fragment() {
             it.mapViewModel = mapViewModel
             it.lifecycleOwner = this
         }
-        mapViewModel.catches.observe(viewLifecycleOwner) {
-            googleMap?.apply {
-                Log.d(TAG, it.title)
-                addMarker(
-                    it
-                )
+        mapViewModel.catches.observe(viewLifecycleOwner) { marker ->
+            googleMap?.let { map ->
+                map.addMarker(marker)
+                //TODO add info and click for markers
             }
         }
         return dataBinding.root
