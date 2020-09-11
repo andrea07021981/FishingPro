@@ -75,6 +75,7 @@ class MapFragment : Fragment() {
         mapViewModel.catches.observe(viewLifecycleOwner) { marker ->
             googleMap?.let { map ->
                 map.addMarker(marker)
+                //TODO add info and click for markers
             }
         }
         return dataBinding.root
