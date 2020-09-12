@@ -75,7 +75,9 @@
             android:defaultValue="0" />
         <action
             android:id="@+id/action_fishFragment_to_catchDetailFragment"
-            app:destination="@id/catchDetailFragment" />
+            app:destination="@id/catchDetailFragment"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
     </fragment>
     <fragment
         android:id="@+id/catchDetailFragment"
@@ -83,8 +85,7 @@
         android:label="CatchDetailFragment"
         tools:layout="@layout/fragment_catch_detail">
         <argument
-            android:name="catchId"
-            app:argType="string"
-            android:defaultValue="0" />
+            android:name="catchData"
+            app:argType="com.example.fishingpro.data.domain.LocalDailyCatch" />
     </fragment>
 </navigation>

@@ -112,6 +112,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$version_room"
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$version_archlifecycle"
+    implementation "android.arch.lifecycle:extensions:$version_arch_lifecycle"
+    implementation "android.arch.lifecycle:viewmodel:$version_arch_lifecycle"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"
