@@ -7,6 +7,7 @@ import com.example.fishingpro.fish.FishAdapter
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.FishData
 import com.example.fishingpro.data.domain.LocalDailyCatch
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,6 +38,13 @@ fun TextView.formatDay(date: Date) {
     text = Calendar.getInstance().apply {
         time = date
     }.get(Calendar.DAY_OF_MONTH).toString()
+}
+
+@BindingAdapter("formatCompleteDate")
+fun CollapsingToolbarLayout.formatCompleteDate(date: Date) {
+    title = with(SimpleDateFormat("dd-MM-yyyy")) {
+        format(date)
+    }
 }
 
 @BindingAdapter("countCatches")

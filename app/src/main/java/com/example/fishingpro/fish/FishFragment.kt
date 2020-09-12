@@ -48,7 +48,7 @@ class FishFragment() : Fragment() {
             it.fishRecycleView.adapter = FishAdapter(FishAdapter.OnFishClickListener { catch ->
                 Log.d(TAG, "Clicked, open detail")
                 findNavController().navigate(R.id.catchDetailFragment,
-                    bundleOf("catchId" to catch.userId))
+                    bundleOf("catchData" to catch))
             })
         }
         dataBinding.fishToolbar.setNavigationOnClickListener {
