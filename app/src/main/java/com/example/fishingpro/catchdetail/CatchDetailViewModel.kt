@@ -24,6 +24,6 @@ class CatchDetailViewModel @Inject constructor(
 
     init {
         Log.d(TAG, catchData.get<LocalDailyCatch>("catchData").toString())
-        _catchInfo.postValue(catchData.get<LocalDailyCatch>("catchData"))
+        _catchInfo.value = catchData.get<LocalDailyCatch>("catchData")
     }
 }

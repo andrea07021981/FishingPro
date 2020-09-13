@@ -41,9 +41,11 @@ fun TextView.formatDay(date: Date) {
 }
 
 @BindingAdapter("formatCompleteDate")
-fun CollapsingToolbarLayout.formatCompleteDate(date: Date) {
-    title = with(SimpleDateFormat("dd-MM-yyyy")) {
-        format(date)
+fun CollapsingToolbarLayout.formatCompleteDate(date: Date?) {
+    date?.let {
+        title = with(SimpleDateFormat("dd-MM-yyyy")) {
+            format(it)
+        }
     }
 }
 
