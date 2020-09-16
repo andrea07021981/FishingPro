@@ -75,9 +75,7 @@
             android:defaultValue="0" />
         <action
             android:id="@+id/action_fishFragment_to_catchDetailFragment"
-            app:destination="@id/catchDetailFragment"
-            app:enterAnim="@anim/fragment_close_enter"
-            app:exitAnim="@anim/fragment_close_exit" />
+            app:destination="@id/catchDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/catchDetailFragment"

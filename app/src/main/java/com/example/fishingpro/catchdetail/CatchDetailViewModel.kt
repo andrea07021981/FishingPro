@@ -2,6 +2,7 @@ package com.example.fishingpro.catchdetail
 
 import android.util.Log
 import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -10,7 +11,7 @@ import com.example.fishingpro.data.domain.LocalCatch
 import com.example.fishingpro.data.domain.LocalDailyCatch
 import javax.inject.Inject
 
-class CatchDetailViewModel @Inject constructor(
+class CatchDetailViewModel @ViewModelInject constructor(
     @Assisted val catchData: SavedStateHandle
 ) : ViewModel(){
 
@@ -24,6 +25,6 @@ class CatchDetailViewModel @Inject constructor(
 
     init {
         Log.d(TAG, catchData.get<LocalDailyCatch>("catchData").toString())
-        _catchInfo.value = catchData.get<LocalDailyCatch>("catchData")
+        //_catchInfo.value = catchData.get<LocalDailyCatch>("catchData")
     }
 }
