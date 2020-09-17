@@ -49,6 +49,6 @@ class CatchDetailFragment : Fragment() {
             }
         }
 
-        return view
+        return dataBinding.root
     }
 }

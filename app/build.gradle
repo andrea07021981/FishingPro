@@ -46,11 +46,40 @@ android {
     useLibrary 'android.test.mock'
 
     buildTypes {
+        emulator {
+            applicationIdSuffix ".debug"
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "version"
+
+    productFlavors {
+        freeVersion {
+            //select the dimension of flavor
+            dimension "version"
+
+            //configure applicationId for app published to Play store
+            applicationId "com.example.fishingpro"
+
+            //Configure this flavor specific app name published in Play Store
+            resValue "string", "flavored_app_name", "Free Fighing Pro App"
+
+        }
+
+        paidVersion {
+            dimension "version"
+            applicationId "com.example.fishingpro"
+            resValue "string", "flavored_app_name", "Paid Fighing Pro App"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

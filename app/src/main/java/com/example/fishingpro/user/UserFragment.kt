@@ -204,7 +204,7 @@ class UserFragment : Fragment() {
             .addOnCompleteListener(
                 requireNotNull(activity)
             ) { task ->
-                if (task.isSuccessful && task.result != null) {
+                if (task.isSuccessful) {
                     task.result?.let {
                         userViewModel.updateLatLong(it.latitude, it.longitude)
                     }
