@@ -27,7 +27,7 @@
                 app:expandedTitleMarginStart="12dp"
                 app:expandedTitleTextAppearance="@style/customExpanded"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                >
+                app:formatCompleteDate="@{catchDetailViewModel.catchInfo.date}">
 
                 <com.google.android.gms.maps.MapView
                     android:id="@+id/fish_mapview"

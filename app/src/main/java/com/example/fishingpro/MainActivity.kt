@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(
                 this
             ) { task ->
-                if (task.isSuccessful && task.result != null) {
+                if (task.isSuccessful) {
                     showSnackbar(getString(R.string.location_detected))
                     //task.result
                 } else {

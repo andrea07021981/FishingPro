@@ -33,7 +33,7 @@ class CatchDetailFragment : Fragment() {
         dataBinding = FragmentCatchDetailBinding.inflate(inflater).also {
             it.catchDetailViewModel = catchDetailViewModel
             it.lifecycleOwner = this
-            /*it.fishMapview.onCreate(savedInstanceState)
+            it.fishMapview.onCreate(savedInstanceState)
             it.fishMapview.onResume()
             it.fishMapview.getMapAsync { googleMap ->
                 map = googleMap
@@ -46,9 +46,9 @@ class CatchDetailFragment : Fragment() {
                         .title("Marker in Sydney")
                 )
                 map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-            }*/
+            }
         }
 
-        return view
+        return dataBinding.root
     }
 }
