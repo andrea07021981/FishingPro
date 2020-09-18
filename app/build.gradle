@@ -58,6 +58,10 @@ android {
         }
     }
 
+    // Specifies the flavor dimensions you want to use. The order in which you
+    // list each dimension determines its priority, from highest to lowest,
+    // when Gradle merges variant sources and configurations. You must assign
+    // each product flavor you configure to one of the flavor dimensions.
     flavorDimensions "version"
 
     productFlavors {
@@ -65,9 +69,10 @@ android {
             //select the dimension of flavor
             dimension "version"
 
-            //configure applicationId for app published to Play store
-            applicationId "com.example.fishingpro"
-
+            //configure applicationId for app published to Play store and redefine the default one
+            //applicationId "com.example.fishingpro."
+            //OR But we use only the suffix
+            applicationIdSuffix = ".free"
             //Configure this flavor specific app name published in Play Store
             resValue "string", "flavored_app_name", "Free Fighing Pro App"
 
@@ -75,7 +80,8 @@ android {
 
         paidVersion {
             dimension "version"
-            applicationId "com.example.fishingpro"
+            //applicationId "com.example.fishingpro"
+            applicationIdSuffix = ".paid"
             resValue "string", "flavored_app_name", "Paid Fighing Pro App"
         }
     }
