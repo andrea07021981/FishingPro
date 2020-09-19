@@ -9,6 +9,14 @@ apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('/Users/andreafranco/Keys/fishing_key')
+            storePassword 'franco'
+            keyAlias 'fishingKey'
+            keyPassword 'franco'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -22,6 +30,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField 'String', 'BASE_WEATHER_URL', "\"https://api.openweathermap.org/data/2.5/\""
+        signingConfig signingConfigs.config
     }
 
     packagingOptions {
@@ -47,7 +56,6 @@ android {
 
     buildTypes {
         emulator {
-            applicationIdSuffix ".debug"
             debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -65,24 +73,26 @@ android {
     flavorDimensions "version"
 
     productFlavors {
-        freeVersion {
+        free {
             //select the dimension of flavor
             dimension "version"
-
             //configure applicationId for app published to Play store and redefine the default one
-            //applicationId "com.example.fishingpro."
+            //applicationId "com.example.fishingpro"
             //OR But we use only the suffix
             applicationIdSuffix = ".free"
+            versionNameSuffix "-free"
             //Configure this flavor specific app name published in Play Store
             resValue "string", "flavored_app_name", "Free Fighing Pro App"
-
+            resValue "string", "app_name", "Free Fighing Pro App"
         }
 
-        paidVersion {
+        paid {
             dimension "version"
             //applicationId "com.example.fishingpro"
             applicationIdSuffix = ".paid"
+            versionNameSuffix "-paid"
             resValue "string", "flavored_app_name", "Paid Fighing Pro App"
+            resValue "string", "app_name", "Paid Fighing Pro App"
         }
     }
 
