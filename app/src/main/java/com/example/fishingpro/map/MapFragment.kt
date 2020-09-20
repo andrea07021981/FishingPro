@@ -56,8 +56,8 @@ class MapFragment : Fragment() {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))*/
         googleMap = map
         map.moveCamera(CameraUpdateFactory.newLatLng(LatLng(44.394473, -79.680223))) //Fixed for now
+        //TODO calculate the average disntance among points for zoom
     }
-
 
     private val mapViewModel: MapViewModel by viewModels()
 

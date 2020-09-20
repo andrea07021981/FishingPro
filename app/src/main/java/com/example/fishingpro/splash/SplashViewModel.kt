@@ -9,7 +9,7 @@ import com.example.fishingpro.R
 
 class SplashViewModel : ViewModel() {
 
-    val textScreen = R.string.fighing_pro
+    val textScreen = R.string.flavored_app_name
 
     private val _loginEvent = MutableLiveData<Event<Unit>>()
     val loginEvent: LiveData<Event<Unit>>

@@ -1,5 +1,6 @@
 package com.example.fishingpro.util
 
+import android.location.Location
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,9 @@ import com.example.fishingpro.fish.FishAdapter
 import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.FishData
 import com.example.fishingpro.data.domain.LocalDailyCatch
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.firebase.firestore.GeoPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -52,4 +55,16 @@ fun CollapsingToolbarLayout.formatCompleteDate(date: Date?) {
 @BindingAdapter("countCatches")
 fun TextView.countCatches(localDailyCatch: List<FishData>) {
     text = localDailyCatch.count().toString()
+}
+
+fun GeoPoint.toLatLng(): LatLng {
+    return this.run {
+        LatLng(this.latitude, this.longitude)
+    }
+}
+
+fun Location.toLatLng(): LatLng {
+    return this.run {
+        LatLng(this.latitude, this.longitude)
+    }
 }
