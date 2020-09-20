@@ -82,7 +82,7 @@ android {
             applicationIdSuffix = ".free"
             versionNameSuffix "-free"
             //Configure this flavor specific app name published in Play Store
-            resValue "string", "flavored_app_name", "Free Fighing Pro App"
+            resValue "string", "flavored_app_name", "Free Fighing Pro"
             resValue "string", "app_name", "Free Fighing Pro App"
         }
 
@@ -91,7 +91,7 @@ android {
             //applicationId "com.example.fishingpro"
             applicationIdSuffix = ".paid"
             versionNameSuffix "-paid"
-            resValue "string", "flavored_app_name", "Paid Fighing Pro App"
+            resValue "string", "flavored_app_name", "Paid Fighing Pro"
             resValue "string", "app_name", "Paid Fighing Pro App"
         }
     }

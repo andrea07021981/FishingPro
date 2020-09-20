@@ -97,7 +97,7 @@ class UserViewModel @ViewModelInject constructor(
             viewModelScope.launch(handler) {
                 //With supervisor, if one fails the other jobs keep working
                 supervisorScope {
-                    // Request weather
+                    // Request weather //TODO can remove the suspend functions and coroutinescope, not nee
                     val jobWeather = launch(childExceptionHandler) { loadWeather(latLon) }
                     // Request data from user
                     val jobUser = launch(childExceptionHandler) { loadUserInfo() }

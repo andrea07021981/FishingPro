@@ -3,8 +3,11 @@ package com.example.fishingpro
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.Menu
@@ -17,8 +20,8 @@ import com.example.fishingpro.data.await
 import com.example.fishingpro.data.domain.LocalCatch
 import com.example.fishingpro.data.domain.LocalDailyCatch
 import com.example.fishingpro.data.source.remote.datatranferobject.asFirebaseModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
@@ -36,6 +39,7 @@ import java.time.LocalDateTime
 import java.time.Month
 import java.time.ZoneId
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
@@ -43,6 +47,8 @@ class MainActivity : AppCompatActivity() {
 
     //TODO review the class, it could be an abstract parent of home
     private lateinit var firebaseConfig: FirebaseRemoteConfig
+    public var lastLocation: Location? = null
+    private lateinit var locationCallback: LocationCallback
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
@@ -57,7 +63,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         //Load the default remote config
         firebaseConfig = FirebaseRemoteConfig.getInstance()
@@ -85,6 +90,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                super.onLocationResult(locationResult)
+                locationResult ?: return
+                lastLocation = locationResult.lastLocation
+                showSnackbar(getString(R.string.location_detected).plus(lastLocation))
+            }
+
+            override fun onLocationAvailability(p0: LocationAvailability?) {
+                super.onLocationAvailability(p0)
+                showSnackbar("Location available")
+            }
+        }
+        startTrackingApp()
+    }
+
+    private fun startTrackingApp() {
         // Microsoft App Config
         AppCenter.start(
             application, "95a1ea7a-69cf-44fa-a7ad-526fb81a4498",
@@ -96,6 +119,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+    }
+
+    override fun onResume() {
+        super.onResume()
         if (!checkPermissions()) {
             requestPermissions()
         } else {
@@ -103,6 +130,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+    }
     /**
      * Provides a simple way of getting a device's location and is well suited for
      * applications that do not require a fine-grained location and that do not need location
@@ -124,7 +155,23 @@ class MainActivity : AppCompatActivity() {
             requestPermissions()
             return
         }
-        fusedLocationClient!!.lastLocation
+
+        LocationRequest().apply {
+            interval = TimeUnit.SECONDS.toMillis(60)
+            fastestInterval = TimeUnit.SECONDS.toMillis(30)
+            maxWaitTime = TimeUnit.MINUTES.toMillis(2)
+            //smallestDisplacement = 170f // 170 m = 0.1 mile
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }.also {
+            fusedLocationClient!!.requestLocationUpdates(
+                it,
+                locationCallback,
+                Looper.getMainLooper()
+            )
+        }
+
+
+        /*fusedLocationClient!!.lastLocation
             .addOnCompleteListener(
                 this
             ) { task ->
@@ -139,7 +186,7 @@ class MainActivity : AppCompatActivity() {
                     )
                     showSnackbar(getString(R.string.no_location_detected))
                 }
-            }
+            }*/
     }
 
     /**
