@@ -68,3 +68,11 @@ fun Location.toLatLng(): LatLng {
         LatLng(this.latitude, this.longitude)
     }
 }
+
+fun Location?.toText():String {
+    return if (this != null) {
+        "($latitude, $longitude)"
+    } else {
+        "Unknown location"
+    }
+}

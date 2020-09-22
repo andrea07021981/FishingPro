@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
@@ -16,30 +15,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.example.fishingpro.data.await
-import com.example.fishingpro.data.domain.LocalCatch
-import com.example.fishingpro.data.domain.LocalDailyCatch
-import com.example.fishingpro.data.source.remote.datatranferobject.asFirebaseModel
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.Month
-import java.time.ZoneId
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
@@ -47,12 +30,19 @@ class MainActivity : AppCompatActivity() {
 
     //TODO review the class, it could be an abstract parent of home
     private lateinit var firebaseConfig: FirebaseRemoteConfig
-    public var lastLocation: Location? = null
-    private lateinit var locationCallback: LocationCallback
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
         private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
+        /**
+         * The desired interval for location updates. Inexact. Updates may be more or less frequent.
+         */
+        private const val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 600000
+        /**
+         * The fastest rate for active location updates. Exact. Updates will never be more frequent
+         * than this value.
+         */
+        private const val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS / 2
     }
 
     /**
@@ -60,10 +50,61 @@ class MainActivity : AppCompatActivity() {
      */
     private var fusedLocationClient: FusedLocationProviderClient? = null
 
+    public var lastLocation: Location? = null
+    private var locationCallback: LocationCallback? = null
+    private var locationSettingRequest: LocationSettingsRequest? = null
+    private var settingsClient: SettingsClient? = null
+    private var locationRequest: LocationRequest? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        loadFirebaseConfig()
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        settingsClient = LocationServices.getSettingsClient(this)
+        createCallback()
+        createRequest()
+        createSettings()
+        startTrackingApp()
+    }
+
+    private fun createRequest() {
+        locationRequest = LocationRequest().apply {
+            interval = UPDATE_INTERVAL_IN_MILLISECONDS
+            fastestInterval = FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+    }
+
+    private fun createSettings() {
+        val builder = LocationSettingsRequest.Builder()
+        locationRequest?.let { builder.addLocationRequest(it) }
+        locationSettingRequest = builder.build()
+    }
+
+    private fun createCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                super.onLocationResult(locationResult)
+                locationResult ?: return
+                lastLocation = locationResult.lastLocation
+                showSnackbar(getString(R.string.location_detected).plus(lastLocation)) // TODO manage this as a container for all fragments using delegates and listeners https://developer.android.com/training/basics/fragments/communicating.html
+            }
+
+            override fun onLocationAvailability(p0: LocationAvailability?) {
+                super.onLocationAvailability(p0)
+                showSnackbar("Location available")
+            }
+        }
+    }
+
+    /**
+     * Load the remote configuration from Firebase
+     */
+    private fun loadFirebaseConfig() {
         //Load the default remote config
         firebaseConfig = FirebaseRemoteConfig.getInstance()
         val configSettings = remoteConfigSettings {
@@ -78,33 +119,21 @@ class MainActivity : AppCompatActivity() {
                                 if (task.isSuccessful) {
                                     val updated = task.result
                                     Log.d(TAG, "Config params updated: $updated")
-                                    Toast.makeText(this, "Fetch and activate succeeded",
-                                        Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        this, "Fetch and activate succeeded",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 } else {
-                                    Toast.makeText(this, "Fetch failed",
-                                        Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        this, "Fetch failed",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
                     }
                 }
             }
         }
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                super.onLocationResult(locationResult)
-                locationResult ?: return
-                lastLocation = locationResult.lastLocation
-                showSnackbar(getString(R.string.location_detected).plus(lastLocation))
-            }
-
-            override fun onLocationAvailability(p0: LocationAvailability?) {
-                super.onLocationAvailability(p0)
-                showSnackbar("Location available")
-            }
-        }
-        startTrackingApp()
     }
 
     private fun startTrackingApp() {
@@ -126,7 +155,7 @@ class MainActivity : AppCompatActivity() {
         if (!checkPermissions()) {
             requestPermissions()
         } else {
-            getLastLocation()
+            startLocationUpdates()
         }
     }
 
@@ -143,50 +172,33 @@ class MainActivity : AppCompatActivity() {
      *
      * Note: this method should be called after location permission has been granted.
      */
-    private fun getLastLocation() {
+    private fun startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             requestPermissions()
             return
         }
 
-        LocationRequest().apply {
-            interval = TimeUnit.SECONDS.toMillis(60)
-            fastestInterval = TimeUnit.SECONDS.toMillis(30)
-            maxWaitTime = TimeUnit.MINUTES.toMillis(2)
-            //smallestDisplacement = 170f // 170 m = 0.1 mile
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }.also {
-            fusedLocationClient!!.requestLocationUpdates(
-                it,
-                locationCallback,
-                Looper.getMainLooper()
-            )
-        }
-
-
-        /*fusedLocationClient!!.lastLocation
-            .addOnCompleteListener(
-                this
-            ) { task ->
-                if (task.isSuccessful) {
-                    showSnackbar(getString(R.string.location_detected))
-                    //task.result
-                } else {
-                    Log.w(
-                        Companion.TAG,
-                        "getLastLocation:exception",
-                        task.exception
+        //Start requesting updates
+        settingsClient?.let {
+            it.checkLocationSettings(locationSettingRequest)
+                .addOnSuccessListener {
+                    fusedLocationClient!!.requestLocationUpdates(
+                        locationRequest,
+                        locationCallback,
+                        Looper.myLooper()
                     )
-                    showSnackbar(getString(R.string.no_location_detected))
                 }
-            }*/
+                .addOnFailureListener {
+                    showSnackbar("Location permission must be granted")
+                }
+        }
     }
 
     /**
@@ -227,7 +239,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkPermissions(): Boolean {
         val permissionState = ActivityCompat.checkSelfPermission(
             this,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
         return permissionState == PackageManager.PERMISSION_GRANTED
     }
@@ -235,7 +247,7 @@ class MainActivity : AppCompatActivity() {
     private fun startLocationPermissionRequest() {
         ActivityCompat.requestPermissions(
             this@MainActivity,
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             REQUEST_PERMISSIONS_REQUEST_CODE
         )
     }
@@ -247,7 +259,7 @@ class MainActivity : AppCompatActivity() {
         val shouldProvideRationale =
             ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             )
 
         // Provide an additional rationale to the user. This would happen if the user denied the
@@ -288,7 +300,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
                     // Permission granted.
-                    getLastLocation()
+                    startLocationUpdates()
                 }
                 else -> {
                     // Permission denied.
