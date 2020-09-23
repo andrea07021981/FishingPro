@@ -31,6 +31,12 @@ class MainActivity : AppCompatActivity() {
     //TODO review the class, it could be an abstract parent of home
     private lateinit var firebaseConfig: FirebaseRemoteConfig
 
+    interface OnLocationUpdateDelegate {
+        fun updateLocation(lastLocation: Location)
+    }
+
+    var mainDelegate: OnLocationUpdateDelegate? = null
+
     companion object {
         private val TAG = MainActivity::class.java.simpleName
         private const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
@@ -48,13 +54,11 @@ class MainActivity : AppCompatActivity() {
     /**
      * Provides the entry point to the Fused Location Provider API.
      */
-    private var fusedLocationClient: FusedLocationProviderClient? = null
-
-    public var lastLocation: Location? = null
-    private var locationCallback: LocationCallback? = null
-    private var locationSettingRequest: LocationSettingsRequest? = null
-    private var settingsClient: SettingsClient? = null
-    private var locationRequest: LocationRequest? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationSettingRequest: LocationSettingsRequest
+    private lateinit var settingsClient: SettingsClient
+    private lateinit var locationRequest: LocationRequest
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,7 +85,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun createSettings() {
         val builder = LocationSettingsRequest.Builder()
-        locationRequest?.let { builder.addLocationRequest(it) }
+        builder.addLocationRequest(locationRequest)
         locationSettingRequest = builder.build()
     }
 
@@ -90,8 +94,11 @@ class MainActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 super.onLocationResult(locationResult)
                 locationResult ?: return
-                lastLocation = locationResult.lastLocation
-                showSnackbar(getString(R.string.location_detected).plus(lastLocation)) // TODO manage this as a container for all fragments using delegates and listeners https://developer.android.com/training/basics/fragments/communicating.html
+                //showSnackbar(getString(R.string.location_detected).plus(lastLocation))
+                //Update whoever is listening
+                mainDelegate?.let {
+                    it.updateLocation(locationResult.lastLocation)
+                }
             }
 
             override fun onLocationAvailability(p0: LocationAvailability?) {
@@ -161,7 +168,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        fusedLocationClient?.removeLocationUpdates(locationCallback)
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
     /**
      * Provides a simple way of getting a device's location and is well suited for
@@ -186,10 +193,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Start requesting updates
-        settingsClient?.let {
+        settingsClient.let {
             it.checkLocationSettings(locationSettingRequest)
                 .addOnSuccessListener {
-                    fusedLocationClient!!.requestLocationUpdates(
+                    fusedLocationClient.requestLocationUpdates(
                         locationRequest,
                         locationCallback,
                         Looper.myLooper()
