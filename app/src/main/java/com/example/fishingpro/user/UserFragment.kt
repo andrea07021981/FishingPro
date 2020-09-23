@@ -5,8 +5,10 @@ import android.app.AlertDialog
 import android.content.Context.LOCATION_SERVICE
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,12 +22,12 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.transition.TransitionInflater
 import com.example.fishingpro.EventObserver
+import com.example.fishingpro.MainActivity
 import com.example.fishingpro.R
 import com.example.fishingpro.data.domain.LocalDailyCatch
 import com.example.fishingpro.databinding.FragmentUserBinding
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -37,19 +39,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_user.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
-import kotlin.collections.ArrayList
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class UserFragment : Fragment() {
+class UserFragment : Fragment(), MainActivity.OnLocationUpdateDelegate {
 
+    companion object {
+        val TAG = UserFragment::class.java.simpleName
+    }
     private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var dataBinding: FragmentUserBinding
     private lateinit var locationManager: LocationManager
     private var fusedLocationClient: FusedLocationProviderClient? = null
     private lateinit var chart: BarChart
-    //TODO change to barchar
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -216,5 +220,17 @@ class UserFragment : Fragment() {
                     ).show()
                 }
             }
+        (requireNotNull(activity) as MainActivity).mainDelegate = this
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (requireNotNull(activity) as MainActivity).mainDelegate = null
+    }
+
+    override fun updateLocation(lastLocation: Location) {
+        Log.d(TAG, "Location retrieved: ${lastLocation.latitude}, ${lastLocation.longitude}")
+        // TODO remove the other location, but we need lat long as soons as we enter here
+        userViewModel.updateLatLong(lastLocation.latitude, lastLocation.longitude)
     }
 }
