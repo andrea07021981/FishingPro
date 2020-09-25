@@ -80,7 +80,7 @@ class UserViewModel @ViewModelInject constructor(
     }
     */
 
-    //TODO add to a future abstract class
+    //TODO add to a future abstract class, add thwow new exceptio and check the effect in children jobs
     private val handler = CoroutineExceptionHandler { _, exception ->
         println("Exception thrown within parent: $exception.")
     }
