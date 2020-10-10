@@ -37,6 +37,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @ExperimentalCoroutinesApi
@@ -74,11 +75,19 @@ object BaseModule {
 
     @ExperimentalCoroutinesApi
     @Provides
+    @Named("UserRemoteDataSource")
     fun provideUserRemoteDataSource(firebaseAuth: FirebaseAuth, firebaseFirestore: FirebaseFirestore): UserSource {
         return UserRemoteDataSource(
             firebaseAuth,
             firebaseFirestore
         )
+    }
+
+    @ExperimentalCoroutinesApi
+    @Provides
+    @Named("UserLocalDataSource")
+    fun provideUserLocalDataSource(): UserSource {
+        return UserLocalDataSource()
     }
 
     @Provides
