@@ -139,7 +139,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
     // Support libraries
     implementation "androidx.appcompat:appcompat:$version_appcompat"
     implementation "androidx.fragment:fragment:$version_fragment"
@@ -151,7 +151,7 @@ dependencies {
     // Room and Lifecycle dependencies
     implementation "androidx.room:room-runtime:$version_room"
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
     implementation 'com.google.firebase:firebase-config-ktx:19.2.0'
     implementation 'com.google.firebase:firebase-analytics-ktx:17.5.0'
     kapt "androidx.room:room-compiler:$version_room"
@@ -175,7 +175,7 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
 
     //Material
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
 
     //Play service
 
@@ -200,7 +200,7 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$version_paging"
 
     //Interceptor and http loggin
-    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.8.0'
 
     // Testing
@@ -250,7 +250,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth-ktx:$version_auth"
 
     //Firebase firestore
-    implementation "com.google.firebase:firebase-firestore-ktx:${version_firestore_ktx}"
+    implementation "com.google.firebase:firebase-firestore-ktx:$version_firestore_ktx"
 
     //Firebase crashlytics and analytics
     implementation "com.google.firebase:firebase-crashlytics:$version_crashlytics"
