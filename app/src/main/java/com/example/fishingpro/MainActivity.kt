@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
     }
-
+//TODO add bottomnav with navigation comnent https://github.com/android/architecture-components-samples/blob/master/NavigationAdvancedSample/app/src/main/java/com/example/android/navigationadvancedsample/MainActivity.kt
     private fun createSettings() {
         val builder = LocationSettingsRequest.Builder()
         builder.addLocationRequest(locationRequest)

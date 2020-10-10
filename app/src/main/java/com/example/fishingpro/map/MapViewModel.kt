@@ -14,10 +14,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MapViewModel @ViewModelInject constructor(
@@ -32,43 +29,48 @@ class MapViewModel @ViewModelInject constructor(
 
     private val _catchesResult = fishRepository.retrieveCatches(
         auth.uid.toString()
-    )
-    private val _catches = MutableLiveData<MarkerOptions>()
-    val catches: LiveData<MarkerOptions>
-        get() = _catches
+    ).asLiveData(viewModelScope.coroutineContext)
 
-    init {
-        loadLocations()
-    }
-
-    //TODO add all markers and change _catches to list
-    private fun loadLocations() {
-        viewModelScope.launch {
-            _catchesResult.collect { catches ->
-                if (catches is Result.Success) {
-                    catches.data
-                        .asFlow()
-                        .onEach {
-                            delay(100) //TODO; BAD CHANGE. PROBLEM WITH TIME AND MULTIPLE MARKERS
-                        }
-                        .onCompletion {
-                            Log.d(TAG, "DONE")
-                        }
-                        .collect { localDailyCatch ->
-                            val asDataMap = localDailyCatch.asDataMap()
-                            val catchesByLocation = asDataMap.groupBy { it.location }
-                            catchesByLocation.keys.first()?.let { geoPoint ->
-                                val totalCatches = catchesByLocation[geoPoint]?.groupingBy { it.userId}?.eachCount()
-                                _catches.postValue(MarkerOptions()
-                                    .position(LatLng(geoPoint.latitude, geoPoint.longitude))
-                                    .title("Total catches: ${totalCatches?.getOrDefault(auth.uid.toString(), 0)}")
+    private val _catches = _catchesResult.switchMap {
+        liveData {
+            if (it is Result.Success) {
+                val markersList = arrayListOf<MarkerOptions>()
+                for (data in it.data) {
+                    val asDataMap = data.asDataMap()
+                    val catchesByLocation = asDataMap.groupBy { it.location }
+                    catchesByLocation.keys.first()?.let { geoPoint ->
+                        val totalCatches = catchesByLocation[geoPoint]?.groupingBy { it.userId}?.eachCount()
+                        markersList.add(MarkerOptions()
+                            .position(
+                                LatLng(
+                                    geoPoint.latitude,
+                                    geoPoint.longitude
                                 )
-                            }
-                        }
+                            )
+                            .title(
+                                "Total catches: ${
+                                    totalCatches?.getOrDefault(
+                                        auth.uid.toString(),
+                                        0
+                                    )
+                                }"
+                            )
+                        )
+                    }
                 }
+                emit(markersList)
             }
         }
     }
+    val catches: LiveData<ArrayList<MarkerOptions>>
+        get() = _catches
+
+    init {
+        //loadLocations()
+    }
+
+    //TODO add all markers and change _catches to list
+
     /**
      * Factory for constructing MapViewModel with parameter
      */
