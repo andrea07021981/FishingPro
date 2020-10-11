@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_graph"
+    app:startDestination="@id/userFragment">
+
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.example.fishingpro.user.UserFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_user">
+        <action
+            android:id="@+id/action_userFragment_to_weatherFragment"
+            app:destination="@id/weatherFragment" />
+        <action
+            android:id="@+id/action_userFragment_to_fishFragment"
+            app:destination="@id/fishFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="com.example.fishingpro.weather.WeatherFragment"
+        android:label="WeatherFragment"
+        tools:layout="@layout/fragment_weather">
+        <argument
+            android:name="localWeatherDomain"
+            app:argType="com.example.fishingpro.data.domain.LocalWeatherDomain" />
+    </fragment>
+    <fragment
+        android:id="@+id/fishFragment"
+        tools:layout="@layout/fragment_fish"
+        android:name="com.example.fishingpro.fish.FishFragment"
+        android:label="FishFragment" >
+        <argument
+            android:name="userId"
+            app:argType="string"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_fishFragment_to_catchDetailFragment"
+            app:destination="@id/catchDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/catchDetailFragment"
+        android:name="com.example.fishingpro.catchdetail.CatchDetailFragment"
+        android:label="CatchDetailFragment"
+        tools:layout="@layout/fragment_catch_detail">
+        <argument
+            android:name="catchData"
+            app:argType="com.example.fishingpro.data.domain.LocalDailyCatch" />
+    </fragment>
+</navigation>

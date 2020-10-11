@@ -17,6 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+//TODO DELETE AND RENAME USER TO HOME
+
+
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class HomeFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -34,24 +37,20 @@ class HomeFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val navigation: BottomNavigationView = view.findViewById(R.id.homeBottomNavigation)
-        navigation.setOnNavigationItemSelectedListener(this)
+        //val navigation: BottomNavigationView = view.findViewById(R.id.homeBottomNavigation)
+        //navigation.setOnNavigationItemSelectedListener(this)
 
         firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         val mapVisible = firebaseRemoteConfig.getBoolean("map_visibility")
         //TODO check why it doesn't read the correct server value
-        navigation.menu.findItem(R.id.map_page).isVisible = mapVisible
-        loadFragment(userFragment)
+        ///navigation.menu.findItem(R.id.map_page).isVisible = mapVisible
+        //loadFragment(userFragment)
         return view
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        return loadFragment(when (item.itemId) {
-                R.id.user_page -> userFragment
-                R.id.map_page -> mapFragment
-                else -> null
-            }
-        )
+        return true
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
