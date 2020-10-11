@@ -15,7 +15,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.location.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
@@ -65,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setUpNavigation()
         loadFirebaseConfig()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -75,6 +82,42 @@ class MainActivity : AppCompatActivity() {
         startTrackingApp()
     }
 
+    private fun setUpNavigation() {
+        //TODO manage the async of loadFirebaseConfig with coroutines
+        var firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
+        val mapVisible = firebaseRemoteConfig.getBoolean("map_visibility")
+        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+
+        val navController = findNavController(R.id.nav_host_fragment)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val graphs = {
+            if (mapVisible) {
+                setOf(
+                    R.id.main_graph, R.id.home_graph, R.id.map_graph
+                )
+            } else {
+                setOf(
+                    R.id.main_graph, R.id.home_graph
+                )
+            }
+        }
+        val appBarConfiguration = AppBarConfiguration(graphs())
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.userFragment, R.id.mapFragment -> navView.visibility = View.VISIBLE
+                else -> navView.visibility = View.GONE
+            }
+        }
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return (Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp()
+                || super.onSupportNavigateUp())
+    }
+
     private fun createRequest() {
         locationRequest = LocationRequest().apply {
             interval = UPDATE_INTERVAL_IN_MILLISECONDS
@@ -82,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
     }
-//TODO add bottomnav with navigation comnent https://github.com/android/architecture-components-samples/blob/master/NavigationAdvancedSample/app/src/main/java/com/example/android/navigationadvancedsample/MainActivity.kt
+
     private fun createSettings() {
         val builder = LocationSettingsRequest.Builder()
         builder.addLocationRequest(locationRequest)
@@ -119,8 +162,8 @@ class MainActivity : AppCompatActivity() {
         }
         firebaseConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener {
             if (it.isSuccessful) {
-                firebaseConfig.setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
-                    if (it.isSuccessful) {
+                firebaseConfig.setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener { taskListener ->
+                    if (taskListener.isSuccessful) {
                         firebaseConfig.fetchAndActivate()
                             .addOnCompleteListener(this) { task ->
                                 if (task.isSuccessful) {
