@@ -3,18 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_graph"
-    app:startDestination="@id/userFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/userFragment"
-        android:name="com.example.fishingpro.user.UserFragment"
-        android:label="UserFragment"
-        tools:layout="@layout/fragment_user">
+        android:id="@+id/homeFragment"
+        android:name="com.example.fishingpro.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_userFragment_to_weatherFragment"
+            android:id="@+id/action_homeFragment_to_weatherFragment"
             app:destination="@id/weatherFragment" />
         <action
-            android:id="@+id/action_userFragment_to_fishFragment"
+            android:id="@+id/action_homeFragment_to_fishFragment"
             app:destination="@id/fishFragment" />
     </fragment>
     <fragment
