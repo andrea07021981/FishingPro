@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -35,6 +36,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.material.appbar.AppBarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -64,13 +66,14 @@ class HomeFragment : Fragment(), MainActivity.OnLocationUpdateDelegate {
             it.lifecycleOwner = this
             it.homeViewModel = userViewModel
             it.maintoolbar.setNavigationOnClickListener {
-                userViewModel.backToLogin()
+                userViewModel.logOutUser()
             }
         }
         chart = dataBinding.root.catches_chart
         prepareChart()
 
         userViewModel.userEvent.observe(this.viewLifecycleOwner, EventObserver {
+            //TODO change with user info fragment dialog
             AlertDialog.Builder(requireNotNull(activity))
                 .setTitle("Log Out")
                 .setMessage("Would you like to log out?")
@@ -125,6 +128,21 @@ class HomeFragment : Fragment(), MainActivity.OnLocationUpdateDelegate {
             )
         )
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
+        dataBinding.mainappbar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset -> //  Vertical offset == 0 indicates appBar is fully expanded.
+            val offsetAlpha = appBarLayout.y / appBarLayout.totalScrollRange
+            val value = 0 + (255 * offsetAlpha * -1).toInt()
+            Log.d(TAG, "Value: $value")
+            appBarLayout.maintoolbar.navigationIcon?.alpha = value
+        })
+
+        // Mange the back device button
+        requireNotNull(activity).onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //TODO manage here or in activity
+            }
+
+        })
         return dataBinding.root
     }
 

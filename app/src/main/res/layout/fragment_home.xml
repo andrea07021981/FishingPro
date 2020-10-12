@@ -58,10 +58,9 @@
                             android:id="@+id/maintoolbar"
                             android:layout_width="match_parent"
                             android:layout_height="?attr/actionBarSize"
-                            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                            app:navigationIcon="?attr/homeAsUpIndicator"
                             app:layout_collapseMode="pin"
-                            />
+                            app:navigationIcon="@drawable/circular_user_view"
+                            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
                     </com.google.android.material.appbar.CollapsingToolbarLayout>
                 </com.google.android.material.appbar.AppBarLayout>
 

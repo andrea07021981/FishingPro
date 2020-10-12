@@ -9,17 +9,19 @@ import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.fishingpro.databinding.ActivityMainBinding
 import com.google.android.gms.location.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -29,6 +31,7 @@ import com.microsoft.appcenter.AppCenter
 import com.microsoft.appcenter.analytics.Analytics
 import com.microsoft.appcenter.crashes.Crashes
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 @AndroidEntryPoint
@@ -69,9 +72,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
-        setUpNavigation()
+        setUpNavigation(binding)
         loadFirebaseConfig()
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -82,11 +86,11 @@ class MainActivity : AppCompatActivity() {
         startTrackingApp()
     }
 
-    private fun setUpNavigation() {
+    private fun setUpNavigation(binding: ActivityMainBinding) {
         //TODO manage the async of loadFirebaseConfig with coroutines
         var firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         val mapVisible = firebaseRemoteConfig.getBoolean("map_visibility")
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+        val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
@@ -94,23 +98,40 @@ class MainActivity : AppCompatActivity() {
         val graphs = {
             if (mapVisible) {
                 setOf(
-                    R.id.main_graph, R.id.home_graph, R.id.map_graph
+                    R.id.splashFragment, R.id.loginFragment, R.id.signUpFragment, R.id.homeFragment, R.id.mapFragment
                 )
             } else {
                 setOf(
-                    R.id.main_graph, R.id.home_graph
+                    R.id.splashFragment, R.id.loginFragment, R.id.signUpFragment, R.id.homeFragment
                 )
             }
         }
         val appBarConfiguration = AppBarConfiguration(graphs())
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.homeFragment, R.id.mapFragment -> navView.visibility = View.VISIBLE
+                R.id.homeFragment, R.id.mapFragment -> {
+                    navView.visibility = View.VISIBLE
+                }
                 else -> navView.visibility = View.GONE
             }
+            toolbar.updateVisibility(destination.id)
         }
-        setupActionBarWithNavController(navController, appBarConfiguration)
+
         navView.setupWithNavController(navController)
+    }
+
+    fun Toolbar.updateVisibility(id: Int) {
+        visibility = when (id) {
+            R.id.splashFragment,
+            R.id.loginFragment,
+            R.id.signUpFragment,
+            R.id.homeFragment,
+            R.id.fishFragment,
+            R.id.catchDetailFragment -> View.GONE
+            else -> View.VISIBLE
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -381,11 +402,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+/*    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
-    }
+    }*/
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here. The action bar will

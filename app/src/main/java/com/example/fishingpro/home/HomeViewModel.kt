@@ -179,7 +179,7 @@ class HomeViewModel @ViewModelInject constructor(
         }
     }
 
-    fun backToLogin() {
+    fun userInfo() {
         _userEvent.value = Event(Unit)
     }
 
