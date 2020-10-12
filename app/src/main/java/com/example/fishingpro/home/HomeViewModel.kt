@@ -1,4 +1,4 @@
-package com.example.fishingpro.user
+package com.example.fishingpro.home
 
 import android.util.Log
 import android.view.View
@@ -17,15 +17,12 @@ import com.example.fishingpro.data.source.repository.WeatherRepository
 import com.example.fishingpro.data.succeeded
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.lang.Exception
 
 @ExperimentalCoroutinesApi
-class UserViewModel @ViewModelInject constructor(
+class HomeViewModel @ViewModelInject constructor(
     private val weatherRepository: WeatherRepository,
     private val userRepository: UserRepository,
     private val fishRepository: FishRepository,
@@ -34,7 +31,7 @@ class UserViewModel @ViewModelInject constructor(
 ) : ViewModel() {
 
     companion object {
-        private val TAG = UserViewModel::class.java.simpleName
+        private val TAG = HomeViewModel::class.java.simpleName
     }
 
     private val _userEvent = MutableLiveData<Event<Unit>>()
@@ -165,7 +162,7 @@ class UserViewModel @ViewModelInject constructor(
             .onCompletion {
                 Log.d(TAG, "Done")
             }
-            .launchIn(this@UserViewModel.viewModelScope)
+            .launchIn(this@HomeViewModel.viewModelScope)
     }
 
     /**

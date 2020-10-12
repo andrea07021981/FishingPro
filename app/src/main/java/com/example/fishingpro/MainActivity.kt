@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(graphs())
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.userFragment, R.id.mapFragment -> navView.visibility = View.VISIBLE
+                R.id.homeFragment, R.id.mapFragment -> navView.visibility = View.VISIBLE
                 else -> navView.visibility = View.GONE
             }
         }

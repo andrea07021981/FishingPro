@@ -13,7 +13,7 @@ import com.example.fishingpro.data.source.remote.datasource.WeatherRemoteDataSou
 import com.example.fishingpro.data.source.remote.service.weather.WeatherService
 import com.example.fishingpro.data.source.repository.*
 import com.example.fishingpro.map.MapFragment
-import com.example.fishingpro.user.UserFragment
+import com.example.fishingpro.home.HomeFragment
 import com.example.fishingpro.weather.WeatherFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -130,8 +130,8 @@ object BaseModule {
 
     @Singleton
     @Provides
-    fun provideUserFragmentFactory(): UserFragment {
-        return UserFragment()
+    fun provideHomeFragmentFactory(): HomeFragment {
+        return HomeFragment()
     }
 
     @Singleton

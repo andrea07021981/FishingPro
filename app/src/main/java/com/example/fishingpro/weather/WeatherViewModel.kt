@@ -7,7 +7,6 @@ import com.example.fishingpro.data.Result
 import com.example.fishingpro.data.domain.LocalWeatherDomain
 import com.example.fishingpro.data.domain.WeatherDomain
 import com.example.fishingpro.data.source.repository.WeatherRepository
-import com.example.fishingpro.user.UserViewModel
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 
